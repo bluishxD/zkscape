@@ -162,7 +162,7 @@ if(!window.__zkCV){window.__zkCV=1;
  addEventListener('keydown',e=>{if(isC()&&(e.code==='Space'||e.code.indexOf('Arrow')===0))e.preventDefault()},true);}
 addEventListener('pointerdown',e=>{if(isC()&&e.target===g2.canvas)K.e=1});
 
-function ctl(on){let c=$z('cctl');if(!c){c=document.createElement('div');c.id='cctl';c.style.cssText='position:absolute;left:0;right:0;bottom:3vh;display:none;justify-content:space-between;padding:0 4vw;z-index:7;pointer-events:none';
+function ctl(on){let c=$z('cctl');if(c&&c.dataset.own!=='canvas'){c.remove();c=null}if(!c){c=document.createElement('div');c.id='cctl';c.dataset.own='canvas';c.style.cssText='position:absolute;left:0;right:0;bottom:3vh;display:none;justify-content:space-between;padding:0 4vw;z-index:7;pointer-events:none';
  const mb=(t,k,l)=>{const b=document.createElement('button');b.textContent=t;b.setAttribute('aria-label',l);b.style.cssText='pointer-events:auto;touch-action:none;width:64px;height:64px;border-radius:50%;margin:0 5px;font-size:24px;background:#0b0e1fcc;color:#d9e7ff;border:2px solid #46528a';
   const set=v=>e=>{e.preventDefault();if(k==='j'&&v&&!K.j)K.jp=1;if(k==='u'&&v&&!K.u)K.jb=1;
    if(k==='e'){K.eh=v;if(v)K.e=1;return}K[k]=v};

@@ -117,7 +117,7 @@ if(!window.__zkZR){window.__zkZR=1;
 addEventListener('pointerdown',e=>{if(!isZ()||!V.ui||V.ui.lock||e.target!==g2.canvas)return;
  const r=g2.canvas.getBoundingClientRect(),px=(e.clientX-r.left)*g2.canvas.width/r.width,py=(e.clientY-r.top)*g2.canvas.height/r.height;
  for(const q of(V.uiR||[]))if(px>=q.x&&px<=q.x+q.w&&py>=q.y&&py<=q.y+q.h){V.ui.sel=q.i;choose(q.i);return}});
-function ctl(on){let c=$z('zkctl');if(!c){c=document.createElement('div');c.id='zkctl';
+function ctl(on){let c=$z('zkctl');if(c&&c.dataset.own!=='zilkroad'){c.remove();c=null}if(!c){c=document.createElement('div');c.id='zkctl';c.dataset.own='zilkroad';
  c.style.cssText='position:absolute;left:0;right:0;bottom:3vh;display:none;justify-content:space-between;padding:0 4vw;z-index:7;pointer-events:none';
  const mb=(t,k,l)=>{const b=document.createElement('button');b.textContent=t;b.setAttribute('aria-label',l);
   b.style.cssText='pointer-events:auto;touch-action:none;width:60px;height:60px;border-radius:50%;margin:0 4px;font:600 22px sans-serif;color:#fff;background:#12082acc;border:2px solid #ff6ad5';
