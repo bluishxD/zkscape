@@ -99,6 +99,7 @@ body.land canvas{max-width:780px;border-radius:16px;transform:rotate(-.5deg)}
 #zk .opts button:hover{border-color:var(--a)}
 #zk .ok{color:#5dd68a;font-weight:600}.no{color:#ff7a7a;font-weight:600}
 #zk .big{font:400 clamp(30px,5vw,70px)/1 'Abril Fatface',serif}
+html.zpro-on #zhud,html.zpro-on #zback{display:none!important}
 #zback{position:fixed;right:18px;bottom:18px;z-index:60;display:none;background:#f4b728;color:#000;border:0;border-radius:99px;padding:12px 22px;font:600 16px 'Bricolage Grotesque',sans-serif;cursor:pointer;box-shadow:0 8px 30px #000a}
 #zk canvas#zw{position:absolute;inset:0;width:100%;height:100%;max-width:none;border:0;border-radius:0;transform:none;box-shadow:none}
 #zk .confirm{position:absolute;left:50%;bottom:8vh;transform:translateX(-50%);z-index:6;display:none;width:min(520px,90vw);background:#070916f2;border:1px solid var(--a);border-radius:14px;padding:22px;text-align:center;box-shadow:0 0 60px -10px var(--a)}
@@ -163,6 +164,54 @@ body.land canvas{max-width:780px;border-radius:16px;transform:rotate(-.5deg)}
 50%{translate:0 -6px;rotate:0deg;scale:1 1.018}
 75%{translate:-2px -3px;rotate:-.5deg;scale:1.006 1.008}}
 @media(prefers-reduced-motion:reduce){#zk .pfp.hubp{animation:none}}
+<style id="zk-hub2">
+/* ===== HUB v2: playable concourse + player name (frames use the same angled-corner language as .plq / .btn) ===== */
+#zk canvas#zh{image-rendering:pixelated;inset:auto;left:0;top:0;width:auto;height:auto;background:#02030a}
+#zk canvas#zho{position:absolute;left:0;top:0;width:100%;height:100%;max-width:none;border:0;border-radius:0;transform:none;box-shadow:none;pointer-events:none;background:none}
+#zk #ring{pointer-events:none}
+#zk #ring .po{pointer-events:auto;position:absolute;transform:translate(-50%,-50%);width:56px;height:80px;padding:0;margin:0;border:0!important;background:transparent!important;color:transparent!important;font-size:0!important;line-height:0;text-shadow:none!important;cursor:pointer;display:block;overflow:hidden}
+#zk #ring .po *{display:none}
+#zk #ring .po:focus-visible{outline:2px solid #fff;outline-offset:2px;overflow:visible}
+#zk #hp{display:none!important}
+#zk .hud{top:14px;left:14px;padding:10px 18px 12px 14px;background:linear-gradient(180deg,#0a0d1ecc,#05060fe8);border-left:4px solid var(--a);clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));font-size:12px;letter-spacing:.12em;line-height:1.65;text-shadow:0 1px 0 #000}
+#zk .hud b{font-size:25px;line-height:1.05;margin:0}
+#zk .hud .hs{display:block;font-size:10px;letter-spacing:.32em;color:var(--a);margin:2px 0 8px}
+#zk .hud summary{cursor:pointer}
+#zk .hud details[open]{max-height:30vh;overflow:auto}
+#zprof{display:inline-flex;align-items:center;gap:8px;margin-top:9px;max-width:100%;background:#0b0e22cc;color:#fff;border:1px solid var(--a);padding:5px 12px 5px 10px;font:600 12px ui-monospace,monospace;letter-spacing:.14em;cursor:pointer;clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px)}
+#zprof i{font-style:normal;color:var(--a)}#zprof u{text-decoration:none;opacity:.55;font-size:11px}
+#zprof:hover,#zprof:focus-visible{background:var(--a);color:#000;outline:0}#zprof:hover i,#zprof:focus-visible i,#zprof:hover u,#zprof:focus-visible u{color:#000}
+#zk #s-hub #zlbb{background:#0b0e22cc;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);border-radius:0;font-size:14px;padding:10px 18px}
+#zk #s-hub #zlbb:hover,#zk #s-hub #zlbb:focus-visible{background:var(--a);color:#000}
+#zk #wel{bottom:auto!important;top:74px;pointer-events:none;z-index:3;text-shadow:0 0 18px #000,0 2px 0 #000;transition:opacity 1.4s;font-size:clamp(16px,2vw,28px)}
+#zk #wel.out{opacity:0}
+#zhm{position:absolute;left:50%;bottom:5vh;transform:translateX(-50%);z-index:4;width:min(660px,92vw);pointer-events:none;display:none;text-align:left}
+#zhm.on{display:block}#zhm .bigt{font-size:clamp(17px,2vw,27px)}#zhm .rest{font-size:clamp(14px,1.3vw,18px);margin-top:4px}
+#hctl{position:absolute;left:0;right:0;bottom:3vh;display:none;justify-content:space-between;padding:0 4vw;z-index:7;pointer-events:none}
+#hctl button{pointer-events:auto;touch-action:none;width:64px;height:64px;border-radius:50%;margin:0 6px;font:600 24px sans-serif;color:#fff;background:#080a18aa;border:2px solid var(--a)}
+#znm .nm{width:min(470px,92vw);background:#070916;border:1px solid var(--a);padding:28px 26px 24px;box-shadow:0 0 70px -15px var(--a);display:flex;flex-direction:column;gap:12px;text-align:center;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px))}
+#znm .q{font-size:clamp(24px,3vw,32px)}
+#znmi{background:#0d1020;border:1px solid var(--a);color:#fff;border-radius:0;padding:14px;font:600 24px ui-monospace,monospace;letter-spacing:.12em;text-align:center;outline:none;text-transform:uppercase;width:100%}
+#znmi::placeholder{color:#4a4f6c}#znmi:focus{box-shadow:0 0 0 2px var(--a),0 0 24px -4px var(--a)}
+#znm .znh{font-size:12px;letter-spacing:.04em}
+#znm .btn{border-radius:0;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+@media(max-width:700px){#zk .hud{transform-origin:top left;transform:scale(.86)}#zhm{bottom:17vh}#zk #wel{display:none}}
+@media(prefers-reduced-motion:reduce){#zk #wel{transition:none}}
+</style>
+<style id="zk-snark">
+/* zkSNARK number picker (landing). Framed like .plq / the angled-corner buttons. */
+#zk .zsnk{display:flex;flex-direction:column;align-items:center;gap:10px;width:min(520px,92vw)}
+#zk .zsnw{display:flex;align-items:center;gap:2px;background:#0b0e22cc;border:1px solid #3a3d55;border-radius:10px;padding:2px 6px 2px 16px;transition:border-color .2s,box-shadow .2s}
+#zk .zsnw:focus-within{border-color:var(--a);box-shadow:0 0 24px -6px var(--a)}
+#zk .zsnh{font:600 26px ui-monospace,monospace;color:var(--a)}
+#zk #zsn{width:5.5ch;background:none;border:0;outline:none;color:#fff;font:600 30px ui-monospace,monospace;letter-spacing:.1em;text-align:center;padding:8px 10px}
+#zk #zsn::placeholder{color:#4a4f6c;letter-spacing:.08em}
+#zk .zsnr{display:flex;flex-direction:column;align-items:center;gap:4px;min-height:34px;font:600 11px ui-monospace,monospace;letter-spacing:.2em;color:#8a867c;text-align:center}
+#zk #zsnm{letter-spacing:.1em}
+#zk #zsnl{margin:0;border-radius:0;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);box-shadow:0 0 18px -4px var(--a)}
+#zk #zsnl{cursor:pointer}
+#zk #zsnl:focus-visible{outline:2px solid #fff;outline-offset:3px}
+@media(max-width:600px){#zk .zsnw{padding-left:10px}#zk #zsn{font-size:24px;width:4.5ch}#zk .zsnr{font-size:10px}}
 </style></head>
 <body>
 <div class="top"><div class="seg" id="mode" role="group" aria-label="Device type"><button data-v="phone" aria-pressed="true">Phone</button><button data-v="pc" aria-pressed="false">Desktop</button></div></div>
@@ -253,11 +302,13 @@ function setPalette(p){
   const best=[...p].sort((a,b)=>lum(b)-lum(a))[0];
   document.documentElement.style.setProperty('--accent',lum(best)>90?best:'#f4b728');
 }
-function removeBg(img){
+function removeBg(img,thr){
   const w=img.width,h=img.height,t=document.createElement('canvas');t.width=w;t.height=h;
   const x=t.getContext('2d',{willReadFrequently:true});x.drawImage(img,0,0);
   const id=x.getImageData(0,0,w,h),d=id.data,ref=[d[0],d[1],d[2]],seen=new Uint8Array(w*h),st=[];
-  const ok=i=>d[i*4+3]>0&&dist([d[i*4],d[i*4+1],d[i*4+2]],ref)<32;
+  /* thr 32 is tuned for uploads (soft/vignetted edges). The zkSNARK artwork sits on PURE black, so a
+     strict key is required: at 32 it eats dark faces and the baked-in checkerboard portraits. */
+  const ok=i=>d[i*4+3]>0&&dist([d[i*4],d[i*4+1],d[i*4+2]],ref)<(thr==null?32:thr);
   for(let i=0;i<w;i++)st.push(i,(h-1)*w+i);
   for(let j=0;j<h;j++)st.push(j*w,j*w+w-1);
   while(st.length){
@@ -455,9 +506,9 @@ fill('phone');
 <div id="zk" aria-label="ZKSCAPE">
 <canvas id="zs"></canvas>
 <section class="scr on" id="s-land">
- <h1 class="t">ZKSCAPE</h1><p class="sub">Your PFP. Your world. Your Zcash story.</p>
+ <h1 class="t">ZKSCAPE</h1><p class="sub">Your zkSNARK. Your world. Your Zcash story.</p>
  <img id="lp" class="pfp" hidden alt="Your PFP" style="height:26vh;margin-bottom:20px">
- <label class="btn" id="zup" tabindex="0">ENTER THE SHIELDED WORLD — upload your PFP<input type="file" id="zf" accept="image/*" hidden></label>
+ <div class="zsnk"><label class="btn" for="zsn" id="zsnl">LOOK UP YOUR zkSNARK</label><span class="zsnw" id="zsnw"><span class="zsnh">#</span><input id="zsn" inputmode="numeric" autocomplete="off" spellcheck="false" maxlength="5" placeholder="4312" aria-label="Your zkSNARK number"></span><div class="zsnr"><span id="zsnp"></span><span id="zsnm" role="status" aria-live="polite"></span></div></div>
  <button class="btn" id="zgo" hidden>YOUR WORLD IS READY. ENTER ZKSCAPE →</button>
  <button class="btn g" id="zres" hidden>RESET PROGRESS</button>
 </section>
@@ -472,10 +523,29 @@ fill('phone');
  <div><button class="btn" id="cdl">DOWNLOAD EXPLORER CARD</button><button class="btn g" id="cbk">BACK TO HUB</button></div></section>
 <div id="zc" class="confirm"></div><div id="zb" style="display:none;position:absolute;inset:0;z-index:8;background:radial-gradient(circle,#fff,var(--a) 60%,#000);pointer-events:none"></div>
 <div class="panel" id="zv" style="z-index:9"><div style="width:min(900px,92vw)"><div style="aspect-ratio:16/9;background:#000;border:1px solid var(--a);border-radius:12px;overflow:hidden"><video id="vv" muted playsinline style="width:100%;height:100%;display:none"></video><div id="vph" style="width:100%;height:100%;align-items:center;justify-content:center;font:400 40px 'Abril Fatface',serif;color:var(--a);text-align:center;background:repeating-linear-gradient(45deg,#0a0c1a,#0a0c1a 12px,#0d1022 12px,#0d1022 24px)"></div></div><div style="height:4px;background:#222;margin:8px 0"><div id="vbar" style="height:100%;width:0;background:var(--a)"></div></div><button class="btn g" id="vr">↺ REPLAY</button><button class="btn g" id="vm">🔇</button><button class="btn" id="vx">✕ CLOSE</button></div></div>
+<div class="panel" id="znm" role="dialog" aria-modal="true" aria-labelledby="znmt"><div class="nm"><div class="q" id="znmt">WHAT SHOULD WE CALL YOU?</div><div class="deep" id="znmd">Enter your explorer name.</div><input id="znmi" maxlength="16" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="EXPLORER" aria-label="Explorer name"><div class="deep znh">Optional. Letters, numbers, space . _ - (up to 16). Saved only in this browser.</div><div><button class="btn" id="znmg" type="button">ENTER ZKSCAPE</button><button class="btn g" id="znms" type="button">SKIP</button></div></div></div>
 <div class="panel" id="zp"><div class="card"><div class="l"><img class="pfp" id="pp" alt=""><div class="q" id="pn"></div></div><div class="r" id="pb"></div></div></div>
 </div>
 <div id="zhud"><div><span>TIME</span><b id="zht">00:00</b></div><div><span>SCORE</span><b id="zhs">0</b><div id="zhf"></div></div></div>
 <button id="zback">← BACK TO ZKSCAPE</button>
+<script src="polish/zkp.js"></script>
+<script src="polish/prologue.js"></script>
+<script src="polish/finale.js"></script>
+<script src="polish/card.js"></script>
+<script src="polish/zm.js"></script>
+<script src="worlds/01-origin.js"></script>
+<script src="worlds/02-shielded.js"></script>
+<script src="worlds/03-proof.js"></script>
+<script src="worlds/04-keys.js"></script>
+<script src="worlds/05-orchard.js"></script>
+<script src="worlds/06-ironwood.js"></script>
+<script src="worlds/07-blocks.js"></script>
+<script src="worlds/08-machine.js"></script>
+<script src="worlds/09-canvas.js"></script>
+<script src="worlds/10-archive.js"></script>
+<script src="worlds/11-noir.js"></script>
+<script src="worlds/12-zilkroad.js"></script>
+<script src="hub/hub.js"></script>
 <script>
 // ===== ZKSCAPE STATE =====
 window.ZKSCAPE=(function(){
@@ -483,29 +553,48 @@ const $z=id=>document.getElementById(id),Z=$z('zk'),KEY='zkscape.v1';
 let S={done:{},score:0,t0:0,tEnd:0,art:false,pfp:null,id:'ZK-'+Math.floor(0x1000+Math.random()*0xefff).toString(16).toUpperCase(),pal:['#f4b728','#4ee3f0','#6a3d9a']};
 try{const j=JSON.parse(localStorage.getItem(KEY));if(j&&typeof j==='object'&&j.done)S=Object.assign(S,j)}catch(e){}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+// ===== PLAYER NAME (shared): sanitize, persist inside S (same save as progress), pixel-font tag drawn over the player in EVERY scene =====
+const ZNAME=(()=>{
+const DEF='EXPLORER',MAX=16,subs=[];
+const RAW={A:'01110 10001 10001 11111 10001 10001 10001',B:'11110 10001 10001 11110 10001 10001 11110',C:'01110 10001 10000 10000 10000 10001 01110',D:'11110 10001 10001 10001 10001 10001 11110',E:'11111 10000 10000 11110 10000 10000 11111',F:'11111 10000 10000 11110 10000 10000 10000',G:'01110 10001 10000 10111 10001 10001 01111',H:'10001 10001 10001 11111 10001 10001 10001',I:'01110 00100 00100 00100 00100 00100 01110',J:'00111 00010 00010 00010 00010 10010 01100',K:'10001 10010 10100 11000 10100 10010 10001',L:'10000 10000 10000 10000 10000 10000 11111',M:'10001 11011 10101 10101 10001 10001 10001',N:'10001 11001 10101 10011 10001 10001 10001',O:'01110 10001 10001 10001 10001 10001 01110',P:'11110 10001 10001 11110 10000 10000 10000',Q:'01110 10001 10001 10001 10101 10010 01101',R:'11110 10001 10001 11110 10100 10010 10001',S:'01111 10000 10000 01110 00001 00001 11110',T:'11111 00100 00100 00100 00100 00100 00100',U:'10001 10001 10001 10001 10001 10001 01110',V:'10001 10001 10001 10001 10001 01010 00100',W:'10001 10001 10001 10101 10101 10101 01010',X:'10001 10001 01010 00100 01010 10001 10001',Y:'10001 10001 01010 00100 00100 00100 00100',Z:'11111 00001 00010 00100 01000 10000 11111',
+0:'01110 10001 10011 10101 11001 10001 01110',1:'00100 01100 00100 00100 00100 00100 01110',2:'01110 10001 00001 00010 00100 01000 11111',3:'11110 00001 00001 01110 00001 00001 11110',4:'00010 00110 01010 10010 11111 00010 00010',5:'11111 10000 11110 00001 00001 10001 01110',6:'00110 01000 10000 11110 10001 10001 01110',7:'11111 00001 00010 00100 01000 01000 01000',8:'01110 10001 10001 01110 10001 10001 01110',9:'01110 10001 10001 01111 00001 00010 01100',
+' ':'00000 00000 00000 00000 00000 00000 00000','.':'00000 00000 00000 00000 00000 01100 01100',',':'00000 00000 00000 00000 01100 00100 01000','-':'00000 00000 00000 11111 00000 00000 00000','_':'00000 00000 00000 00000 00000 00000 11111','!':'00100 00100 00100 00100 00100 00000 00100','?':'01110 10001 00001 00010 00100 00000 00100',':':'00000 01100 01100 00000 01100 01100 00000',"'":'00100 00100 01000 00000 00000 00000 00000','/':'00001 00010 00010 00100 01000 01000 10000','+':'00000 00100 00100 11111 00100 00100 00000',
+'<':'00010 00110 01110 11110 01110 00110 00010','>':'01000 01100 01110 01111 01110 01100 01000','^':'00000 00100 01110 11111 00000 00000 00000','~':'00000 00000 11111 01110 00100 00000 00000','%':'00000 00001 00011 10110 11100 01000 00000','@':'01110 10001 10001 11111 11011 11011 11111','*':'00000 00100 01110 11111 01110 00100 00000'};
+const GL={};Object.keys(RAW).forEach(k=>GL[k]=RAW[k].split(' '));
+// letters, digits, space . _ -  (the same character set the leaderboard name already used); everything else is dropped. Never touches HTML.
+const clean=v=>{v=typeof v==='string'?v:'';try{v=v.normalize('NFKD')}catch(e){}return v.replace(/[\u0300-\u036f]/g,'').replace(/[^A-Za-z0-9_ .-]/g,'').replace(/\s+/g,' ').trim().slice(0,MAX).trim()};
+const get=()=>clean(S.name)||DEF,has=()=>!!clean(S.name);
+const accent=()=>/^#[0-9a-f]{6}$/i.test((S.pal||[])[0])?S.pal[0]:'#f4b728';
+function set(v){S.name=clean(v);S.nameAsked=1;save();subs.forEach(f=>{try{f()}catch(e){}})}
+const width=(t,k)=>t.length?(t.length*6-1)*k:0;
+function text(c,t,x,y,k,col){c.fillStyle=col;let X=x;for(const ch of t){const g=GL[ch];if(g)for(let r=0;r<7;r++){const row=g[r];for(let q=0;q<5;q++)if(row.charCodeAt(q)===49)c.fillRect(X+q*k,y+r*k,k,k)}X+=6*k}}
+const kScale=()=>Math.max(2,Math.min(4,Math.round(Math.min(innerWidth*.56,innerHeight)/330)));
+// tag: centred on cx, floating just above topY (head top). Stable pixel size (k) no matter how the scene is scaled or shaken.
+function tag(c,cx,topY,k,al,vw){const t=get().toUpperCase(),b=Math.max(1,Math.round(k/2)),w=width(t,k)+k*6,h=7*k+k*4;let x=Math.round(cx-w/2),y=Math.round(topY-h-k*4);x=Math.max(4,Math.min(vw-w-4,x));y=Math.max(4,y);
+ c.save();c.globalAlpha=Math.max(0,Math.min(1,al==null?1:al));c.shadowBlur=0;c.setLineDash&&c.setLineDash([]);
+ c.fillStyle='rgba(4,5,14,.84)';c.fillRect(x+k,y,w-2*k,h);c.fillRect(x,y+k,w,h-2*k);
+ c.fillStyle=accent();c.globalAlpha*=.8;c.fillRect(x+k,y,w-2*k,b);c.fillRect(x+k,y+h-b,w-2*k,b);c.fillRect(x,y+k,b,h-2*k);c.fillRect(x+w-b,y+k,b,h-2*k);c.globalAlpha=Math.max(0,Math.min(1,al==null?1:al));
+ const px=Math.round(cx),tw=k*5;c.fillStyle='rgba(4,5,14,.84)';c.fillRect(px-tw/2|0,y+h,tw,k);c.fillRect(px-(k*3/2|0),y+h+k,k*3,k);c.fillRect(px-(k/2|0),y+h+2*k,k,k);
+ text(c,t,x+k*3+k,y+k*2+k,k,'#000');text(c,t,x+k*3,y+k*2,k,'#fff');c.restore();return{x,y,w,h}}
+// world scenes: the engine's g2 is wrapped once (below); any drawImage(pim,...) records where the head is, drawn after the frame.
+const rec={n:0,x:0,y:0,a:1};
+function hook(ctx,isP){const d=ctx.drawImage;ctx.drawImage=function(im){if(!rec.n&&arguments.length===5&&isP(im)){const m=this.getTransform(),a=arguments[1],b=arguments[2],w=arguments[3],h=arguments[4],px=a+w/2,X=m.a*px+m.c*b+m.e,y1=m.b*px+m.d*b+m.f,y2=m.b*px+m.d*(b+h)+m.f;rec.n=1;rec.x=X;rec.y=Math.min(y1,y2);rec.a=this.globalAlpha}return d.apply(this,arguments)}}
+function worldTag(c){if(!rec.n)return;rec.n=0;c.save();c.setTransform(1,0,0,1,0,0);c.globalAlpha=1;c.shadowBlur=0;tag(c,rec.x,rec.y,kScale(),rec.a,c.canvas.width);c.restore()}
+// name panel (first visit asks once; the profile chip re-opens it later)
+const P_=$z('znm'),I_=$z('znmi');let after=null;
+function ask(mode,cb){after=cb||null;P_.dataset.mode=mode;const ed=mode==='edit';$z('znmt').textContent=ed?'CHANGE YOUR NAME':'WHAT SHOULD WE CALL YOU?';$z('znmd').textContent=ed?'This is what floats above your explorer.':'Enter your explorer name.';$z('znmg').textContent=ed?'SAVE NAME':'ENTER ZKSCAPE';$z('znms').textContent=ed?'CANCEL':'SKIP';I_.value=clean(S.name);P_.classList.add('on');setTimeout(()=>{I_.focus();I_.select()},60)}
+function close_(){P_.classList.remove('on');const a=document.activeElement;a&&a.blur&&a.blur();const f=after;after=null;f&&f()}
+function ok_(){set(I_.value);close_()}
+function no_(){if(P_.dataset.mode!=='edit'&&!S.nameAsked){S.nameAsked=1;save()}close_()}
+$z('znmg').onclick=ok_;$z('znms').onclick=no_;
+I_.addEventListener('input',()=>{const v=I_.value.replace(/[^A-Za-z0-9_ .-]/g,'').slice(0,MAX);if(v!==I_.value)I_.value=v});
+P_.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();ok_()}else if(e.key==='Escape'){e.preventDefault();no_()}});
+const maybeAsk=()=>{if(typeof DR!=='undefined'&&DR)return;if(!S.nameAsked&&!P_.classList.contains('on'))setTimeout(()=>{if(!S.nameAsked&&!P_.classList.contains('on')&&$z('s-hub').classList.contains('on'))ask('first')},500)};
+return{get,has,clean,set,text,width,tag,hook,worldTag,rec,ask,maybeAsk,kScale,accent,onChange:f=>subs.push(f),DEF,MAX}})();
+
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 // ===== WORLDS =====  (steps = click-through lessons; edit freely)
-const W=[
-{id:'origin',n:'ORIGIN',title:'THE ORIGIN',sub:'Why does Zcash exist?',q:'Public money does not have to mean public history.',steps:[
- 'Zcash launched in October 2016.','ZEC is the native cryptocurrency of the Zcash network.','Zcash has a 21 million maximum supply, like Bitcoin.','It supports both transparent and shielded transactions, using zero-knowledge cryptography for the shielded kind.'],deep:'Zcash is a proof-of-work blockchain; privacy is an option users choose per transaction.'},
-{id:'shielded',n:'SHIELD',title:'SHIELDED VALLEY',sub:'Transparent or shielded?',q:'Zcash gives users the option of shielded transactions.',sort:[
- ['Publicly visible transaction history',0],['Private financial activity',1],['Choosing the privacy-preserving path',1],['Amounts and addresses readable by anyone on-chain',0]],
- deep:'Shielded transactions protect financial information from public view while the network can still verify they are valid. Not every transaction is automatically private.'},
-{id:'proof',n:'PROOF',title:'THE PROOF TEMPLE',sub:'Prove it. Without revealing it.',q:'The secret doesn\'t travel.',steps:[
- 'SECRET — you hold a symbol only you know: ◈ ▲ ✦ (never shown).','TRANSFORM — a prover turns it into a stylized proof: 7f3a·c91e·02bd.','VERIFIED — the verifier checks the proof. Proof verified. Secret revealed: NO.',
- 'A zero-knowledge proof shows a statement is true without revealing the secret that makes it true. In Zcash, it helps the network verify shielded transactions follow the rules without exposing the same financial information publicly.'],deep:'zk-SNARK = Zero-Knowledge Succinct Non-Interactive Argument of Knowledge. (This temple is a stylized demo, not real cryptography.)'},
-{id:'keys',n:'KEYS',title:'THE KEY LIBRARY',sub:'Selective disclosure',q:'You can reveal information without handing over the ability to spend.',steps:[
- 'THE VAULT (spending key): needed to spend funds. It stays locked.','THE WINDOW (viewing key): lets someone see authorized transaction details — without spending power.','Sapling introduced full viewing keys: details can be viewed without exposing the spending key.','Selective disclosure: share what you choose, with whom you choose.'],deep:'Also: incoming and outgoing viewing keys, scoped to one direction of activity.'},
-{id:'orchard',n:'ORCHARD',title:'ORCHARD',sub:'Pick the fruit',q:'Every fruit is a note.',steps:[
- 'NOTE — a unit of shielded value with recipient information.','COMMITMENT — commits to the note without simply revealing it.','NULLIFIER — marks a note as spent, preventing double-spends, without publishing the note.','PROOF — shows the transaction follows the rules.','Orchard shipped with NU5 (2022) as a new shielded pool using the Halo 2 proving system. It is one part of the architecture, not the only shielded protocol.'],deep:'Pallas/Vesta curve cycle · Sinsemilla commitments · Halo 2 · Action circuit · RedPallas.'},
-{id:'ironwood',n:'IRONWOOD',title:'IRONWOOD',sub:'Protocol engineering evolves',q:'Zcash continues to harden its privacy technology.',steps:[
- 'NU6.2 (2026) addressed a critical Orchard proof-circuit vulnerability.','NU6.3 activated on July 28, 2026 (block 3,428,143) and introduced the Ironwood shielded pool.','Ironwood is part of the broader Orchard protocol design, but a distinct value pool from the original Orchard pool.','After NU6.3 the original Orchard pool is restricted; funds exit it through the turnstile into Ironwood.','OLD POOL → NEW POOL. One protocol can evolve while its pools and consensus rules change.'],deep:'Ironwood: version 6 transactions, separate pool, supply integrity, formal verification, quantum recoverability. (Facts as supplied by the project owner — please re-verify against z.cash / zips.z.cash before publishing.)'},
-{id:'blocks',n:'BLOCKS',title:'BLOCK OBSERVATORY',sub:'Wait for the next block',q:'The network remembers.',steps:[
- 'Zcash is a proof-of-work blockchain: miners produce blocks.','Blocks contain transactions; network consensus decides which chain is valid.','⚠ DEMO MODE — SIMULATED BLOCK: height #— · txs — · hash — (nothing here is real chain data).'],deep:'Real blocks can be explored on any Zcash block explorer.'},
-{id:'machine',n:'MACHINE',title:'THE ZCASH MACHINE',sub:'Transaction anatomy',q:'Conceptually, six stations.',steps:[
- '1 NOTE — value + recipient info.','2 COMMITMENT — hidden value in a structure.','3 NULLIFIER — marks a note spent.','4 PROOF — rules are satisfied.','5 SIGNATURE — authorized by the right key.','6 BLOCK — included and confirmed by consensus. (High-level, not a formal spec.)'],deep:'Simplified for beginners.'},
-{id:'canvas',n:'CANVAS',title:'THE CANVAS',sub:'Every explorer leaves an artifact',q:'Now turn your PFP into something of your own.',canvas:true},
-{id:'archive',n:'ARCHIVE',title:'THE ARCHIVE',sub:'Final knowledge gate',q:'5 correct answers required.',quiz:true}];
+const W=[],GIANT={},LM={};let HUBX=null;
 // ===== QUIZ =====
 const Q=[
 ['What is ZEC?',['A wallet','Zcash\'s native cryptocurrency','A proof','A block explorer'],1],
@@ -529,7 +618,8 @@ const scr=n=>{Z.querySelectorAll('.scr').forEach(s=>s.classList.toggle('on',s.id
 const nd=()=>W.slice(0,10).filter(w=>S.done[w.id]).length;
 const open=i=>W[i].bonus?!!S.done.origin:(i===0||S.done[W[i-1].id]);
 function theme(){Z.style.setProperty('--a',S.pal[0])}
-function hub(){stopWorld();scr('hub');$z('hp').src=S.pfp;$z('hd').innerHTML='DISCOVERIES: '+nd()+'/10<br>BONUS: '+bonus()+'/2<br>'+inv();
+function hub(){const was=$z('s-hub').classList.contains('on');stopWorld();scr('hub');$z('hp').src=S.pfp;$z('hd').innerHTML='DISCOVERIES: '+nd()+'/10<br>BONUS: '+bonus()+'/2<br>'+inv();
+ if(HUBX){HUBX.enter(was);return}   // playable HUB (hub/hub.js); the ring below is the untouched legacy fallback
  const R=$z('ring');R.innerHTML='';const cx=innerWidth/2,cy=innerHeight*.52,rx=innerWidth*.4,ry=innerHeight*.36;
  W.forEach((w,i)=>{const a=(i/W.length)*Math.PI*2-Math.PI/2,b=document.createElement('button');
   b.className='po '+(S.done[w.id]?'done':open(i)?'open':'')+(w.bonus?' bonus':'');b.style.left=cx+Math.cos(a)*rx+'px';b.style.top=cy+Math.sin(a)*ry+'px';
@@ -577,6 +667,7 @@ $('dl').addEventListener('click',()=>{if(Z.style.display==='none'){if(!S.done.ca
 $z('zback').onclick=()=>{Z.style.display='';$z('zback').style.display='none';hub();bumpFrom(ZPEND);ZPEND=null;if(S.done.canvas)enter(8)};
 // ===== FINAL CARD =====
 function end(){stopWorld();P.classList.remove('on');scr('end');const c=$z('cc'),g=c.getContext('2d'),im=new Image(),I=ident(),s=I.s,lv=['ROOKIE','EXPLORER','PATHFINDER','GUARDIAN','ARCHITECT'].indexOf(I.rank);im.onload=()=>{
+ if(window.ZKCARD&&ZKCARD.show({canvas:c,img:im,S,I,s,lv,W,fmtN,fmtT,reduce,name:ZNAME.has()?ZNAME.get():''}))return;   // the Obsidian Relic (polish/card.js); the original drawing below is the fallback
  g.fillStyle='#05060f';g.fillRect(0,0,1600,900);const gr=g.createRadialGradient(480,470,0,480,470,640);gr.addColorStop(0,S.pal[0]+(40+lv*20).toString(16).padStart(2,'0'));gr.addColorStop(1,'#0000');g.fillStyle=gr;g.fillRect(0,0,1600,900);
  g.strokeStyle=S.pal[0];g.lineWidth=4+lv*3;g.shadowColor=S.pal[0];g.shadowBlur=10+lv*8;g.strokeRect(30,30,1540,840);g.shadowBlur=0;
  const ws=W.filter(x=>S.done[x.id]);ws.forEach((x,i)=>{const a=i/ws.length*Math.PI*2-Math.PI/2,X=480+Math.cos(a)*340,Y=470+Math.sin(a)*370;g.shadowColor=S.pal[i%3];g.shadowBlur=18;g.fillStyle=S.pal[i%3]||S.pal[0];g.beginPath();g.arc(X,Y,22,0,7);g.fill();g.shadowBlur=0;g.fillStyle='#000';g.font='bold 18px sans-serif';g.textAlign='center';g.fillText(x.n[0],X,Y+6)});
@@ -585,14 +676,87 @@ function end(){stopWorld();P.classList.remove('on');scr('end');const c=$z('cc'),
  g.font="30px ui-monospace,monospace";[['SCORE',fmtN(s.score)],['TIME',fmtT(s.elapsed_seconds)],['ACCURACY',s.accuracy+'%  ('+s.first_try+'/'+s.correct_answers+' first try)'],['WORLDS',s.worlds_completed+'/10   BONUS '+s.bonus_worlds_completed+'/2'],['ARTIFACTS',String(s.artifacts_collected)],['HINTS',String(s.hints_used)],['BEST AT',I.best.toUpperCase()]].forEach(([a,b],i)=>{g.fillStyle='#8a867c';g.fillText(a,905,335+i*46);g.fillStyle=i===0?S.pal[0]:'#fff';g.fillText(b,1130,335+i*46)});g.fillStyle='#8a867c';g.font="18px ui-monospace,monospace";g.fillText('ID '+S.id,905,298);g.font="30px ui-monospace,monospace";
  g.fillStyle='#ece8df';g.font="26px sans-serif";let y=690,line='';('You got '+s.first_try+'/'+s.correct_answers+' right on the first try'+(s.hints_used?' with '+s.hints_used+' hint'+(s.hints_used>1?'s':''):' and no hints')+'; strongest in '+I.best.toLowerCase()+'; explored '+s.worlds_completed+'/10 core and '+s.bonus_worlds_completed+'/2 bonus worlds'+(S.art?', and created your wallpaper artifact.':'.')).split(' ').forEach(wd=>{if(g.measureText(line+wd).width>620){g.fillText(line,905,y);y+=34;line=''}line+=wd+' '});g.fillText(line,905,y);
  g.fillStyle=S.pal[0];g.font="600 40px Caveat,cursive";g.fillText('WELCOME TO THE SHIELDED WORLD.',90,850);g.fillStyle='#8a867c';g.font="16px sans-serif";g.fillText('In-browser collectible — not an NFT, not on-chain.',1150,850)};im.src=S.pfp}
-$z('cdl').onclick=()=>$z('cc').toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='zkscape-'+S.id+'.png';a.click()});
+$z('cdl').onclick=()=>((window.ZKCARD&&ZKCARD.exportCanvas())||$z('cc')).toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='zkscape-'+S.id+'.png';a.click()});
 $z('cbk').onclick=hub;
 // ===== ZKSCAPE UI: landing + stars =====
-function use(url,img){S.pfp=url;try{S.pal=extract(img)[0]}catch(e){}theme();$z('lp').src=url;$z('lp').hidden=false;$z('zgo').hidden=false;$z('zup').firstChild.textContent='CHANGE PFP'}
-$z('zf').onchange=e=>{const f=e.target.files[0];if(!f||!f.type.startsWith('image/'))return;const im=new Image();im.onload=()=>{
- const k=Math.min(1,320/Math.max(im.width,im.height)),t=document.createElement('canvas');t.width=Math.round(im.width*k);t.height=Math.round(im.height*k);
- t.getContext('2d').drawImage(im,0,0,t.width,t.height);let cl;try{cl=removeBg(t)}catch(x){cl=t}use(cl.toDataURL('image/png'),im);save()};im.src=URL.createObjectURL(f)};
-$z('zgo').onclick=()=>{ensureRun();hub();if(!reduce)$z('wel').animate([{opacity:0},{opacity:1}],2000)};
+function use(url,img){S.pfp=url;try{S.pal=extract(img)[0]}catch(e){}theme();$z('lp').src=url;$z('lp').hidden=false;$z('zgo').hidden=false}
+// ===== CHARACTER PICKER: look up your zkSNARK by number =====
+// Files are <id>.webp in 10kpfps/zilkroad_art/ — Ids 1..10000, no manifest needed: we just try the file and
+// handle the miss. The artwork is pure black-backed, so removeBg is called with a strict key (thr 3) —
+// the default 32 destroys dark faces and the checkerboard portraits.
+const SNARK=1e4;
+const findSnark=()=>{
+  const raw=$z('zsn').value.replace(/\D/g,'').slice(0,5);
+  $z('zsn').value=raw;
+  const n=parseInt(raw,10),m=$z('zsnm');
+  if(!n||n<1||n>SNARK){m.innerHTML='<span class="no">ENTER A NUMBER BETWEEN 1 AND '+SNARK+'.</span>';return}
+  const im=new Image();
+  im.onload=()=>{
+    /* Background removal needs to READ pixels back off a canvas. Under file:// every file is its
+       own opaque origin, so the canvas is tainted and getImageData/toDataURL throw
+       "DOMException: The operation is insecure". Catch it and fall back to the file URL as-is:
+       the character still shows, it just keeps its black backdrop. Served over http the canvas
+       is clean and the backdrop is removed as normal. */
+    let url=im.src,cut=true;
+    try{
+      const k=Math.min(1,520/Math.max(im.width,im.height)),t=document.createElement('canvas');
+      t.width=Math.round(im.width*k);t.height=Math.round(im.height*k);
+      t.getContext('2d').drawImage(im,0,0,t.width,t.height);
+      url=removeBg(t,3).toDataURL('image/png');
+    }catch(e){url=im.src;cut=false}
+    S.snark=n;use(url,im);save();
+    m.innerHTML=cut?'<span class="ok">zkSNARK #'+n+' IS YOUR EXPLORER.</span>'
+      :'<span class="no">OPEN THIS OVER HTTP (NOT BY DOUBLE-CLICKING) OR YOUR zkSNARK KEEPS ITS BLACK BACKDROP.</span>';
+    $z('zsnp').textContent='THE COLLECTION HAS '+SNARK+'.';$z('zsnl').textContent='LOOK UP ANOTHER zkSNARK';
+    // keep the input on screen so LOOK UP ANOTHER can actually change it; just select what's there
+    $z('zsn').focus();$z('zsn').select();
+    AM&&AM.init&&AM.sfx('correct');
+  };
+  /* A failed load is NOT the same as a missing snark: it can be a bad path, a host that blocks
+     the folder, or a browser without WebP. Say so, rather than claiming the snark doesn't exist. */
+  im.onerror=()=>{m.innerHTML='<span class="no">COULD NOT LOAD #'+n+' &mdash; the file may be missing, or this browser cannot read WebP.</span>'};
+  im.src='10kpfps/zilkroad_art/'+n+'.webp';
+};
+$z('zsnl').onclick=findSnark;
+$z('zsn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();findSnark()}});
+$z('zsn').addEventListener('input',()=>{$z('zsnm').textContent=''});
+// ===== ENTRY FLOW: the single place that decides where a session begins =====
+// Today every player starts in the HUB. FUTURE INTRO (not built): make ENTRY.pick() return 'intro' for brand-new players;
+// the intro ends with  ENTRY.run('origin')  (-> burst() + startWorld(0), the same transition the HUB portals use).
+const ENTRY={
+ routes:{
+  hub(o){if(!(o&&o.resume))ensureRun();hub();if(!(o&&o.resume)&&!reduce)$z('wel').animate([{opacity:0},{opacity:1}],2000)},
+  origin(){ensureRun();burst(()=>startWorld(0))},
+  intro(o){if(!proPlay(o))ENTRY.routes.hub(o)}   // cinematic prologue (polish/prologue.js); it hands over to the HUB route when it ends or is skipped
+ },
+ pick(o){return (o&&o.resume)||!window.ZKPRO?'hub':'intro'},
+ run(n,o){(ENTRY.routes[n]||ENTRY.routes.hub)(o)},
+ go(o){ENTRY.run(ENTRY.pick(o),o)}
+};
+$z('zgo').onclick=()=>ENTRY.go();
+// ===== PROLOGUE glue: the cinematic itself lives in polish/prologue.js and never touches game state. =====
+// It borrows the engine's own world scenes: startWorld() runs a real world (muted, no player input), the module only reads its canvas.
+// Side effects of that are undone in proRestore(): audio flags, and the HUB's "which portal did I leave" marker.
+const PRO_BG=bg,PRO_FORE=fore,PRO={mute:null,rt:null,last:0,tok:0,o:null,rtSaved:false};   // PRO_BG/FORE: the unwrapped, stateless backdrop renderers
+function proMute(){if(PRO.mute)return;PRO.mute={mo:AM.PF.mo,so:AM.PF.so};AM.PF.mo=0;AM.PF.so=0}   // not saved to storage: lv()/sv() are never called while muted
+function proRestore(){if(PRO.mute){AM.PF.mo=PRO.mute.mo;AM.PF.so=PRO.mute.so;PRO.mute=null}if(PRO.rtSaved&&HUBX&&HUBX.state){HUBX.state.returnTo=PRO.rt;PRO.rtSaved=false}}
+const proAd={
+ get canvas(){return wc},
+ audio(){const P=AM.PF;return{on:!!(P.mo||P.so),level:P.m*(P.mo?P.mu:P.sf)}},
+ begin(id,cb){const i=W.findIndex(w=>w.id===id);if(i<0)return cb(false);proMute();const k=++PRO.tok;try{stopWorld()}catch(e){}
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{if(k!==PRO.tok)return;
+   try{startWorld(i);PRO.last=performance.now();const z=Math.min(1.4,2000/Math.max(1,innerWidth));if(z>1.05){wc.width=Math.round(innerWidth*z);wc.height=Math.round(innerHeight*z)}cb(true)}catch(e){console.warn('prologue world',id,e);try{stopWorld()}catch(_){}cb(false)}}))},
+ stop(){PRO.tok++;try{stopWorld()}catch(e){}},
+ pure(id,t,cm,zm,fx,fy,w,h){if(!wc.width)return;const gw=wc.width,gh=wc.height,gy=gh*.8,p=pal(),sv={cur,T,cam,wow};
+  try{cur={id};T=t;cam=cm;wow=0;g2.setTransform(1,0,0,1,0,0);g2.globalAlpha=1;g2.save();PRO_BG(gw,gh,gy,p);PRO_FORE(gw,gh,gy,p);g2.restore()}finally{cur=sv.cur;T=sv.T;cam=sv.cam;wow=sv.wow;g2.setTransform(1,0,0,1,0,0)}},
+ settle(){return Math.max(0,560-(performance.now()-PRO.last))},   // the engine's own 500ms world-start sfx timer must fire while still muted
+ restore:proRestore,
+ done(){proRestore();ENTRY.routes.hub(PRO.o)}
+};
+function proPlay(o){if(!window.ZKPRO||ZKPRO.active())return false;PRO.o=o;PRO.rt=HUBX&&HUBX.state?HUBX.state.returnTo:null;PRO.rtSaved=true;PRO.last=0;
+ try{AM.stopMusic()}catch(e){}
+ const ok=ZKPRO.play({host:Z,pfp:S.pfp,npc:'NPCs/zkSNARK_clean.png',pal:pal(),reduce,adapter:proAd,after:proRestore});if(!ok)proRestore();return ok}
+
 $z('zres').onclick=()=>{try{localStorage.removeItem(KEY)}catch(e){}location.reload()};
 $z('zres').hidden=false;
 function close(){P.classList.remove('on');hub()}
@@ -602,85 +766,33 @@ const cv2=$z('zs'),sg=cv2.getContext('2d');let st=[];
 function stars(){cv2.width=innerWidth;cv2.height=innerHeight;st=Array.from({length:matchMedia('(max-width:800px)').matches?60:140},()=>({x:Math.random()*cv2.width,y:Math.random()*cv2.height,s:Math.random()*2+.4,v:Math.random()*.25+.05}))}
 (function f(){sg.clearRect(0,0,cv2.width,cv2.height);sg.fillStyle=S.pal[1]||'#fff';st.forEach(p=>{sg.globalAlpha=.3+p.s/3;sg.fillRect(p.x,p.y,p.s,p.s);if(!reduce){p.y-=p.v;if(p.y<0)p.y=cv2.height}});requestAnimationFrame(f)})();
 addEventListener('resize',stars);stars();
-if(S.pfp){const im=new Image();im.onload=()=>{theme();$z('lp').src=S.pfp;$z('lp').hidden=false;$z('zgo').hidden=false;if(nd())hub()};im.src=S.pfp}
+if(S.pfp){const im=new Image();im.onload=()=>{theme();$z('lp').src=S.pfp;$z('lp').hidden=false;$z('zgo').hidden=false;if(nd())ENTRY.go({resume:true})};im.src=S.pfp}
 // ===== V2: WORLD ENTRY + SCENES =====
-const A={origin:'Origin Shard',shielded:'Shield Fragment',proof:'ZK Sigil',keys:'Viewing Lens',orchard:'Orchard Fruit',ironwood:'Ironwood Core',blocks:'Block Shard',machine:'Protocol Core',canvas:'Creator Artifact',archive:'Archive Seal',noir:'Noir Key',zilkroad:'Market Token'};
+const A={};
 // ===== ECOSYSTEM LINKS ===== (paste the official Noir URL below; none was provided so none is invented)
 const LINKS={noir:'https://www.zknoir.com/',zilkroad:'https://zilkroad.com/'};
-W[2].video='videos/noirwallet.mp4';W[8].video='videos/zilkroad.mp4';
-W.push({id:'noir',n:'NOIR',bonus:1,title:'THE NOIR GATE',sub:'A private wallet city',q:'Self-custody: your keys, your control.',video:'videos/noirwallet.mp4',link:'noir',linkLabel:'VISIT NOIR',desc:'Explore a self-custodial Zcash wallet built for private Zcash payments and dApp interactions.',steps:[
- 'Noir is a self-custodial Zcash wallet for private Zcash payments and dApp interactions.','It is installed as a Chrome extension.','You create or restore a wallet and back up your recovery phrase. Never share it.','The wallet synchronizes; then you can receive ZEC and shield transparent funds.','Optional world: you never need to install or fund a wallet to finish ZKSCAPE.'],deep:'See the official Noir docs for current setup steps.'},
-{id:'zilkroad',n:'ZILKROAD',bonus:1,title:'THE ZK MARKET',sub:'Shielded identities, on display',q:'Culture lives on Zcash too.',video:'videos/zilkroad.mp4',link:'zilkroad',linkLabel:'VISIT ZILKROAD',more:'EXPLORE ZKSNARKS',desc:'zkSNARKs is a collection of 10,000 shielded identities on Zcash.',steps:[
- 'zkSNARKs is a collection of 10,000 shielded identities on Zcash.','Zilkroad is the marketplace and index for the collection.','Exploring is free. Buying one is never required to complete ZKSCAPE.'],deep:'Collectibles are not financial advice.'});
 const bonus=()=>W.filter(w=>w.bonus&&S.done[w.id]).length;
 const inv=()=>{const l=W.filter(w=>S.done[w.id]);return '<details><summary style="cursor:pointer">◈ INVENTORY ('+l.length+')</summary>'+l.map(w=>'◈ '+A[w.id]+'<br>').join('')+'</details>'};
 const pal=()=>({pr:S.pal[0],se:S.pal[1]||S.pal[0],ac:S.pal[2]||S.pal[0],dk:'#05060f',li:'#fff'});
 const wc=$z('zw'),g2=wc.getContext('2d');
-let cur=null,curI=0,hs=[],vis=[],AVs='IDLE',ax=0,tx=0,parts=[],T=0,run=0,pim=null,sk=0,celeb=0,last={dx:0,dy:0},fin=0,pan=0;
+let cur=null,curI=0,hs=[],vis=[],AVs='IDLE',ax=0,tx=0,parts=[],T=0,_lt=0,run=0,pim=null,sk=0,celeb=0,last={dx:0,dy:0},fin=0,pan=0;
 const rc=(x,y,w,h,c)=>{g2.fillStyle=c;g2.fillRect(x,y,w,h)},ci=(x,y,r,c,a)=>{g2.globalAlpha=a==null?1:a;g2.fillStyle=c;g2.beginPath();g2.arc(x,y,r,0,7);g2.fill();g2.globalAlpha=1};
 const tx_=(s,x,y,c,f)=>{g2.fillStyle=c;g2.font=f;g2.textAlign='center';g2.fillText(s,x,y)};
 const gear=(x,y,r,t,c)=>{g2.strokeStyle=c;g2.lineWidth=4;g2.beginPath();g2.arc(x,y,r,0,7);g2.stroke();for(let k=0;k<8;k++){const a=t+k*Math.PI/4;g2.beginPath();g2.moveTo(x+Math.cos(a)*r,y+Math.sin(a)*r);g2.lineTo(x+Math.cos(a)*(r+10),y+Math.sin(a)*(r+10));g2.stroke()}};
+ZNAME.hook(g2,im=>im===pim);   // one shared hook: every world already draws the player with g2.drawImage(pim,...)
 // ===== WORLDS: one animated scene per world, colors come from the PFP palette =====
-const DEC={
-origin(w,h,gy,t,p){for(let i=0;i<6;i++){const x=w*(.1+i*.16),q=h*(.1+.06*(i%3)),o=Math.sin(t+i)*6;rc(x,gy-q-o,26,q,'#1a1c2e');rc(x+4,gy-q-o,4,q,p.se)}
- const s=h*.22,bx=w*.5,by=gy-h*.3+Math.sin(t)*8;g2.shadowColor=p.pr;g2.shadowBlur=40;rc(bx-s/2,by-s/2,s,s,'#12142a');g2.strokeStyle=p.pr;g2.lineWidth=3;g2.strokeRect(bx-s/2,by-s/2,s,s);g2.shadowBlur=0;tx_('2016',bx,by+s*.14,p.pr,`${s*.4}px 'Abril Fatface'`);
- for(let i=0;i<8;i++)rc(w*(.05+i*.13)+Math.cos(t+i)*10,h*(.2+.1*(i%3))+Math.sin(t*.8+i)*14,14,14,p.ac)},
-shielded(w,h,gy,t,p){g2.font='16px monospace';for(let i=0;i<16;i++){g2.fillStyle='#9aa3b2';g2.textAlign='left';g2.fillText((i*7%2)+''+(i*5%2),w*(.02+i*.03),(t*70+i*91)%gy)}
- for(let i=0;i<4;i++){const a=.12+.12*Math.sin(t*2+i);rc(w*(.56+i*.1),gy-h*.35,w*.03,h*.35,p.pr);g2.globalAlpha=a;rc(w*(.5),gy-h*.4,w*.5,h*.4,p.pr);g2.globalAlpha=1}
- rc(w*.5-1,0,2,gy,p.ac);tx_('TRANSPARENT',w*.25,h*.1,'#9aa3b2','600 22px monospace');tx_('SHIELDED',w*.75,h*.1,p.pr,'600 22px monospace')},
-proof(w,h,gy,t,p){const cx=w*.5,cy=gy-h*.38;for(let k=0;k<4;k++){g2.save();g2.translate(cx,cy);g2.rotate(t*(k%2?.5:-.4));g2.setLineDash([14,10]);g2.strokeStyle=k%2?p.pr:p.ac;g2.lineWidth=3;g2.beginPath();g2.ellipse(0,0,(70+k*45)*h/700,(30+k*20)*h/700,0,0,7);g2.stroke();g2.restore()}
- rc(cx-50,gy-h*.18,100,h*.18,'#12142a');tx_('SECRET → PROOF → VERIFIED',cx,gy-h*.05,p.pr,'14px monospace');for(let i=0;i<14;i++)ci(cx+Math.cos(t+i)*(120+i*8),cy+Math.sin(t*1.3+i)*60,3,p.ac)},
-keys(w,h,gy,t,p){for(let i=0;i<10;i++)rc(w*(.04+i*.095),h*.15,w*.08,gy-h*.15,i%2?'#12142a':'#0e1024');
- rc(w*.12,gy-h*.34,w*.16,h*.34,'#1b1d33');g2.strokeStyle='#888';g2.strokeRect(w*.12,gy-h*.34,w*.16,h*.34);tx_('SPENDING VAULT 🔒',w*.2,gy-h*.37,'#aaa','14px monospace');
- g2.strokeStyle=p.pr;g2.lineWidth=4;g2.strokeRect(w*.72,gy-h*.36,w*.16,h*.3);g2.globalAlpha=.25;rc(w*.72,gy-h*.36,w*.16,h*.3,p.pr);g2.globalAlpha=1;tx_('VIEWING WINDOW',w*.8,gy-h*.39,p.pr,'14px monospace');
- for(let i=0;i<5;i++){const x=w*(.3+i*.1),y=h*.4+Math.sin(t*1.5+i)*14;ci(x,y,10,p.ac);rc(x,y-2,34,4,p.ac)}},
-orchard(w,h,gy,t,p){for(let i=0;i<8;i++){const x=w*(.07+i*.125),s=i===4?1.5:1;rc(x-6,gy-h*.18*s,12,h*.18*s,'#2a1d1a');ci(x+Math.sin(t+i)*6,gy-h*.24*s,h*.1*s,p.se,.75);for(let k=0;k<3;k++)ci(x+(k-1)*26*s+Math.sin(t+i)*6,gy-h*(.22+.03*(k%2))*s,6,p.pr,.6+.4*Math.sin(t*3+k+i))}},
-ironwood(w,h,gy,t,p){for(let i=0;i<9;i++){const x=w*(.03+i*.12);const gd=g2.createLinearGradient(x,0,x+20,0);gd.addColorStop(0,'#1c1f2a');gd.addColorStop(.5,'#545b70');gd.addColorStop(1,'#1c1f2a');g2.fillStyle=gd;g2.fillRect(x,h*.15,20,gy-h*.15);ci(x+10,h*.3+(i*47%120),4,p.se,.5+.5*Math.sin(t*2+i))}
- for(let i=0;i<40;i++)ci((i*53+t*20)%w,h-((i*37+t*40)%h),2,p.pr,.6);tx_('NU6.3',w*.5,h*.14,p.pr,"60px 'Abril Fatface'");tx_('ORCHARD → PROTOCOL EVOLUTION → IRONWOOD',w*.5,h*.2,'#ccc','16px monospace')},
-blocks(w,h,gy,t,p){for(let i=0;i<6;i++){const W2=w+200,x=(((i*W2/6-t*70)%W2)+W2)%W2-100,y=h*.28+Math.sin(i)*30;g2.strokeStyle=p.pr;g2.lineWidth=3;g2.strokeRect(x,y,90,60);tx_('SIM #'+(1000+i),x+45,y+36,p.ac,'13px monospace');rc(x+90,y+28,W2/6-90,2,p.se)}
- tx_('⚠ SIMULATION — not real chain data',w*.5,h*.1,'#ffcc66','600 20px monospace');rc(w*.3,gy-6,w*.4,6,p.se)},
-machine(w,h,gy,t,p){[[.15,.35,40],[.35,.28,56],[.55,.36,44],[.75,.3,60],[.9,.4,34]].forEach(([a,b,r],i)=>gear(w*a,h*b,r,t*(i%2?1:-1)*.8,i%2?p.pr:p.ac));rc(0,gy-14,w,14,'#1b1d33');for(let i=0;i<20;i++)rc((i*70+t*40)%w,gy-12,30,4,p.se)},
-canvas(w,h,gy,t,p){for(let i=0;i<5;i++){const x=w*(.1+i*.19),y=h*.22+Math.sin(t+i)*10,fw=w*.13,fh=fw*1.2;g2.shadowColor=[p.pr,p.se,p.ac][i%3];g2.shadowBlur=24;rc(x,y,fw,fh,'#0c0e1c');g2.strokeStyle=[p.pr,p.se,p.ac][i%3];g2.lineWidth=4;g2.strokeRect(x,y,fw,fh);g2.shadowBlur=0;if(pim&&pim.complete&&pim.width){const r=Math.min((fw-10)/pim.width,(fh-10)/pim.height);g2.imageSmoothingEnabled=false;g2.drawImage(pim,x+fw/2-pim.width*r/2,y+fh/2-pim.height*r/2,pim.width*r,pim.height*r)}}
- tx_('EVERY EXPLORER LEAVES AN ARTIFACT.',w*.5,h*.1,p.pr,"600 26px 'Caveat'")},
-archive(w,h,gy,t,p){W.slice(0,9).forEach((x,i)=>{const X=w*(.06+i*.1),d=S.done[x.id];g2.shadowColor=d?p.pr:'#000';g2.shadowBlur=d?18+6*Math.sin(t*2+i):0;rc(X,gy-90,60,60,d?'#1c2040':'#0e1020');g2.shadowBlur=0;tx_(x.n.slice(0,6),X+30,gy-55,d?p.pr:'#555','11px monospace');tx_(d?'◈':'·',X+30,gy-100,d?p.ac:'#444','22px sans-serif')});tx_('THE ARCHIVE',w*.5,h*.14,p.pr,"60px 'Abril Fatface'")},
-noir(w,h,gy,t,p){for(let i=0;i<24;i++){const x=i*w/24,q=h*(.2+.25*Math.abs(Math.sin(i*2.3)));rc(x,gy-q,w/24-4,q,'#0b0d1e');for(let k=0;k<5;k++)if((i*7+k*3)%4)rc(x+6,gy-q+10+k*22,5,8,p.ac+(Math.sin(t*2+i+k)>0?'cc':'44'))}
- g2.shadowColor=p.ac;g2.shadowBlur=30;g2.strokeStyle=p.ac;g2.lineWidth=6;g2.strokeRect(w*.44,gy-h*.42,w*.12,h*.42);g2.shadowBlur=0;tx_('NOIR',w*.5,gy-h*.45,p.ac,"44px 'Abril Fatface'")},
-zilkroad(w,h,gy,t,p){tx_('zkSNARKs',w*.5,h*.16,p.pr,"72px 'Abril Fatface'");const c=[p.pr,p.se,p.ac];for(let i=0;i<44;i++){const x=(i*71+t*20*(1+i%3))%w,y=h*.28+(i*29%160)+Math.sin(t+i)*8;ci(x,y,7,c[i%3],.7);rc(x-6,y+7,12,14,c[i%3]+'aa')}
- for(let i=0;i<6;i++){rc(w*(.08+i*.15),gy-70,90,70,'#12142a');tx_(['OPEN','ZK','MARKET','24/7','PFP','$$'][i],w*(.08+i*.15)+45,gy-45,c[i%3],'600 16px monospace')}}};
+const DEC={};
 function bg(w,h,gy,p){const d=g2.createLinearGradient(0,0,0,h);d.addColorStop(0,'#02030a');d.addColorStop(1,p.se+'44');g2.fillStyle=d;g2.fillRect(0,0,w,h);for(let i=0;i<70;i++)rc((i*131)%w,(i*77)%gy,2,2,'#ffffff55');rc(0,gy,w,h-gy,'#080a16');rc(0,gy,w,2,p.pr);
  g2.shadowColor=p.pr;g2.shadowBlur=24;rc(w*.96,gy-90,6,90,p.pr);g2.shadowBlur=0}
 // ===== WOW PASS: parallax depth, giants, atmosphere, cinematic moments =====
-const TH={origin:{sky:['#140a04','#3a1a08'],moon:[.78,.2,.09,'#ffb347','eclipse'],mt:'#120905',fog:'#ff9a3c',amb:'ember'},
-shielded:{sky:['#040916','#0a2438'],moon:[.5,.14,.06,'#9fe8ff'],mt:'#06101c',fog:'#4ee3f0',amb:'mote'},
-proof:{sky:['#080318','#1c0b46'],moon:[.5,.3,.16,'#7a5cff'],mt:'#0a051c',fog:'#7a5cff',amb:'mote'},
-keys:{sky:['#0a081c','#2a1d40'],moon:[.15,.18,.06,'#ffd27a'],mt:'#100c24',fog:'#ffd27a',amb:'mote'},
-orchard:{sky:['#030a14','#0a2c2c'],moon:[.8,.16,.08,'#d8fff0'],mt:'#04151a',fog:'#40ffc0',amb:'firefly'},
-ironwood:{sky:['#06070a','#161a22'],moon:[.2,.15,.06,'#a8b0c0'],mt:'#090b0f',fog:'#808aa0',amb:'spark'},
-blocks:{sky:['#020208','#0a0a2c'],moon:[.82,.25,.14,'#6a7cff','planet'],mt:'#04040e',fog:'#3a4cff',amb:'mote'},
-machine:{sky:['#0e0905','#2a1809'],moon:[.5,.12,.05,'#ff9a3c'],mt:'#130c07',fog:'#ff8a2c',amb:'spark'},
-canvas:{sky:['#100416','#2c0a40'],moon:[.5,.2,.1,'#ff9ae0'],mt:'#16071d',fog:'#ff5ad0',amb:'ember'},
-archive:{sky:['#050810','#0e1a2c'],moon:[.5,.18,.07,'#bfe0ff'],mt:'#071018',fog:'#6aa8ff',amb:'mote'},
-noir:{sky:['#04010a','#140730'],moon:[.85,.12,.06,'#c9a0ff'],mt:'#070214',fog:'#8a4cff',amb:'rain'},
-zilkroad:{sky:['#06031a','#2c0a4c'],moon:[.15,.2,.1,'#ff6ad5','planet'],mt:'#0b0522',fog:'#ff4ad0',amb:'pix'}};
+const TH={};
 let wow=0,fly=[],art=null,cam=0,shx=1;
 const spr=[];(function(){const P=['#ff6ad5','#4ee3f0','#ffd35a','#9a6bff','#5dd68a'];for(let k=0;k<10;k++){const c=document.createElement('canvas');c.width=c.height=26;const x=c.getContext('2d');for(let j=0;j<13;j++)for(let i=0;i<7;i++)if((i*7+j*13+k*5)%3){x.fillStyle=P[(i+j+k)%5];x.fillRect(i*2,j*2,2,2);x.fillRect(24-i*2,j*2,2,2)}spr.push(c)}})();
 function ridge(w,h,gy,col,par,amp,al,ph,c){g2.fillStyle=col;g2.globalAlpha=al;g2.beginPath();g2.moveTo(-50,gy);for(let x=-50;x<=w+50;x+=30){const X=x-c*par*10;g2.lineTo(x,gy-h*amp*(.5+.5*Math.sin(X*.004+ph)*Math.cos(X*.0013+ph*2))-h*.04)}g2.lineTo(w+50,gy);g2.fill();g2.globalAlpha=1}
 function ring(x,y,r,s,col,t){g2.save();g2.translate(x,y);g2.rotate(t*s);g2.setLineDash([30,18]);g2.strokeStyle=col;g2.lineWidth=5;g2.beginPath();g2.arc(0,0,r,0,7);g2.stroke();g2.restore()}
 // one enormous landmark per world, partly off-screen, to give scale
 function giant(w,h,gy,t,th,p,c){const id=cur.id,o=-c*.04,f=th.fog;g2.save();
- if(id==='origin'){ring(w*.16+o,gy-h*.05,h*.6,.1,f,t);ring(w*.16+o,gy-h*.05,h*.42,-.15,p.pr,t);g2.strokeStyle=f+'66';g2.lineWidth=2;g2.font="150px 'Abril Fatface'";g2.textAlign='center';g2.strokeText('2016',w*.5+o,h*.24);for(let i=0;i<30;i++)ci(w*(.2+i*.02)+o,h*(.04+.02*Math.sin(i)),2,'#fff',.7)}
- else if(id==='proof'){for(let k=0;k<5;k++)ring(w*.5+o,gy-h*.35,h*(.3+k*.12),(k%2?.12:-.1),k%2?p.pr:p.ac,t);for(let i=0;i<12;i++){const a=t*.2+i/12*7;tx_('◈▲✦∑'[i%4],w*.5+Math.cos(a)*h*.6+o,gy-h*.35+Math.sin(a)*h*.35,f,'28px serif')}}
- else if(id==='keys'){rc(w*.0+o,0,w*.09,gy,'#18122e');rc(w*.91+o,0,w*.09,gy,'#18122e');for(let i=0;i<70;i++)ci((i*113)%w,(i*71)%(gy*.8),2.5,i%2?f:p.pr,.4+.4*Math.sin(t+i))}
- else if(id==='orchard'){rc(w*-.01+o,0,w*.08,gy,'#06151a');rc(w*.93+o,0,w*.09,gy,'#06151a');ci(w*.04+o,h*.1,h*.32,f+'33');ci(w*.96+o,h*.12,h*.3,p.pr+'33')}
- else if(id==='ironwood'){for(let i=0;i<5;i++){rc(w*(.1+i*.2)+o,h*.05,w*.05,gy,'#0e1117');g2.strokeStyle='#1c212b';g2.lineWidth=10;g2.beginPath();g2.moveTo(w*(.12+i*.2)+o,gy);g2.quadraticCurveTo(w*(.05+i*.2),gy+30,w*(.0+i*.2),gy+60);g2.stroke()}g2.fillStyle=p.se;for(let i=0;i<20;i++)g2.fillRect((i*90+t*60)%w,gy+14,12,2)}
- else if(id==='blocks'){for(let i=0;i<10;i++){const s=120*(1-i*.085),x=w*.2+i*w*.065+((t*8)%(w*.065)),y=h*.45-i*h*.012;g2.strokeStyle=p.pr;g2.globalAlpha=1-i*.08;g2.lineWidth=3;g2.strokeRect(x,y,s,s*.7);g2.globalAlpha=1}}
- else if(id==='machine'){gear(w*.18+o,gy-h*.2,h*.45,t*.3,f);gear(w*.8+o,gy-h*.25,h*.38,-t*.3,p.pr)}
- else if(id==='canvas'){g2.strokeStyle=f;g2.lineWidth=6;g2.strokeRect(w*.2+o,h*.06,w*.6,gy-h*.14);g2.globalAlpha=.06;rc(w*.2+o,h*.06,w*.6,gy-h*.14,'#fff');g2.globalAlpha=1}
- else if(id==='archive'){g2.strokeStyle=f;g2.lineWidth=8;g2.beginPath();g2.arc(w*.5+o,gy,h*.62,Math.PI,0);g2.stroke()}
- else if(id==='noir'){for(let i=0;i<7;i++){rc(w*i*.16+o,h*(.05+.1*(i%3)),w*.06,gy,'#0a0620');rc(w*i*.16+o,h*(.05+.1*(i%3)),3,gy,f)}}
- else if(id==='zilkroad'){g2.globalAlpha=.55;for(let r=0;r<4;r++)for(let q=0;q<Math.ceil(w/28);q++)g2.drawImage(spr[(r*7+q*3)%10],q*28+o,gy-h*.6+r*28+Math.sin(t+q*.3)*3);g2.globalAlpha=1;for(let i=0;i<8;i++)g2.drawImage(spr[i],(i*210+t*30)%w,gy-34)}
- else if(id==='shielded'){ring(w*.5+o,gy-h*.3,h*.7,.05,f,t)}
- g2.restore()}
+ if(GIANT[id])GIANT[id](w,h,gy,t,th,p,c,id,o,f); g2.restore()}
 function bg(w,h,gy,p){const th=TH[cur.id],c=cam,t=T,d=g2.createLinearGradient(0,0,0,gy);d.addColorStop(0,th.sky[0]);d.addColorStop(1,th.sky[1]);g2.fillStyle=d;g2.fillRect(-60,-60,w+120,h+120);
  for(let i=0;i<90;i++)ci((i*131)%w-c*.01,(i*77)%gy,1.2,'#fff',.3+.4*Math.abs(Math.sin(t+i)));
  const[mx,my,mr,mc,kd]=th.moon,X=w*mx-c*.02,Y=h*my;g2.shadowColor=mc;g2.shadowBlur=70;ci(X,Y,h*mr,mc,.9);g2.shadowBlur=0;if(kd==='eclipse')ci(X+h*mr*.35,Y,h*mr*.95,'#000',.92);if(kd==='planet'){g2.strokeStyle=mc;g2.lineWidth=4;g2.beginPath();g2.ellipse(X,Y,h*mr*1.8,h*mr*.4,-.3,0,7);g2.stroke()}
@@ -696,15 +808,6 @@ function amb(w,h,t,th,p){const k=th.amb;for(let i=0;i<60;i++){let x,y;const col=
 function fore(w,h,gy,p){const th=TH[cur.id],c=cam,t=T;g2.fillStyle=th.fog;g2.globalAlpha=.05+.03*Math.sin(t);for(let k=0;k<3;k++){const X=w*(.2+k*.3)-c*.03;g2.beginPath();g2.moveTo(X,0);g2.lineTo(X+60,0);g2.lineTo(X+260,gy);g2.lineTo(X-120,gy);g2.fill()}g2.globalAlpha=1;
  amb(w,h,t,th,p);g2.fillStyle='#000';g2.globalAlpha=.85;for(let k=0;k<3;k++){g2.beginPath();g2.ellipse(w*(.1+k*.45)-c*.25,h*1.03,150+k*40,h*.08,0,0,7);g2.fill()}g2.globalAlpha=1;
  if(wow>0){const a=Math.min(1,wow);const gd=g2.createLinearGradient(0,0,0,gy);gd.addColorStop(0,th.fog+'00');gd.addColorStop(1,th.fog+'aa');g2.globalAlpha=a*.5;g2.fillStyle=gd;g2.fillRect(w*.5-30-a*50,0,60+a*100,gy);g2.globalAlpha=1}}
-// shielded valley: exposed trails on the left, protected bubbles on the right, a shield gate between
-DEC.shielded=(w,h,gy,t,p)=>{shx+=((ax<w*.5?1:.08)-shx)*.04;
- for(let i=0;i<9;i++){const y=gy-30-i*h*.07,x=(t*120+i*140)%(w*.5);g2.globalAlpha=.25*shx+.03;rc(0,y,w*.5,2,'#cfd6e4');g2.globalAlpha=shx;ci(x,y,5,'#fff');g2.fillStyle='#cfd6e4';g2.font='12px monospace';g2.textAlign='left';g2.fillText('zs1…'+(i*811%1000)+' → '+(i*37%90)+' ZEC',x+8,y-6);g2.globalAlpha=1}
- for(let i=0;i<10;i++){const x=w*.55+(i*83)%(w*.4),y=gy-60-(i*61)%(h*.4)+Math.sin(t+i)*10;g2.strokeStyle=p.pr;g2.globalAlpha=.6;g2.lineWidth=2;g2.beginPath();g2.arc(x,y,26,0,7);g2.stroke();g2.globalAlpha=1;ci(x+Math.cos(t*2+i)*8,y,3,p.ac)}
- const gx=w*.5,R=h*.3,open=ax>gx;g2.shadowColor=p.pr;g2.shadowBlur=40;g2.strokeStyle=p.pr;g2.lineWidth=8;g2.beginPath();g2.arc(gx,gy-R,R,Math.PI,0);g2.moveTo(gx+R,gy-R);g2.lineTo(gx+R,gy);g2.moveTo(gx-R,gy-R);g2.lineTo(gx-R,gy);g2.stroke();g2.shadowBlur=0;
- g2.globalAlpha=.12+.08*Math.sin(t*2)+(open?.18:0);g2.fillStyle=p.pr;g2.beginPath();g2.arc(gx,gy-R,R,Math.PI,0);g2.lineTo(gx+R,gy);g2.lineTo(gx-R,gy);g2.fill();g2.globalAlpha=1;
- tx_('TRANSPARENT',w*.25,h*.1,'#cfd6e4','600 26px monospace');tx_('SHIELDED',w*.75,h*.1,p.pr,'600 26px monospace')};
-W[0].steps[0]='Zcash launched in October 2016, introducing a new approach to digital money: privacy built into the protocol.';
-W[2].steps[3]='zk-SNARKs allow someone to prove that a statement is true without revealing the underlying secret. In Zcash, zero-knowledge proofs help the network verify that a shielded transaction follows the rules without exposing the same financial information publicly.';
 
 // ===== QUESTION BANK (70) — first option is the correct answer; options are shuffled at render time =====
 let _qid=0;const mk=(t,c,d,q,a,e)=>({id:'q'+(++_qid),type:t,c,d,q,a,e});
@@ -790,7 +893,7 @@ function avatar(w,h,gy,p){if(!(pim&&pim.complete&&pim.width))return;const ah=h*.
  const gr=g2.createRadialGradient(ax,gy-ah/2,0,ax,gy-ah/2,ah*1.4);gr.addColorStop(0,p.pr+(AVs==='WALKING'||wow>0?'66':'33'));gr.addColorStop(1,p.pr+'00');g2.fillStyle=gr;g2.fillRect(ax-ah*1.5,gy-ah*2,ah*3,ah*2.5);g2.fillStyle='#0008';g2.beginPath();g2.ellipse(ax,gy+4,aw*.4,6,0,0,7);g2.fill();g2.save();g2.shadowColor=p.pr;g2.shadowBlur=26;g2.imageSmoothingEnabled=false;if(tx<ax-3){g2.translate(ax,0);g2.scale(-1,1);g2.translate(-ax,0)}g2.drawImage(pim,ax-aw/2,y,aw,ah);g2.restore();
  if(AVs==='WALKING'&&Math.random()<.5)parts.push({x:ax,y:gy-4,vx:-Math.sign(tx-ax)*.6,vy:-.5-Math.random(),l:1,c:p.ac})}
 function burstP(x,y,c){for(let i=0;i<40;i++){const a=Math.random()*7;parts.push({x,y,vx:Math.cos(a)*4,vy:Math.sin(a)*4,l:1.2,c})}}
-function loop(){if(!run)return;g2.setTransform(1,0,0,1,0,0);T+=.016;const w=wc.width,h=wc.height,gy=h*.8,p=pal();cam=ax-w/2;wow=Math.max(0,wow-.004);const zz=1+Math.min(wow,1)*.05,sk_=Math.min(wow,1)*3;g2.save();g2.translate(w/2+(Math.random()-.5)*sk_,gy+(Math.random()-.5)*sk_);g2.scale(zz,zz);g2.translate(-w/2,-gy);bg(w,h,gy,p);DEC[cur.id](w,h,gy,T,p);fore(w,h,gy,p);
+function loop(){if(!run)return;g2.setTransform(1,0,0,1,0,0);ZNAME.rec.n=0;const _n=performance.now();if(!_lt)_lt=_n;T+=Math.min(.05,(_n-_lt)/1000||.016);_lt=_n;const w=wc.width,h=wc.height,gy=h*.8,p=pal();cam=ax-w/2;wow=Math.max(0,wow-.004);const zz=1+Math.min(wow,1)*.05,sk_=Math.min(wow,1)*3;g2.save();g2.translate(w/2+(Math.random()-.5)*sk_,gy+(Math.random()-.5)*sk_);g2.scale(zz,zz);g2.translate(-w/2,-gy);bg(w,h,gy,p);DEC[cur.id](w,h,gy,T,p);fore(w,h,gy,p);
  hs.forEach((o,k)=>{const x=o.x*w,y=gy-h*.1+Math.sin(T*2+k)*6;g2.shadowColor=vis[k]?'#5dd68a':p.ac;g2.shadowBlur=22;ci(x,y,14,vis[k]?'#5dd68a':p.ac);g2.shadowBlur=0;tx_(vis[k]?'✓':(o.pan?'★':k+1),x,y+5,'#000','bold 14px sans-serif')});
  const dx=tx-ax;if(Math.abs(dx)>2){ax+=Math.sign(dx)*Math.min(Math.abs(dx),Math.max(1.6,Math.abs(dx)*.045));if(AVs!=='COMPLETING')AVs='WALKING'}else if(AVs==='WALKING'){AVs='IDLE';arrive(w)}
  avatar(w,h,gy,p);
@@ -801,7 +904,7 @@ function loop(){if(!run)return;g2.setTransform(1,0,0,1,0,0);T+=.016;const w=wc.w
  fly=fly.filter(f=>f.t<1.2);fly.forEach(f=>{f.t+=.016;f.x+=(ax-f.x)*.08;f.y+=(gy-h*.12-f.y)*.08;g2.shadowColor=p.pr;g2.shadowBlur=20;ci(f.x,f.y,8,p.pr);g2.shadowBlur=0;if(f.t>1.15)burstP(ax,gy-h*.12,p.ac)});
  g2.restore();if(wow>1){g2.globalAlpha=Math.min(.4,wow-1);rc(0,0,w,h,'#fff');g2.globalAlpha=1}
  if(art){art.t+=.012;const e=Math.max(0,Math.min(1,art.t)),s=e*e*(3-2*e),X=ax+(70-ax)*s,Y=gy-h*.12+(70-gy+h*.12)*s;g2.shadowColor=p.pr;g2.shadowBlur=30;ci(X,Y,18-8*s,p.pr);g2.shadowBlur=0;if(art.t>1.1)art=null}
- requestAnimationFrame(loop)}
+ ZNAME.worldTag(g2);requestAnimationFrame(loop)}
 function fact(t){const i=t.search(/[.!?](\s|$)/),a=i>0?t.slice(0,i+1):t,b=i>0?t.slice(i+1):'';$z('wf').innerHTML='<div class="plq"><div class="bigt">'+a+'</div>'+(b.trim()?'<div class="rest">'+b+'</div>':'')+'</div>'}
 function arrive(w){if(cur.sort&&Math.abs(ax-w*.5)>w*.1){const side=ax<w*.5?0:1;if(side===cur.sort[sk][1]){sk++;burstP(ax,wc.height*.7,pal().pr);if(sk>=cur.sort.length){fact('Shielded transactions protect financial information from public view. Privacy is not a decoration. It is part of the protocol. '+cur.deep);return setTimeout(complete,1500)}fact('✓ VERIFIED — next: <b>'+cur.sort[sk][0]+'</b>')}else fact('NOT YET — walk to the other side.');tx=w*.5}}
 function finishWorld(){if(S.done[cur.id])return fact('✓ ALREADY DISCOVERED');if(!cur.link)return complete();const d=$z('wd');d.innerHTML=(cur.more?'<button class="btn g" id="d2">'+cur.more+'</button>':'')+'<button class="btn g" id="d3">'+cur.linkLabel+(LINKS[cur.link]?' ↗':' (add URL)')+'</button><button class="btn" id="d4">DISCOVERED ✓</button>';d.hidden=false;
@@ -810,7 +913,7 @@ function complete(){if(S.done[cur.id])return;S.done[cur.id]=true;save();AVs='COM
  $z('wf').innerHTML='<div class="big ok">DISCOVERY VERIFIED</div><div class="fact">◈ '+A[cur.id].toUpperCase()+' ADDED TO INVENTORY</div><div class="q">“'+cur.q+'”</div>';setTimeout(back,3600)}
 function startWorld(i){cur=W[i];curI=i;scr('world');wc.width=innerWidth;wc.height=innerHeight;pim=new Image();pim.src=S.pfp;vis=[];celeb=0;parts=[];fin=0;sk=0;pan=0;wow=0;fly=[];art=null;shx=1;AVs='WALKING';$z('wd').hidden=true;
  const n=cur.steps?cur.steps.length:0;hs=n?cur.steps.map((t,k)=>({x:n===1?.5:.16+.64*k/(n-1),t})):cur.sort?[]:[{x:.5,pan:1}];ax=-60;tx=wc.width*.08;vis=hs.map(()=>0);
- $z('wt').innerHTML='<h2>'+cur.title+'</h2><div class="q">'+cur.sub+'</div>';$z('wt').animate([{opacity:0},{opacity:1,offset:.15},{opacity:1,offset:.8},{opacity:0}],{duration:reduce?1:3200});
+ $z('wt').innerHTML='<h2>'+cur.title+'</h2><div class="q">'+cur.sub+'</div>';$z('wt').getAnimations().forEach(a=>a.cancel());$z('wt').animate([{opacity:0},{opacity:1,offset:.1},{opacity:1,offset:.7},{opacity:0}],{duration:reduce?1:5000,fill:'forwards'});
  fact(cur.sort?'Walk to the correct side: <b>'+cur.sort[0][0]+'</b>':hs[0].pan?'Walk to the ★ to continue.':'Click to walk. Reach each glowing orb.');$z('wv').hidden=!cur.video;run=1;loop()}
 function stopWorld(){run=0;cur=null;const s=$z('s-hub');s.getAnimations().forEach(a=>a.cancel());$z('hp').getAnimations().forEach(a=>a.animationName===undefined&&a.cancel());$z('zc').classList.remove('on')}
 function burst(cb){const e=$z('zb');e.style.display='block';e.animate([{opacity:0},{opacity:1,offset:.5},{opacity:0}],{duration:reduce?1:900}).onfinish=()=>e.style.display='none';setTimeout(cb,reduce?1:450)}
@@ -839,19 +942,19 @@ const SUPABASE_URL='https://unckcqnvfbcpspawbbhg.supabase.co',SUPABASE_ANON_KEY=
 
 // ---------- AudioManager (files in audio/music + audio/sfx are optional; synth fallback otherwise) ----------
 const AM=(()=>{
-const K='zkscape.audio';let PF={m:.8,mu:.55,sf:.7,mo:1,so:1};try{Object.assign(PF,JSON.parse(localStorage.getItem(K)||'{}'))}catch(e){}
-let C,MG,MB,SB,cur='',want='',aud=null,dr=null,ready=0,nb=null,last={};const probe={};
+const K='zkscape.audio.v2';let PF={m:.8,mu:.7,sf:.88,mo:1,so:1};try{Object.assign(PF,JSON.parse(localStorage.getItem(K)||'{}'))}catch(e){}
+let C,MG,MB,SB,HEAD,cur='',want='',aud=null,dr=null,ready=0,nb=null,last={};const probe={};
 const F={zk:'zkscape-theme',origin:'origin',shielded:'shielded-valley',proof:'proof-temple',keys:'key-library',orchard:'orchard',ironwood:'ironwood',blocks:'observatory',machine:'zcash-machine',canvas:'canvas',archive:'archive',noir:'noir',zilkroad:'zilkroad'};
 const M={zk:[110,[1,1.5,2,2.25],900,'sine'],origin:[98,[1,1.19,1.5,2],600,'triangle'],shielded:[130.8,[1,1.5,2,3],1100,'sine'],proof:[123.5,[1,1.33,1.78,2.67],1400,'triangle'],keys:[87.3,[1,1.2,1.5,1.8],500,'sine'],orchard:[146.8,[1,1.25,1.5,2],1300,'sine'],ironwood:[65.4,[1,1.5,1.41,2],450,'sawtooth'],blocks:[110,[1,1.5,2,3],1500,'sine'],machine:[82.4,[1,1.5,2,2.97],800,'square'],canvas:[164.8,[1,1.25,1.5,2],1600,'triangle'],archive:[98,[1,1.19,1.41,2],700,'triangle'],noir:[73.4,[1,1.19,1.5,1.78],550,'sawtooth'],zilkroad:[196,[1,1.25,1.5,2],1800,'square']};
 const sv=()=>{try{localStorage.setItem(K,JSON.stringify(PF))}catch(e){}},vol=()=>PF.m*PF.mu;
 function lv(){if(!C)return;const t=C.currentTime;MG.gain.setTargetAtTime(PF.m,t,.05);MB.gain.setTargetAtTime(PF.mo?PF.mu:0,t,.15);SB.gain.setTargetAtTime(PF.so?PF.sf:0,t,.05);if(aud)aud.volume=PF.mo?vol():0;sv()}
-function init(){if(ready)return;try{const AC=window.AudioContext||window.webkitAudioContext;C=new AC();MG=C.createGain();MB=C.createGain();SB=C.createGain();MB.connect(MG);SB.connect(MG);MG.connect(C.destination);ready=1;lv();C.resume&&C.resume();
+function init(){if(ready)return;try{const AC=window.AudioContext||window.webkitAudioContext;C=new AC();MG=C.createGain();HEAD=C.createGain();HEAD.gain.value=1.6;MB=C.createGain();SB=C.createGain();MB.connect(MG);SB.connect(MG);MG.connect(HEAD);HEAD.connect(C.destination);ready=1;lv();C.resume&&C.resume();
  ['click','hover','portal','enter-world','interaction','correct','incorrect','collectible','world-complete','core-activate','card-reveal','leaderboard'].forEach(n=>{try{const a=new Audio();a.preload='auto';a.oncanplaythrough=()=>{probe[n]=a};a.onerror=()=>{probe[n]=0};a.src='audio/sfx/'+n+'.wav'}catch(e){}});
  if(want)music(want,1)}catch(e){ready=0}}
 function fade(a,to,s,done){const f=a.volume,t0=performance.now();(function st(){const k=Math.min(1,(performance.now()-t0)/(s*1000));try{a.volume=Math.max(0,Math.min(1,f+(to-f)*k))}catch(e){}if(k<1)setTimeout(st,50);else done&&done()})()}
 function stopCur(s){if(aud){const a=aud;aud=null;fade(a,0,s,()=>{try{a.pause();a.removeAttribute('src');a.load()}catch(e){}})}
  if(dr){const d=dr;dr=null;try{d.g.gain.setTargetAtTime(0,C.currentTime,s/3)}catch(e){}setTimeout(()=>{try{d.n.forEach(o=>{o.stop&&o.stop();o.disconnect()});d.g.disconnect()}catch(e){}},s*1000+400)}}
-function drone(n){if(!ready||dr||!PF.mo)return;const m=M[n]||M.zk,g=C.createGain(),f=C.createBiquadFilter(),l=C.createOscillator(),lg=C.createGain(),nd_=[f,l,lg];g.gain.value=0;f.type='lowpass';f.frequency.value=m[2];f.connect(g);g.connect(MB);
+function drone(n){if(!ready||dr||!PF.mo)return;if(window.ZKMUS){try{dr=window.ZKMUS.play(C,n,MB);return}catch(e){console.warn('ZKMUS',e)}}const m=M[n]||M.zk,g=C.createGain(),f=C.createBiquadFilter(),l=C.createOscillator(),lg=C.createGain(),nd_=[f,l,lg];g.gain.value=0;f.type='lowpass';f.frequency.value=m[2];f.connect(g);g.connect(MB);
  m[1].forEach((r,i)=>{const o=C.createOscillator(),og=C.createGain();o.type=i?'sine':m[3];o.frequency.value=m[0]*r*(i?1:.5);o.detune.value=(i-1.5)*7;og.gain.value=.5/(i+1.5);o.connect(og);og.connect(f);o.start();nd_.push(o,og)});
  l.frequency.value=.07+Math.random()*.05;lg.gain.value=m[2]*.35;l.connect(lg);lg.connect(f.frequency);l.start();g.gain.setTargetAtTime(.16,C.currentTime,.9);dr={g,n:nd_}}
 function music(n,force){want=n;if(!ready||(n===cur&&!force)||!F[n])return;cur=n;stopCur(1.6);if(!PF.mo)return;let ok=0;
@@ -944,7 +1047,7 @@ async function lbRender(fl_){const pod=$z('pod'),Rw=$z('lbr'),nb_=$z('lbn');pod.
 function showLB(f){if(DR)return;scr('lb');AM.music('zk');lbRender(f)}
 $z('lbtabs').onclick=e=>{const t=e.target.dataset&&e.target.dataset.t;if(t){LBT=t;lbRender(0)}};$z('lbh').onclick=hub;$z('lbe').onclick=()=>scr('end');$z('zlbb').onclick=()=>showLB(0);
 if($z('clb'))$z('clb').onclick=()=>S.lbDone?showLB(0):nmOpen();
-function nmOpen(){const m=$z('zlbn');m.classList.add('on');$z('zlbm').textContent='';$z('zlbi').value=S.lbName||'';setTimeout(()=>$z('zlbi').focus(),50)}
+function nmOpen(){const m=$z('zlbn');m.classList.add('on');$z('zlbm').textContent='';$z('zlbi').value=S.lbName||(ZNAME.clean(S.name).length>=3?ZNAME.clean(S.name):'');setTimeout(()=>$z('zlbi').focus(),50)}
 async function nmGo(){if(DR)return;const m=$z('zlbm'),n=$z('zlbi').value.replace(/[^A-Za-z0-9_ .-]/g,'').trim().slice(0,16);if(n.length<3){m.textContent='Use 3–16 letters, numbers, spaces or _ . -';return}if(!(S.tEnd>0)){m.textContent='Only timed runs can join the leaderboard. Start a new run from the hub.';return}if(busy)return;busy=1;m.textContent='SUBMITTING…';
  try{if(!cfg())throw 0;if(!S.rid){S.rid=uuid();save()}await sb('rpc/submit_run',{m:'POST',b:JSON.stringify({p:Object.assign({id:S.rid,display_name:n},stats())})});S.lbName=n;S.lbDone=1;save();$z('zlbn').classList.remove('on');upd();LBT='all';showLB(1)}
  catch(e){m.textContent='Leaderboard temporarily unavailable — your Explorer Card is still saved locally.'}busy=0}
@@ -1006,21 +1109,10 @@ function zbd(){const o=$z('zbd');o&&o.remove();const B=breakdown(),L=[['WORLD EX
  const d=document.createElement('details');d.id='zbd';d.innerHTML='<summary>HOW YOUR SCORE WAS EARNED</summary>'+L.map(x=>'<div><span>'+x[0]+'</span><span>+'+fmtN(x[1])+'</span></div>').join('')+'<div class="tt"><span>TOTAL</span><span>'+fmtN(B.totalScore)+'</span></div>';$z('cc').insertAdjacentElement('afterend',d)}
 
 // ===== HUB SCENE: ZKSCAPE CORE, chain, physical portal landmarks; palette-driven and evolves with progress =====
-const hc=$z('zh'),hg=hc.getContext('2d');let HT=0;
+const hc=$z('zh'),hg=hc.getContext('2d',{willReadFrequently:true});let HT=0;
 function lm(id,x,y,s,c,t,a){hg.save();hg.globalAlpha=a;hg.strokeStyle=c;hg.fillStyle=c;hg.lineWidth=3;hg.shadowColor=c;hg.shadowBlur=a*22;hg.translate(x,y);const B=()=>hg.beginPath();
- switch(id){case'origin':B();hg.arc(0,0,s,Math.PI,0);hg.lineTo(s,s);hg.moveTo(-s,0);hg.lineTo(-s,s);hg.stroke();B();hg.arc(0,-s*.3,s*.25,0,7);hg.fill();break;
- case'shielded':B();hg.moveTo(-s*.8,-s);hg.lineTo(s*.8,-s);hg.lineTo(s*.8,0);hg.quadraticCurveTo(s*.8,s,0,s*1.3);hg.quadraticCurveTo(-s*.8,s,-s*.8,0);hg.closePath();hg.stroke();hg.globalAlpha=a*.25;hg.fill();break;
- case'proof':for(let k=0;k<2;k++){hg.save();hg.rotate(t*(k?-.8:.6));B();hg.ellipse(0,0,s,s*(.4+k*.3),k,0,7);hg.stroke();hg.restore()}break;
- case'keys':hg.strokeRect(-s*.6,-s,s*1.2,s*2);B();hg.arc(0,-s*.1,s*.2,0,7);hg.fill();break;
- case'orchard':hg.fillRect(-3,0,6,s);B();hg.arc(Math.sin(t)*3,-s*.3,s*.8,0,7);hg.globalAlpha=a*.5;hg.fill();break;
- case'ironwood':hg.fillRect(-s*.3,-s*1.2,s*.6,s*2.4);B();hg.moveTo(-s*.3,s*1.2);hg.lineTo(-s,s*1.5);hg.moveTo(s*.3,s*1.2);hg.lineTo(s,s*1.5);hg.stroke();break;
- case'blocks':B();hg.arc(0,0,s,0,7);hg.stroke();hg.fillRect(Math.cos(t*2)*s-5,Math.sin(t*2)*s-5,10,10);break;
- case'machine':for(let k=0;k<8;k++){const q=t*.8+k*Math.PI/4;B();hg.moveTo(Math.cos(q)*s,Math.sin(q)*s);hg.lineTo(Math.cos(q)*s*1.3,Math.sin(q)*s*1.3);hg.stroke()}B();hg.arc(0,0,s,0,7);hg.stroke();break;
- case'canvas':hg.strokeRect(-s,-s*.8,s*2,s*1.6);hg.globalAlpha=a*.3;hg.fillRect(-s*.8,-s*.6,s*1.6,s*1.2);break;
- case'archive':B();hg.arc(0,0,s*1.1,0,7);hg.stroke();B();hg.arc(0,0,s*.5,0,7);hg.stroke();hg.fillRect(-2,-s*1.1,4,s*2.2);break;
- case'noir':for(let k=0;k<5;k++)hg.fillRect(-s+k*s*.45,-s*(.6+(k%3)*.4),s*.35,s*(.6+(k%3)*.4)+s*.4);break;
- default:for(let k=0;k<9;k++)hg.fillRect(-s+(k%3)*s*.7,-s+((k/3)|0)*s*.7,s*.5,s*.5)}hg.restore()}
-function hubLoop(){requestAnimationFrame(hubLoop);if(!$z('s-hub').classList.contains('on'))return;HT+=.016;const w=innerWidth,h=innerHeight,t=HT;if(hc.width!==w||hc.height!==h){hc.width=w;hc.height=h}hg.setTransform(1,0,0,1,0,0);hg.clearRect(0,0,w,h);
+ (LM[id]||LM.zilkroad)(x,y,s,c,t,a,B);hg.restore()}
+function hubLoop(){requestAnimationFrame(hubLoop);if(!$z('s-hub').classList.contains('on'))return;if(HUBX){try{HUBX.frame()}catch(e){console.error('hub frame',e);HUBX=null}return}HT+=.016;const w=innerWidth,h=innerHeight,t=HT;if(hc.width!==w||hc.height!==h){hc.width=w;hc.height=h}hg.setTransform(1,0,0,1,0,0);hg.clearRect(0,0,w,h);
  const P=[S.pal[0],S.pal[1]||S.pal[0],S.pal[2]||S.pal[0]],lv=nd()/10,cx=w/2,cy0=h*.52,rx=w*.4,ry=h*.36;hg.translate(Math.sin(t*.2)*6,Math.cos(t*.17)*3);
  [[.22,.3,P[1]],[.8,.35,P[2]],[.5,.8,P[0]]].forEach(([a,b,c],i)=>{const x=w*a+Math.sin(t*.1+i)*40,y=h*b,g=hg.createRadialGradient(x,y,0,x,y,h*.6);g.addColorStop(0,c+(lv>.3?'44':'24'));g.addColorStop(1,c+'00');hg.fillStyle=g;hg.fillRect(-20,-20,w+40,h+40)});
  for(let i=0;i<10;i++){const hh=h*(.14+.12*Math.abs(Math.sin(i*2.1)));hg.fillStyle='#090b17';hg.fillRect(w*i/9-22,h*.62-hh,44,hh+h*.4);hg.fillStyle=P[i%3]+(lv>.4||i%3?'88':'33');hg.fillRect(w*i/9-22,h*.62-hh,44,3)}
@@ -1034,6 +1126,7 @@ function hubLoop(){requestAnimationFrame(hubLoop);if(!$z('s-hub').classList.cont
   if(dn){hg.strokeStyle=P[i%3]+'88';hg.lineWidth=1.5;hg.beginPath();hg.moveTo(x,y);hg.lineTo(cx,cy);hg.stroke();const q=(t*.5+i*.1)%1;ci(x+(cx-x)*q,y+(cy-y)*q,3,P[i%3])}
   lm(wd.id,x,y,30,col,t,dn?1:op?.75+.2*Math.sin(t*3+i):.25);if(dn)ci(x+Math.cos(t*2+i)*46,y+Math.sin(t*2+i)*18,5,P[i%3]);if(wd.bonus){hg.strokeStyle='#ffcc66';hg.setLineDash([4,5]);hg.beginPath();hg.arc(x,y,48,0,7);hg.stroke();hg.setLineDash([])}});
  for(let i=0;i<30+Math.round(lv*50);i++){const x=(i*97+t*(10+i%5*6))%w,y=h-((i*61+t*(20+i%4*8))%h);hg.globalAlpha=.3+.5*Math.abs(Math.sin(t+i));hg.fillStyle=P[i%3];hg.fillRect(x,y,i%7?2:4,i%7?2:4)}hg.globalAlpha=1}
+(window.ZKW||[]).forEach(f=>eval('('+f+')()'));
 hubLoop();
 
 return {close,end,enter,state:()=>S,W,Q,video,BANK,pickSet,stats,ident}})();
