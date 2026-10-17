@@ -30,7 +30,6 @@ ZKW.push(function(){
 // behaviour and both are kept exactly as they were.
 W.push({id:'canvas',n:'CANVAS',title:'THE CANVAS',sub:'Collect colour. Reveal the Snarks. Create your own.',
   q:'Now turn your PFP into something of your own.',canvas:true});
-W[8].video='videos/zilkroad.mp4';   // pre-existing: this file is NOT on disk, so the guide button is dead
 W[8].sub='Collect colour. Reveal the Snarks. Create your own.';
 W[8].deep='A viewing key proves a payment happened without revealing what was paid. ZKSCAPE asks the same of you: make something, and let everyone see that you made it without ever seeing your key. This studio is that idea you can touch. The pigment is yours, the frame is public, and the receipt proves nothing about what is inside it.';
 A.canvas='Creator Artifact';

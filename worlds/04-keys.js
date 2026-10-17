@@ -158,7 +158,7 @@ function frame(w,h,gy){W_=w;H_=h;GY=gy;U=Math.min(h/800,Math.max(w/820,.5));cons
  if(K.e){K.e=0;if(V.dlg)advance();else if(V.stt==='play')act()}
  const rm=Z.filter(x=>V.px>=x).length-1;if(rm!==V.room){V.room=rm;V.rt=3}V.rt-=dt;V.mt-=dt;V.bad=Math.max(0,V.bad-dt);
  if(V.dlg&&V.dlg.c<V.dlg.L[V.dlg.i].length)V.dlg.c+=dt*46;
- if(V.doorA>=1&&V.px>DOOR&&!V.done){V.done=1;V.stt='done';spark(V.px,100,'#ffffff',40);AM.sfx('collectible');note(EDU);setTimeout(()=>{if(!V.on)return;if(S.done.keys){fact('\u2713 ALREADY DISCOVERED');setTimeout(back,2800)}else complete()},12000)}
+ if(V.doorA>=1&&V.px>DOOR&&!V.done){V.done=1;V.stt='done';spark(V.px,100,'#ffffff',40);AM.sfx('collectible');note(EDU);const me=V;setTimeout(()=>{if(V!==me||!V.on)return;if(S.done.keys){fact('\u2713 ALREADY DISCOVERED');setTimeout(()=>{if(V===me)back()},2800)}else complete()},12000)}
  let d=120;V.near=null;if(!V.dlg&&V.stt==='play')IAS().forEach(o=>{const q=Math.abs(V.px-o.x);if(q<d){d=q;V.near=o}});
  const vw=w/U;V.cx+=((V.px-vw*.42+V.face*60)-V.cx)*(1-Math.exp(-5*dt));V.cx=Math.max(0,Math.min(LW-vw,V.cx));
  V.vp=V.vp.filter(q=>(q.l-=dt)>0);V.vp.forEach(q=>{q.x+=q.vx*dt;q.y+=q.vy*dt;q.vy-=q.g*dt});V.ft=V.ft.filter(f=>(f.l-=dt)>0);

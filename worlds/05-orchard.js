@@ -256,8 +256,9 @@ function frame(w,h,gy){W_=w;H_=h;GY=gy;U=Math.min(h/800,Math.max(w/820,.5));cons
  if(V.dlg&&V.dlg.c<V.dlg.L[V.dlg.i].length)V.dlg.c+=dt*46;
  if(V.awake&&V.lay===0&&V.px>GT-40&&!V.done){V.done=1;V.stt='done';V.vx=0;spark(V.px,100,'#ffffff',44);AM.sfx('collectible');
   const seq=['The orchard was never growing things. It was keeping score without keeping names.',EDU];note(seq[0]);V.mt=8;
-  setTimeout(()=>{if(V.on){note(seq[1]);V.mt=14}},8000);
-  setTimeout(()=>{if(!V.on)return;if(S.done.orchard){fact('\u2713 ALREADY DISCOVERED');setTimeout(back,2800)}else complete()},21000)}
+  const me=V;   // capture this session: a stale timer must never fire against a newer visit
+  setTimeout(()=>{if(V===me&&V.on){note(seq[1]);V.mt=14}},8000);
+  setTimeout(()=>{if(V!==me||!V.on)return;if(S.done.orchard){fact('\u2713 ALREADY DISCOVERED');setTimeout(()=>{if(V===me)back()},2800)}else complete()},21000)}
  let d=120;V.near=null;if(!V.dlg&&V.stt==='play'&&!V.fade&&!V.shape&&V.lock<=0)IA().forEach(o=>{const q=Math.abs(V.px-o.x)*(o.pri?.45:1);if(o.lay===V.lay&&Math.abs(V.py-o.y)<110&&q<d){d=q;V.near=o}});
  // camera: follows you, and the awakening takes it on a tour of the orchard
  const vw=w/U;let tcx=V.px-vw*.42+V.face*60,tcy=V.lay>0?FL:Math.max(0,V.py-130),ks=5;

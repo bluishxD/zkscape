@@ -187,7 +187,7 @@ function frame(w,h,gy){W_=w;H_=h;GY=gy;U=Math.min(h/800,Math.max(w/820,.5));cons
  if(K.e){K.e=0;if(V.dlg)advance();else if(V.stt==='play'&&!V.fade)act()}
  const rm=Z.filter(x=>V.px>=x).length-1;if(rm!==V.room&&V.lay==='g'){V.room=rm;V.rt=3}V.rt-=dt;V.mt-=dt;V.bad=Math.max(0,V.bad-dt);if(V.dlg&&V.dlg.c<V.dlg.L[V.dlg.i].length)V.dlg.c+=dt*46;
  if(V.fx){V.fx.t+=dt;if(V.fx.t>2.4)V.fx=null}
- if(V.door>=1&&V.px>DOOR&&!V.done){V.done=1;V.stt='done';spark(V.px,100,'#ffffff',30);AM.sfx('portal');note(EDU);setTimeout(()=>{if(!V.on)return;if(S.done.ironwood){fact('\u2713 ALREADY DISCOVERED');setTimeout(back,2800)}else complete()},16000)}
+ if(V.door>=1&&V.px>DOOR&&!V.done){V.done=1;V.stt='done';spark(V.px,100,'#ffffff',30);AM.sfx('portal');note(EDU);const me=V;setTimeout(()=>{if(V!==me||!V.on)return;if(S.done.ironwood){fact('\u2713 ALREADY DISCOVERED');setTimeout(()=>{if(V===me)back()},2800)}else complete()},16000)}
  let d=130;V.near=null;if(!V.dlg&&V.stt==='play'&&!V.fade)IAS().forEach(o=>{const q=Math.abs(V.px-o.x);if(q<d){d=q;V.near=o}});
  const vw=w/U;if(!cine||reduce){V.cx+=((V.px-vw*.42+V.face*60)-V.cx)*(1-Math.exp(-5*dt))}V.cx=cl(V.cx,0,LW-vw);
  // The Answer no longer travels. The pan to the Foundry and back (ans 8 -> 22) used to leave the player at the dais

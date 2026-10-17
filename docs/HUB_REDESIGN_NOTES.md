@@ -4,7 +4,7 @@
 - `index.html` (edited): shared `ZNAME` module (name sanitise/persist, pixel-font tag, name panel), one `g2.drawImage` hook so the tag
   shows in every world, `ENTRY` flow object, `hub()`/`hubLoop()` delegate to the new HUB, CSS block `#zk-hub2`, `#znm` panel markup.
 - `hub/hub.js` (new): the playable HUB. Loaded via the existing `window.ZKW` plugin mechanism. Registers no world.
-- `worlds/*.js`, `Players/`, `NPCs/`: unchanged. If `hub/hub.js` is missing/throws, the legacy ring HUB runs as before.
+- `worlds/*.js`, `NPCs/`: unchanged. If `hub/hub.js` is missing/throws, the legacy ring HUB runs as before.
 
 ## Controls (same as Origin)
 A/D or arrows walk, Space/W/Up jump, E/Enter/F interact, click floor/portal to walk, touch buttons on touch screens.

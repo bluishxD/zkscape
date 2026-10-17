@@ -13,7 +13,7 @@
    TIMELINE (seconds)  0-2 choice | 2-5 three worlds | 5-6.65 guide | 6.65-8.1 proof | 8.1-11.1 journey | 11.1-12.45 threshold | 12.45 impact | 12.7 HUB handed over */
 window.ZKPRO=(function(){
 'use strict';
-const T_FLASH=12.45,T_HAND=12.72,T_END=13.8,T_SKIP_SHOW=.9;
+const T_FLASH=12.45,T_HAND=12.72,T_END=13.8;
 const SHOTS=[
  {k:'choice',a:0,b:2.0},
  {k:'world',id:'shielded',a:2.0,b:3.05,y0:.12,h:.74,cx:[.32,.5],z:.1,dk:.42},
@@ -91,13 +91,11 @@ function play(o){
  if(live)return false;                                   // never two at once: no stacked loops, audio, or callbacks
  const host=o.host,ad=o.adapter;if(!host||!ad||!ad.canvas)return false;
  const reduce=!!o.reduce,pal=o.pal||{pr:'#f4b728',se:'#4ee3f0',ac:'#9a6bff'};
- const L=live={t:0,t0:null,pause:0,hid:0,raf:0,skip:-1,handed:false,over:false,w:0,h:0,world:null,wReady:false,wFail:false,wId:'',ac:null,listeners:[],timers:[]};
+ const L=live={t:0,t0:null,pause:0,hid:0,raf:0,handed:false,over:false,w:0,h:0,world:null,wReady:false,wFail:false,wId:'',ac:null,listeners:[],timers:[]};
  const root=document.createElement('div');root.id='zkprologue';root.setAttribute('aria-label','ZKSCAPE intro');root.tabIndex=-1;
  root.style.cssText='position:absolute;inset:0;z-index:200;background:#000;touch-action:none;cursor:default;opacity:1';
  const cv=document.createElement('canvas');cv.style.cssText='position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;display:block!important;margin:0!important;border:0!important;border-radius:0!important;transform:none!important;box-shadow:none!important;filter:none!important;background:none!important;animation:none!important';root.appendChild(cv);
- const skip=document.createElement('button');skip.type='button';skip.className='btn g';skip.textContent='SKIP INTRO \u25B8';skip.setAttribute('aria-label','Skip intro');
- skip.style.cssText='position:absolute;right:max(18px,3vw);bottom:max(18px,4vh);margin:0;padding:11px 20px;font-size:15px;letter-spacing:.08em;opacity:0;pointer-events:none;background:#02030acc;transition:opacity .5s;z-index:2;min-height:44px';
- root.appendChild(skip);host.appendChild(root);document.documentElement.classList.add('zpro-on');
+  host.appendChild(root);document.documentElement.classList.add('zpro-on');
  const g=cv.getContext('2d');
  const mk=(w,h)=>{const c=document.createElement('canvas');c.width=w;c.height=h;return c};
  const tA=mk(8,8),tB=mk(8,8),bl=mk(192,108),blx=bl.getContext('2d');
@@ -119,11 +117,9 @@ function play(o){
  function size(){const w=Math.max(2,innerWidth|0),h=Math.max(2,innerHeight|0);if(w!==L.w||h!==L.h){cv.width=w;cv.height=h;L.w=w;L.h=h;L.vig=null}}
  size();on(window,'resize',size);
 
- // ---------------- input lock + skip ----------------
- function doSkip(){if(L.skip<0&&!L.handed){L.skip=L.t;skip.style.opacity='0';skip.style.pointerEvents='none'}}
- on(skip,'click',e=>{e.stopPropagation();doSkip()});
- on(window,'keydown',e=>{if(!live)return;if(e.target===skip&&(e.key==='Enter'||e.key===' '))return;if(e.key==='Escape'){e.preventDefault();e.stopPropagation();doSkip();return}if(e.key==='Tab'||e.metaKey||e.ctrlKey||e.altKey||/^F\d+$/.test(e.key))return;e.preventDefault();e.stopPropagation()},true);
- on(window,'keyup',e=>{if(live&&e.target!==skip){e.stopPropagation()}},true);
+  // ---------------- input lock (the cinematic always plays through; there is no skip) ----------------
+  on(window,'keydown',e=>{if(!live)return;if(e.key==='Tab'||e.metaKey||e.ctrlKey||e.altKey||/^F\d+$/.test(e.key))return;e.preventDefault();e.stopPropagation()},true);
+  on(window,'keyup',e=>{if(live)e.stopPropagation()},true);
  on(document,'visibilitychange',()=>{if(document.hidden)L.hid=performance.now();else if(L.hid){L.pause+=performance.now()-L.hid;L.hid=0}if(!L.ac)return;try{document.hidden?L.ac.suspend():L.ac.resume()}catch(e){}});
  try{document.activeElement&&document.activeElement.blur&&document.activeElement.blur();root.focus({preventScroll:true})}catch(e){}
 
@@ -261,14 +257,11 @@ function play(o){
     if(!reduce){const s=seg(t,T_FLASH,T_FLASH+.7);g.strokeStyle='rgba(255,255,255,'+(1-s).toFixed(3)+')';g.lineWidth=6*L.h/720;g.beginPath();g.arc(L.w/2,L.h*.44,L.h*(.1+1.1*s),0,7);g.stroke()}}
    if(t<T_FLASH-.2||t>T_FLASH+1)bars(t);
    if(t<.55){g.fillStyle='rgba(0,0,0,'+(1-sm(t/.55)).toFixed(3)+')';g.fillRect(0,0,L.w,L.h)}
-   if(L.skip>=0){const k=sm(seg(t,L.skip,L.skip+.38));g.fillStyle='rgba(0,0,0,'+k.toFixed(3)+')';g.fillRect(0,0,L.w,L.h)}
-  }catch(e){console.warn('ZKPRO frame',e);if(!L.handed)handoff(true)}
-  if(t>T_FLASH-.5&&skip.style.opacity!=='0'){skip.style.opacity='0';skip.style.pointerEvents='none'}
-  else if(t>T_SKIP_SHOW&&t<T_FLASH-.5&&L.skip<0&&!L.handed&&skip.style.opacity!=='1'){skip.style.opacity='1';skip.style.pointerEvents='auto'}
-  if(!L.handed&&((L.skip>=0&&t>=L.skip+.4)||t>=T_HAND))handoff(L.skip>=0);
+   }catch(e){console.warn('ZKPRO frame',e);if(!L.handed)handoff(true)}
+  if(!L.handed&&t>=T_HAND)handoff(false);
   if(t>20)finish()}   // hard stop: nothing can keep this alive
  function handoff(skipped){
-  if(L.handed)return;L.handed=true;skip.style.opacity='0';skip.style.pointerEvents='none';
+  if(L.handed)return;L.handed=true;
   const go=()=>{try{ad.stop&&ad.stop()}catch(e){}try{ad.done()}catch(e){console.warn('ZKPRO done',e)}
    // the HUB is now underneath; fade the cinematic away over it
    root.style.transition='opacity '+(skipped?.55:.95)+'s ease-out';root.style.pointerEvents='none';requestAnimationFrame(()=>{root.style.opacity='0'});
