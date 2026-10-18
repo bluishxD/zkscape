@@ -74,7 +74,7 @@ addEventListener('pointerdown',e=>{if(isO()&&e.target===g2.canvas){K.e=1;K.eh=1}
 function ctl(on){let c=$z('orctl');if(c&&c.dataset.own!=='orchard'){c.remove();c=null}if(!c){c=document.createElement('div');c.id='orctl';c.dataset.own='orchard';c.style.cssText='position:absolute;left:0;right:0;bottom:3vh;display:none;justify-content:space-between;padding:0 4vw;z-index:7;pointer-events:none';
  const mb=(t,k,l)=>{const b=document.createElement('button');b.textContent=t;b.setAttribute('aria-label',l);b.style.cssText='pointer-events:auto;touch-action:none;width:68px;height:68px;border-radius:50%;margin:0 6px;font:600 26px sans-serif;color:#fff;background:#080a18aa;border:2px solid var(--a)';
   const set=v=>e=>{e.preventDefault();if(k==='j'&&v&&!K.j)K.jp=1;if(k==='e'){K.eh=v;if(v)K.e=1;return}K[k]=v};b.onpointerdown=set(1);b.onpointerup=b.onpointerleave=b.onpointercancel=set(0);return b};
- const L=document.createElement('div'),R=document.createElement('div');L.append(mb('\u25C0','l','left'),mb('\u25B6','r','right'));R.append(mb('\u270B','e','interact'),mb('\u2934','j','jump'));c.append(L,R);$z('s-world').appendChild(c)}
+ const L=document.createElement('div'),R=document.createElement('div');L.append(mb('\u25C0','l','left'),mb('\u25B6','r','right'));R.append(mb('\uD83D\uDCAC','e','interact'),mb('\u2934','j','jump'));c.append(L,R);$z('s-world').appendChild(c)}
  c.style.display=on&&coarse?'flex':'none'}
 const spark=(x,y,c,n=10)=>{for(let i=0;i<n;i++){const a=Math.random()*6.28,s=60+Math.random()*180;V.vp.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,l:.9,c,s:5,g:140})}};
 const say=(x,s,y)=>V.ft.push({x,y:y==null?240+V.cy:y,s,l:2.6}),note=s=>{V.msg=s;V.mt=Math.max(5,s.length/15)},bad=(x,s)=>{V.bad=.4;AM.sfx('incorrect');say(x,s||'NO')};

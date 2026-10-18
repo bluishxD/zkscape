@@ -162,13 +162,13 @@ if(!window.__zkCV){window.__zkCV=1;
 addEventListener('pointerdown',e=>{if(isC()&&e.target===g2.canvas)K.e=1});
 
 function ctl(on){let c=$z('cctl');if(c&&c.dataset.own!=='canvas'){c.remove();c=null}if(!c){c=document.createElement('div');c.id='cctl';c.dataset.own='canvas';c.style.cssText='position:absolute;left:0;right:0;bottom:3vh;display:none;justify-content:space-between;padding:0 4vw;z-index:7;pointer-events:none';
- const mb=(t,k,l)=>{const b=document.createElement('button');b.textContent=t;b.setAttribute('aria-label',l);b.style.cssText='pointer-events:auto;touch-action:none;width:64px;height:64px;border-radius:50%;margin:0 5px;font-size:24px;background:#0b0e1fcc;color:#d9e7ff;border:2px solid #46528a';
+ const mb=(t,k,l)=>{const b=document.createElement('button');b.textContent=t;b.setAttribute('aria-label',l);b.style.cssText='pointer-events:auto;touch-action:none;width:68px;height:68px;border-radius:50%;margin:0 6px;font:600 26px sans-serif;color:#fff;background:#080a18aa;border:2px solid var(--a)';
   const set=v=>e=>{e.preventDefault();if(k==='j'&&v&&!K.j)K.jp=1;if(k==='u'&&v&&!K.u)K.jb=1;
    if(k==='e'){K.eh=v;if(v)K.e=1;return}K[k]=v};
   b.onpointerdown=set(1);b.onpointerup=b.onpointerleave=b.onpointercancel=set(0);return b};
  const L2=document.createElement('div'),R2=document.createElement('div');
- L2.append(mb('◀','l','left'),mb('▶','r','right'));
- R2.append(mb('✋','e','use'),mb('⤴','j','jump'));
+ L2.append(mb('\u25C0','l','left'),mb('\u25B6','r','right'));
+ R2.append(mb('\uD83D\uDCAC','e','use'),mb('\u2934','j','jump'));
  c.append(L2,R2);$z('s-world').appendChild(c)}
  c.style.display=on&&coarse?'flex':'none'}
 

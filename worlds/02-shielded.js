@@ -70,9 +70,9 @@ if(!window.__zkVK){window.__zkVK=1;const km=c=>({ArrowLeft:'l',KeyA:'l',ArrowRig
  addEventListener('keydown',e=>{const k=km(e.code);if(!k||!isV())return;e.preventDefault();if(k==='q'){if(!e.repeat)K.q=1;return}if(k==='e'){if(!e.repeat)K.e=1;return}if(k==='j'&&!K.j)K.jp=1;K[k]=1});
  addEventListener('keyup',e=>{const k=km(e.code);if(k&&k!=='q'&&k!=='e')K[k]=0});addEventListener('blur',()=>{K.l=K.r=K.j=0})}
 function ctl(on){let c=$z('vctl');if(c&&c.dataset.own!=='shielded'){c.remove();c=null}if(!c){c=document.createElement('div');c.id='vctl';c.dataset.own='shielded';c.style.cssText='position:absolute;left:0;right:0;bottom:3vh;display:none;justify-content:space-between;padding:0 4vw;z-index:7;pointer-events:none';
- const mb=(t,k)=>{const b=document.createElement('button');b.textContent=t;b.setAttribute('aria-label',k==='j'?'jump':k==='l'?'left':k==='q'?'shield':'talk');b.style.cssText='pointer-events:auto;touch-action:none;width:68px;height:68px;border-radius:50%;margin:0 6px;font:600 26px sans-serif;color:#fff;background:#080a18aa;border:2px solid var(--a)';
+ const mb=(t,k,l)=>{const b=document.createElement('button');b.textContent=t;b.setAttribute('aria-label',l);b.style.cssText='pointer-events:auto;touch-action:none;width:68px;height:68px;border-radius:50%;margin:0 6px;font:600 26px sans-serif;color:#fff;background:#080a18aa;border:2px solid var(--a)';
   const set=v=>e=>{e.preventDefault();if(k==='j'&&v&&!K.j)K.jp=1;if(k==='q'&&v)K.q=1;if(k==='e'&&v)K.e=1;K[k]=v};b.onpointerdown=set(1);b.onpointerup=b.onpointerleave=b.onpointercancel=set(0);return b};
- const L=document.createElement('div'),R=document.createElement('div');L.append(mb('◀','l'),mb('▶','r'));R.append(mb('⤒','j'),mb('Q','q'),mb('E','e'));c.append(L,R);$z('s-world').appendChild(c)}
+ const L=document.createElement('div'),R=document.createElement('div');L.append(mb('\u25C0','l','left'),mb('\u25B6','r','right'));R.append(mb('Q','q','shield'),mb('\uD83D\uDCAC','e','talk'),mb('\u2934','j','jump'));c.append(L,R);$z('s-world').appendChild(c)}
  c.style.display=on&&coarse?'flex':'none'}
 // ---------- particles / floating text ----------
 const spark=(x,y,c,n=10)=>{for(let i=0;i<n;i++){const a=Math.random()*6.28,s=80+Math.random()*220;V.vp.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,l:.8,c,s:5,g:300})}};

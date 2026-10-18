@@ -101,14 +101,14 @@ addEventListener('pointerdown',e=>{if(!isN()||!V.ui||e.target!==g2.canvas)return
 function ctl(on){let c=$z('noctl');if(c&&c.dataset.own!=='noir'){c.remove();c=null}if(!c){c=document.createElement('div');c.id='noctl';c.dataset.own='noir';
  c.style.cssText='position:absolute;left:0;right:0;bottom:3vh;display:none;justify-content:space-between;padding:0 4vw;z-index:7;pointer-events:none';
  const mb=(t,k,l)=>{const b=document.createElement('button');b.textContent=t;b.setAttribute('aria-label',l);
-  b.style.cssText='pointer-events:auto;touch-action:none;width:60px;height:60px;border-radius:50%;margin:0 4px;font:600 22px sans-serif;color:#e9eef8;background:#0b101ccc;border:2px solid #52638a';
+  b.style.cssText='pointer-events:auto;touch-action:none;width:68px;height:68px;border-radius:50%;margin:0 6px;font:600 26px sans-serif;color:#fff;background:#080a18aa;border:2px solid var(--a)';
   const set=v=>e=>{e.preventDefault();if(!V)return;
    if(V.ui){if(v){const u=V.ui;if(k==='u'||k==='l')u.sel=(u.sel+u.o.length-1)%u.o.length;else if(k==='d'||k==='r')u.sel=(u.sel+1)%u.o.length;else if(k==='e')choose(u.sel);else if(k==='x'&&u.cancel!==false){V.ui=null}}return}
    if(k==='j'&&v&&!K.j)K.jp=1;if(k==='e'){if(v)K.e=1;return}if(k==='q'){if(v)cyc();return}K[k]=v};
   b.onpointerdown=set(1);b.onpointerup=b.onpointerleave=b.onpointercancel=set(0);return b};
  const A1=document.createElement('div'),B1=document.createElement('div');
  A1.append(mb('\u25C0','l','left'),mb('\u25B6','r','right'));
- B1.append(mb('Q','q','change what is in hand'),mb('\u270B','e','use'),mb('\u2934','j','jump'));
+ B1.append(mb('Q','q','change what is in hand'),mb('\uD83D\uDCAC','e','use'),mb('\u2934','j','jump'));
  c.append(A1,B1);$z('s-world').appendChild(c)}
  c.style.display=on&&coarse?'flex':'none'}
 

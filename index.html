@@ -9,6 +9,12 @@
 <meta name="theme-color" content="#05060f">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="favicon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translestyle">
+<meta name="apple-mobile-web-app-title" content="ZKSCAPE">
+<meta name="theme-color" content="#05060f">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ZKSCAPE">
 <meta property="og:title" content="ZKSCAPE V2 — Your PFP. Your world. Your Zcash story.">
@@ -33,6 +39,14 @@
 <style>
 :root{--accent:#f4b728;--ink:#000;--paper:#ece8df;--mute:#8a867c;--line:#2b2a26;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
+/* ===== PAGE-SCROLL LOCK (while the game layer #zk is up) =====
+   The wallpaper generator behind the game is ~2150px tall, so the document stays scrollable while
+   #zk (position:fixed) covers the viewport. On a phone, dragging scrolls the document, which
+   collapses the URL bar and rubber-bands the page -- and during that reflow the generator shows
+   through beneath the game. Fixing it at the root: no document scroll at all while the game is up.
+   The lock is released for the artifact-generator screen, which is a normal scrolling page. */
+html.zlock,html.zlock body{overflow:hidden!important;max-height:100%;overscroll-behavior:none!important;width:100%}
+html.zlock body{position:fixed;left:0;top:0}
 *{box-sizing:border-box}
 body{margin:0;min-height:100vh;color:var(--paper);font:16px/1.5 'Bricolage Grotesque',system-ui,sans-serif;background:#000 radial-gradient(60% 50% at 28% 32%,color-mix(in srgb,var(--accent) 16%,#000),#000 70%) no-repeat;transition:background .6s}
 .wrap{max-width:1040px;margin:0 auto;padding:36px 20px 60px;display:grid;grid-template-columns:minmax(0,370px) minmax(0,1fr);gap:64px;align-items:start}
@@ -212,7 +226,7 @@ html.zpro-on #zhud,html.zpro-on #zback{display:none!important}
 #zhm{position:absolute;left:50%;bottom:5vh;transform:translateX(-50%);z-index:4;width:min(660px,92vw);pointer-events:none;display:none;text-align:left}
 #zhm.on{display:block}#zhm .bigt{font-size:clamp(17px,2vw,27px)}#zhm .rest{font-size:clamp(14px,1.3vw,18px);margin-top:4px}
 #hctl{position:absolute;left:0;right:0;bottom:3vh;display:none;justify-content:space-between;padding:0 4vw;z-index:7;pointer-events:none}
-#hctl button{pointer-events:auto;touch-action:none;width:64px;height:64px;border-radius:50%;margin:0 6px;font:600 24px sans-serif;color:#fff;background:#080a18aa;border:2px solid var(--a)}
+#hctl button{pointer-events:auto;touch-action:none;width:68px;height:68px;border-radius:50%;margin:0 6px;font:600 26px sans-serif;color:#fff;background:#080a18aa;border:2px solid var(--a)}
 #znm .nm{width:min(470px,92vw);background:#070916;border:1px solid var(--a);padding:28px 26px 24px;box-shadow:0 0 70px -15px var(--a);display:flex;flex-direction:column;gap:12px;text-align:center;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px))}
 #znm .q{font-size:clamp(24px,3vw,32px)}
 #znmi{background:#0d1020;border:1px solid var(--a);color:#fff;border-radius:0;padding:14px;font:600 24px ui-monospace,monospace;letter-spacing:.12em;text-align:center;outline:none;text-transform:uppercase;width:100%}
@@ -235,16 +249,26 @@ html.zpro-on #zhud,html.zpro-on #zback{display:none!important}
 #wf .fact{font-size:14px;line-height:1.4;padding:2px 9px}
 #wf .btn{padding:11px 18px;font-size:15px}
 }
-/* Rotate hint. Placed BELOW the run HUD on purpose: #zhud is top-left (bottom ~177px) and #zlbb is
-   top-right, so on a 390px-wide phone a top strip has nowhere to go -- it would sit on both.
-   pointer-events:none apart from the button, so it can never trap the player or eat a tap. */
-#zrot{position:absolute;left:50%;top:184px;transform:translateX(-50%);z-index:8;display:none;pointer-events:none;width:min(360px,92vw)}
+/* Rotate suggestion + fullscreen. NOT a gate: portrait is fully playable. The card sits below the
+   run HUD (#zhud is top-left, bottom ~177px) and is pointer-events:none apart from its own buttons,
+   so it can never swallow a tap meant for the game. "GOT IT" is remembered, so it shows at most once. */
+#zrot{position:absolute;left:50%;top:184px;transform:translateX(-50%);z-index:250;display:none;pointer-events:none;width:min(360px,92vw)}
 #zrot.on{display:block}
-#zrot .zin{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;padding:9px 13px;background:#0a0d1ef2;border:1px solid var(--a);border-radius:4px 14px 4px 14px;box-shadow:0 0 30px -12px var(--a)}
-#zrot svg{width:21px;height:21px;fill:none;stroke:var(--a);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+#zrot .zin{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:11px 14px;background:#0a0d1ef2;border:1px solid var(--a);border-radius:4px 14px 4px 14px;box-shadow:0 0 34px -12px var(--a)}
+#zrot .ph{width:26px;height:26px;fill:none;stroke:var(--a);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+#zrot .ph .ar{animation:nudge 1.5s ease-in-out infinite}
 #zrot b{font:600 12px 'Bricolage Grotesque',sans-serif;letter-spacing:.09em;color:var(--a)}
 #zrot span{font-size:10.5px;line-height:1.4;color:#d6d2c8}
-#zrot .btn{pointer-events:auto;min-height:40px;padding:8px 20px;font-size:13px;margin:2px 0 0}
+#zrot .zrow{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+#zrot .btn{pointer-events:auto;min-height:40px;padding:8px 18px;font-size:12.5px;margin:2px 0 0}
+#zrot .zhint{display:block;color:var(--a);font-size:10.5px;line-height:1.4}
+#zrot .zhint:empty{display:none}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
+@media(prefers-reduced-motion:reduce){#zrot .ph .ar{animation:none}#zrot .ph{transform:rotate(90deg)}}
+/* in-game fullscreen toggle */
+#zfsb{position:absolute;top:8px;right:56px;z-index:8;display:none;width:38px;height:38px;padding:0;border-radius:50%;border:1px solid var(--a);background:#0b0e22cc;color:#fff;font:600 17px sans-serif;cursor:pointer;touch-action:manipulation}
+#zfsb:active{background:var(--a);color:#000}
+@media(max-width:700px){#zfsb{top:64px;right:10px}}
 @media(prefers-reduced-motion:reduce){#zk #wel{transition:none}}
 </style>
 <style id="zk-snark">
@@ -652,10 +676,19 @@ function tag(c,cx,topY,k,al,vw){const t=get().toUpperCase(),b=Math.max(1,Math.ro
  c.fillStyle=accent();c.globalAlpha*=.8;c.fillRect(x+k,y,w-2*k,b);c.fillRect(x+k,y+h-b,w-2*k,b);c.fillRect(x,y+k,b,h-2*k);c.fillRect(x+w-b,y+k,b,h-2*k);c.globalAlpha=Math.max(0,Math.min(1,al==null?1:al));
  const px=Math.round(cx),tw=k*5;c.fillStyle='rgba(4,5,14,.84)';c.fillRect(px-tw/2|0,y+h,tw,k);c.fillRect(px-(k*3/2|0),y+h+k,k*3,k);c.fillRect(px-(k/2|0),y+h+2*k,k,k);
  text(c,t,x+k*3+k,y+k*2+k,k,'#000');text(c,t,x+k*3,y+k*2,k,'#fff');c.restore();return{x,y,w,h}}
-// world scenes: the engine's g2 is wrapped once (below); any drawImage(pim,...) records where the head is, drawn after the frame.
+// world scenes: the engine's g2 is wrapped once (below); any drawImage(pim,...) records where the head
+// is, and the name tag is painted IMMEDIATELY after that draw call. It used to be painted at the very
+// end of the frame instead, which put it on top of every popup panel, dialogue box and puzzle the world
+// drew afterwards. Painting it here means everything the world still has to draw lands over it instead.
 const rec={n:0,x:0,y:0,a:1};
-function hook(ctx,isP){const d=ctx.drawImage;ctx.drawImage=function(im){if(!rec.n&&arguments.length===5&&isP(im)){const m=this.getTransform(),a=arguments[1],b=arguments[2],w=arguments[3],h=arguments[4],px=a+w/2,X=m.a*px+m.c*b+m.e,y1=m.b*px+m.d*b+m.f,y2=m.b*px+m.d*(b+h)+m.f;rec.n=1;rec.x=X;rec.y=Math.min(y1,y2);rec.a=this.globalAlpha}return d.apply(this,arguments)}}
-function worldTag(c){if(!rec.n)return;rec.n=0;c.save();c.setTransform(1,0,0,1,0,0);c.globalAlpha=1;c.shadowBlur=0;tag(c,rec.x,rec.y,kScale(),rec.a,c.canvas.width);c.restore()}
+function hook(ctx,isP){const d=ctx.drawImage;ctx.drawImage=function(im){
+ if(!rec.n&&arguments.length===5&&isP(im)){const m=this.getTransform(),a=arguments[1],b=arguments[2],w=arguments[3],h=arguments[4],px=a+w/2,X=m.a*px+m.c*b+m.e,y1=m.b*px+m.d*b+m.f,y2=m.b*px+m.d*(b+h)+m.f;
+  const r=d.apply(this,arguments),al=this.globalAlpha;   // alpha as the player was drawn, so the tag still fades with them
+  rec.n=1;rec.x=X;rec.y=Math.min(y1,y2);rec.a=al;
+  this.save();this.setTransform(1,0,0,1,0,0);this.globalAlpha=1;this.shadowBlur=0;tag(this,X,Math.min(y1,y2),kScale(),al,this.canvas.width);this.restore();
+  return r}
+ return d.apply(this,arguments)}}
+function worldTag(c){}
 // name panel (first visit asks once; the profile chip re-opens it later)
 const P_=$z('znm'),I_=$z('znmi');let after=null;
 function ask(mode,cb){after=cb||null;P_.dataset.mode=mode;const ed=mode==='edit';$z('znmt').textContent=ed?'CHANGE YOUR NAME':'WHAT SHOULD WE CALL YOU?';$z('znmd').textContent=ed?'This is what floats above your explorer.':'Enter your explorer name.';$z('znmg').textContent=ed?'SAVE NAME':'ENTER ZKSCAPE';$z('znms').textContent=ed?'CANCEL':'SKIP';I_.value=clean(S.name);P_.classList.add('on');setTimeout(()=>{I_.focus();I_.select()},60)}
@@ -740,9 +773,9 @@ async function handoff(){run=0;P.classList.remove('on');
  try{const blob=await (await fetch(S.pfp)).blob();load(new File([blob],'pfp.png',{type:'image/png'}));$('mode').querySelector('[data-v=pc]').click();$('sty').querySelector('[data-v=3]').click();$('tag').value='ZKSCAPE';render()}catch(e){console.warn(e)}
  // the artifact generator is optional: always leave a way back, never strand the player
 
- Z.style.display='none';$z('zback').style.display='block'}
+ Z.style.display='none';$z('zback').style.display='block';document.documentElement.classList.remove('zlock')}
 $('dl').addEventListener('click',()=>{if(Z.style.display==='none'){if(!S.done.canvas)ZPEND=breakdown();S.art=true;S.done.canvas=true;save();$z('zback').textContent='ARTIFACT CREATED ✓ — BACK TO ZKSCAPE'}},true);
-$z('zback').onclick=()=>{Z.style.display='';$z('zback').style.display='none';hub();bumpFrom(ZPEND);ZPEND=null;if(S.done.canvas)enter(8)};
+$z('zback').onclick=()=>{Z.style.display='';$z('zback').style.display='none';document.documentElement.classList.add('zlock');hub();bumpFrom(ZPEND);ZPEND=null;if(S.done.canvas)enter(8)};
 // ===== FINAL CARD =====
 function end(){stopWorld();P.classList.remove('on');scr('end');const c=$z('cc'),g=c.getContext('2d'),im=new Image(),I=ident(),s=I.s,lv=['ROOKIE','EXPLORER','PATHFINDER','GUARDIAN','ARCHITECT'].indexOf(I.rank);im.onload=()=>{
  if(window.ZKCARD&&ZKCARD.show({canvas:c,img:im,S,I,s,lv,W,fmtN,fmtT,reduce,name:ZNAME.has()?ZNAME.get():''}))return;   // the Obsidian Relic (polish/card.js); the original drawing below is the fallback
@@ -839,7 +872,20 @@ $z('zres').onclick=()=>{try{localStorage.removeItem(KEY)}catch(e){}location.relo
 $z('zres').hidden=false;
 function close(){P.classList.remove('on');hub()}
 addEventListener('keydown',e=>{if(e.key==='Escape')P.classList.contains('on')&&close()});
-addEventListener('resize',()=>$z('s-hub').classList.contains('on')&&hub());
+// Resize: the hub re-inits itself (metrics() re-derives the pixel scale and re-bakes). The WORLD did
+// not: startWorld() sized #zw once, so rotating the phone left the canvas at the old resolution and
+// the game looked stretched or letterboxed until a reload. loop() reads wc.width/height every frame
+// and hands them to the world's frame(), so updating the canvas is enough for the world to re-derive
+// its scale, ground line and camera on the very next frame -- we only have to bring the player's
+// on-screen position back inside the new width.
+addEventListener('resize',()=>{
+ if($z('s-hub').classList.contains('on'))hub();
+ if(!run||!$z('s-world').classList.contains('on'))return;
+ if(wc.width===innerWidth&&wc.height===innerHeight)return;
+ wc.width=innerWidth;wc.height=innerHeight;
+ ax=Math.max(0,Math.min(innerWidth-20,ax));
+ tx=Math.max(20,Math.min(innerWidth-20,tx));
+});
 const cv2=$z('zs'),sg=cv2.getContext('2d');let st=[];
 function stars(){cv2.width=innerWidth;cv2.height=innerHeight;st=Array.from({length:matchMedia('(max-width:800px)').matches?60:140},()=>({x:Math.random()*cv2.width,y:Math.random()*cv2.height,s:Math.random()*2+.4,v:Math.random()*.25+.05}))}
 (function f(){sg.clearRect(0,0,cv2.width,cv2.height);sg.fillStyle=S.pal[1]||'#fff';st.forEach(p=>{sg.globalAlpha=.3+p.s/3;sg.fillRect(p.x,p.y,p.s,p.s);if(!reduce){p.y-=p.v;if(p.y<0)p.y=cv2.height}});requestAnimationFrame(f)})();
@@ -1026,7 +1072,7 @@ const F={zk:'zkscape-theme',origin:'origin',shielded:'shielded-valley',proof:'pr
 const M={zk:[110,[1,1.5,2,2.25],900,'sine'],origin:[98,[1,1.19,1.5,2],600,'triangle'],shielded:[130.8,[1,1.5,2,3],1100,'sine'],proof:[123.5,[1,1.33,1.78,2.67],1400,'triangle'],keys:[87.3,[1,1.2,1.5,1.8],500,'sine'],orchard:[146.8,[1,1.25,1.5,2],1300,'sine'],ironwood:[65.4,[1,1.5,1.41,2],450,'sawtooth'],blocks:[110,[1,1.5,2,3],1500,'sine'],machine:[82.4,[1,1.5,2,2.97],800,'square'],canvas:[164.8,[1,1.25,1.5,2],1600,'triangle'],archive:[98,[1,1.19,1.41,2],700,'triangle'],noir:[73.4,[1,1.19,1.5,1.78],550,'sawtooth'],zilkroad:[196,[1,1.25,1.5,2],1800,'square']};
 const sv=()=>{try{localStorage.setItem(K,JSON.stringify(PF))}catch(e){}},vol=()=>PF.m*PF.mu;
 function lv(){if(!C)return;const t=C.currentTime;MG.gain.setTargetAtTime(PF.m,t,.05);MB.gain.setTargetAtTime(PF.mo?PF.mu:0,t,.15);SB.gain.setTargetAtTime(PF.so?PF.sf:0,t,.05);if(aud)aud.volume=PF.mo?vol():0;sv()}
-function init(){if(ready)return;try{const AC=window.AudioContext||window.webkitAudioContext;C=new AC();MG=C.createGain();HEAD=C.createGain();HEAD.gain.value=1.6;MB=C.createGain();SB=C.createGain();MB.connect(MG);SB.connect(MG);MG.connect(HEAD);HEAD.connect(C.destination);ready=1;lv();C.resume&&C.resume();
+function init(){if(ready)return;try{document.documentElement.classList.add('zlock')}catch(e){}try{const AC=window.AudioContext||window.webkitAudioContext;C=new AC();MG=C.createGain();HEAD=C.createGain();HEAD.gain.value=1.6;MB=C.createGain();SB=C.createGain();MB.connect(MG);SB.connect(MG);MG.connect(HEAD);HEAD.connect(C.destination);ready=1;lv();C.resume&&C.resume();
  ['click','hover','portal','enter-world','interaction','correct','incorrect','collectible','world-complete','core-activate','card-reveal','leaderboard'].forEach(n=>{try{const a=new Audio();a.preload='auto';a.oncanplaythrough=()=>{probe[n]=a};a.onerror=()=>{probe[n]=0};a.src='audio/sfx/'+n+'.wav'}catch(e){}});
  if(want)music(want,1)}catch(e){ready=0}}
 function fade(a,to,s,done){const f=a.volume,t0=performance.now();(function st(){const k=Math.min(1,(performance.now()-t0)/(s*1000));try{a.volume=Math.max(0,Math.min(1,f+(to-f)*k))}catch(e){}if(k<1)setTimeout(st,50);else done&&done()})()}
@@ -1052,41 +1098,76 @@ step:()=>noise(.06,900,300,.035),impact:()=>tone(80,.5,'sine',.15,40),rise:()=>t
 function sfx(n){if(!ready||!PF.so)return;const t=performance.now();if(last[n]&&t-last[n]<45)return;last[n]=t;
  try{if(probe[n]){const a=probe[n].cloneNode();a.volume=Math.min(1,PF.sf*PF.m);a.play().catch(()=>{R[n]&&R[n]()})}else R[n]&&R[n]()}catch(e){}}
 document.addEventListener('visibilitychange',()=>{if(!C)return;try{if(document.hidden){C.suspend();aud&&aud.pause()}else{C.resume();aud&&aud.play().catch(()=>{})}}catch(e){}});
-// ===== ROTATE HINT (touch devices held upright) =====
-// The worlds lay their dialogue and puzzle panels out against a wide canvas, so portrait on a phone
-// is cramped. This is a HINT, never a gate: it is pointer-events:none apart from its own button, so
-// it cannot trap the player or eat a tap meant for the world below. Shown on the hub and world
-// screens only -- the landing screen is a vertical stack that fits portrait fine. Dismissal is
-// remembered in S so it appears at most once.
+// ===== FULLSCREEN + ROTATE SUGGESTION (touch devices) =====
+// Landscape is recommended, not required: the worlds are laid out for a wide canvas, but every screen
+// also works upright (the landing stack and the world-01 puzzle panel both scale to the viewport), and
+// the canvas re-sizes on rotation so switching orientation mid-game is lossless. So this is a hint,
+// never a gate -- GOT IT is remembered and the game stays fully playable in portrait.
+// Fullscreen: the Fullscreen API works on Android/desktop. iOS Safari refuses to fullscreen arbitrary
+// DOM (video only), so there the honest answer is Add to Home Screen, which manifest.webmanifest +
+// the apple-mobile-web-app-capable meta make possible. We detect that and say so instead of silently
+// doing nothing.
 (function(){
  if(!document.getElementById('zk'))return;
- Z.insertAdjacentHTML('beforeend','<div id="zrot" aria-hidden="true"><div class="zin">'+
-  '<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="15" y="6" width="18" height="36" rx="3"/>'+
-  '<path d="M7 31a18 18 0 0 0 9 6M41 17a18 18 0 0 0-9-6"/></svg>'+
-  '<b>ROTATE TO LANDSCAPE</b><span>The puzzles and story panels are built for a wide view. Turn your phone sideways for the best experience.</span>'+
-  '<button class="btn g" id="zrotx">GOT IT</button></div></div>');
- const el=$z('zrot');
- const dismiss=e=>{if(e)e.stopPropagation();S.rotOk=1;save();el.classList.remove('on');clearTimeout(rt)};
- let rt=0;
- $z('zrotx').onclick=dismiss;
- const onScreen=()=>$z('s-world').classList.contains('on')||$z('s-hub').classList.contains('on');
- let wasOn=false;
- const check=()=>{
-  const touch=matchMedia('(pointer:coarse)').matches||innerWidth<800;
-  const on=!!(touch&&!S.rotOk&&onScreen()&&innerHeight>innerWidth);
-  el.classList.toggle('on',on);
-  // don't let it linger: if it is still up 14s after appearing, treat it as read and remember that.
-  // Keyed off the off->on transition so a rotate away and back restarts the clock.
-  if(on&&!wasOn){clearTimeout(rt);rt=setTimeout(()=>{if(el.classList.contains('on'))dismiss()},14000)}
-  wasOn=on;
+ const IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+ const canFull=()=>!!(document.fullscreenEnabled||document.webkitFullscreenEnabled);
+ const isFull=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
+ // a native-tabbed install is already fullscreen; don't nag those
+ const standalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+
+ const fs=()=>{const e=document.documentElement;const r=(e.requestFullscreen||e.webkitRequestFullscreen);
+  if(r){try{const p=r.call(e,{navigationUI:'hide'});if(p&&p.catch)p.catch(()=>{});}catch(_){}}
+  else if(!IOS&&navigator.keyboard&&navigator.keyboard.lock){try{navigator.keyboard.lock()}catch(_){}}
  };
+ const exitFs=()=>{const r=document.exitFullscreen||document.webkitExitFullscreen;if(r&&isFull()){try{r.call(document)}catch(_){}}};
+
+ Z.insertAdjacentHTML('beforeend',
+  '<div id="zrot"><div class="zin">'+
+  '<svg class="ph" viewBox="0 0 64 64" aria-hidden="true">'+
+  '<rect x="20" y="8" width="24" height="48" rx="4"/>'+
+  '<path d="M8 38a24 24 0 0 0 11 8M56 26a24 24 0 0 0-11-8"/>'+
+  '<path class="ar" d="M17 44l4 4 4-4M47 20l-4-4-4 4"/></svg>'+
+  '<b id="zrott">LANDSCAPE LOOKS BETTER</b>'+
+  '<span>You can play upright, but ZKSCAPE is built for a wide screen.</span>'+
+  '<div class="zrow"><button class="btn g" id="zrotx">GOT IT</button>'+
+  '<button class="btn" id="zfs">GO FULLSCREEN</button></div>'+
+  '<span class="zhint" id="zhint"></span></div></div>');
+
+ const el=$z('zrot'),hint=$z('zhint');
+ $z('zrotx').onclick=()=>{S.rotOk=1;save();el.classList.remove('on')};
+ $z('zfs').onclick=()=>{
+  if(IOS||!canFull()){hint.textContent='On iPhone: tap the Share button, then "Add to Home Screen". Opening ZKSCAPE from your home screen gives you fullscreen with no browser bars.';return}
+  fs();
+  hint.textContent=standalone()?'You are already fullscreen.':'Your browser may ask for permission.';
+ };
+
+ const onScreen=()=>$z('s-hub').classList.contains('on')||$z('s-world').classList.contains('on');
+ const check=()=>{
+  const touch=matchMedia('(pointer:coarse)').matches;
+  const portrait=innerHeight>innerWidth*1.02;      // ignore near-square layouts
+  // hub + world only: the landing screen is a vertical stack that fits portrait perfectly well, and
+  // there the hint would sit right on top of the LOOK UP YOUR zkSNARK button
+  const on=!!(touch&&portrait&&!S.rotOk&&!standalone()&&onScreen());
+  el.classList.toggle('on',on);
+  if(!on)hint.textContent='';                     // clear once they rotate or dismiss
+ };
+ // scr() swaps screens with no event of its own, so watch both screens' class toggles
+ const mo=new MutationObserver(check);
+ mo.observe($z('s-hub'),{attributes:true,attributeFilter:['class']});
+ mo.observe($z('s-world'),{attributes:true,attributeFilter:['class']});
  addEventListener('resize',check);
  addEventListener('orientationchange',()=>setTimeout(check,150));
- // scr() swaps screens with no event of its own, so watch the two screens' class toggles.
- const mo=new MutationObserver(check);
- mo.observe($z('s-world'),{attributes:true,attributeFilter:['class']});
- mo.observe($z('s-hub'),{attributes:true,attributeFilter:['class']});
+ document.addEventListener('fullscreenchange',check);
  check();
+ // a persistent in-game toggle so players can enter/leave fullscreen once they are playing
+ Z.insertAdjacentHTML('beforeend','<button id="zfsb" title="Fullscreen" aria-label="Toggle fullscreen">⛶</button>');
+ const fb=$z('zfsb');
+ fb.onclick=()=>{isFull()?exitFs():fs()};
+ const fsSync=()=>{fb.classList.toggle('on',isFull());fb.textContent=isFull()?'✕':'⛶'};
+ document.addEventListener('fullscreenchange',fsSync);
+ document.addEventListener('webkitfullscreenchange',fsSync);
+ const fbSync=()=>{fb.style.display=(matchMedia('(pointer:coarse)').matches&&!isFull()&&!standalone())?'block':'none'};
+ addEventListener('resize',fbSync);fbSync();fsSync();
 })();
 return {init,music,playMusic:music,crossfadeMusic:music,stopMusic(){stopCur(1);cur=''},stop:stopCur,sfx,playSFX:sfx,PF,
  setMasterVolume(v){PF.m=v;lv()},setMusicVolume(v){PF.mu=v;lv()},setSFXVolume(v){PF.sf=v;lv()},
