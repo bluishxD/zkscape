@@ -184,12 +184,12 @@ function drawVS(p,t){if(!VS_IMG||!VS_IMG.width)return;const wx=VSX(),sx=X(wx),sy
   g2.shadowColor=VS_PAL[0];g2.shadowBlur=18;g2.imageSmoothingEnabled=false;g2.translate(sx,sy-bob);g2.scale(fl,1);g2.drawImage(VS_IMG,-w/2,-h,w,h)}
  g2.restore();
  if(Q.vsNear){tx_('Winter Spring',sx,sy-h-16,VS_PAL[0],MONO(12));tx_(coarse?'◉ TALK':'[E] TALK',sx,sy-h-34,'#e8f6ff',MONO(12))}}
-function drawVsDlg(){if(!Q.dlg)return;const d=Q.dlg,mw=Math.min(W_-24,620),bx=(W_-mw)/2,bh=Math.round(Math.max(120,H_*.2)),by=H_-bh-(coarse?90:24);
- rc(bx,by,mw,bh,'#05060ff2');g2.strokeStyle='#4ee3f0';g2.lineWidth=2;g2.strokeRect(bx,by,mw,bh);
- if(VS_IMG&&VS_IMG.width){g2.imageSmoothingEnabled=false;g2.drawImage(VS_IMG,bx+10,by+10,64,64)}
- g2.textAlign='left';g2.fillStyle=VS_PAL[0];g2.font=MONO(13);g2.fillText('Winter Spring',bx+84,by+28);
- g2.fillStyle='#ece8df';g2.font=MONO(15);wrap(d.L[d.i][0].slice(0,Math.floor(d.c)),mw-100).forEach((l,i)=>g2.fillText(l,bx+84,by+54+i*22));
- g2.fillStyle='#8a867c';g2.font=MONO(11);g2.textAlign='right';g2.fillText(coarse?'TAP TO CONTINUE':'[E] / CLICK',bx+mw-12,by+bh-10)}
+ function drawVsDlg(){if(!Q.dlg)return;const d=Q.dlg,npc=VS_IMG&&VS_IMG.width;g2.font=MONO(15);const ln=wrap(d.L[d.i][0].slice(0,Math.floor(d.c)),W_-(npc?100:16));const B=dlgBox(W_,H_,coarse,ln,{img:npc});
+ rc(B.bx,B.by,B.mw,B.bh,'#05060ff2');g2.strokeStyle='#4ee3f0';g2.lineWidth=2;g2.strokeRect(B.bx,B.by,B.mw,B.bh);
+ if(npc){g2.imageSmoothingEnabled=false;g2.drawImage(VS_IMG,B.bx+10,B.by+10,64,64)}
+ g2.textAlign='left';g2.fillStyle=VS_PAL[0];g2.font=MONO(13);g2.fillText('Winter Spring',B.bx+B.ix,B.by+26);
+ g2.fillStyle='#ece8df';g2.font=MONO(15);B.win.forEach((l,i)=>g2.fillText(l,B.bx+B.ix,B.by+B.head+i*B.lh));
+ g2.fillStyle='#8a867c';g2.font=MONO(11);g2.textAlign='right';g2.fillText(coarse?(B.more?'TAP \u25BC MORE':'TAP TO CONTINUE'):'[E] / CLICK',B.bx+B.mw-12,B.by+B.bh-8)}
 function area(){const x=Q.px;return x<1200?'THRESHOLD':x<2200?'OBSERVATION HALL':x<GB?'THE SEALED CHAMBER':x<EX-100?'THE PROOF ENGINE':'THE EXIT'}
 function frame(w,h,gy){W_=w;H_=h;GY=gy;U=Math.min(h/800,Math.max(w/820,.5));const now=performance.now(),dt=Math.min(.033,(now-Q.last)/1000||.016);Q.last=now;
  if(tx!==Q.ltx&&tx>w*.99){back();return}
@@ -308,7 +308,7 @@ function drawHud(p){g2.textAlign='center';
  if(Q.at>0&&Q.area){g2.globalAlpha=Math.min(1,Q.at);tx_(Q.area,W_/2,34,'#ece8df',MONO(15));g2.globalAlpha=1}
  if(Q.sig){g2.textAlign='left';g2.fillStyle='#07061aee';g2.fillRect(12,10,150,28);g2.strokeStyle=IK.gold;g2.lineWidth=1.5;g2.strokeRect(12,10,150,28);g2.fillStyle=IK.gold;g2.font=MONO(11);g2.fillText('SIGIL  ██████',22,29)}
  if(Q.near&&!Q.msg||Q.near&&Q.mt<=0){const o=Q.near,lab=({pil:'[E] toggle',con:'[E] verify condition',vault:'[E] take',req:'[E] try the chamber',note:'[E] read'})[o.k];tx_(coarse?'◉':lab,X(o.x),Y(o.y+(o.k==='pil'?360:230)),'#e8f6ff',MONO(12))}
- if(Q.msg&&Q.mt>0&&!Q.dlg){const m=Q.msg,mw=Math.min(W_-24,640),bx=(W_-mw)/2;g2.font=MONO(14);const ln=wrap(m.s,mw-32),bh=54+ln.length*22,by=H_-bh-(coarse?100:22);g2.save();g2.globalAlpha=Math.min(1,Q.mt*2);rc(bx,by,mw,bh,'#05060ff2');g2.strokeStyle=m.c;g2.lineWidth=2;g2.strokeRect(bx,by,mw,bh);
+ if(Q.msg&&Q.mt>0&&!Q.dlg){const m=Q.msg,mw=Math.min(W_-24,640),bx=(W_-mw)/2;g2.font=MONO(14);const ln=wrap(m.s,mw-32),bh=54+ln.length*22,by=H_-bh-(coarse?150:22);g2.save();g2.globalAlpha=Math.min(1,Q.mt*2);rc(bx,by,mw,bh,'#05060ff2');g2.strokeStyle=m.c;g2.lineWidth=2;g2.strokeRect(bx,by,mw,bh);
   g2.textAlign='left';g2.fillStyle=m.c;g2.font="700 "+Math.round(Math.max(18,22*U))+"px 'Abril Fatface',serif";g2.fillText(m.h,bx+16,by+32);g2.fillStyle='#ece8df';g2.font=MONO(14);ln.forEach((l,i)=>g2.fillText(l,bx+16,by+56+i*22));g2.restore()}
  if(Q.vt>=0&&Q.vt<3.6){const k=Q.vt;g2.globalAlpha=Math.min(1,k);tx_('SECRET  ████  →  PROOF  →  VERIFIER  →  '+(k>3.4?'VALID ✓':'...'),W_/2,H_*.22,k>3.4?IK.ok:IK.cyan,MONO(16));g2.globalAlpha=1}
  if(Q.vt>=3.4){g2.globalAlpha=Math.min(1,Q.vt-3.4)*(Q.vt<8?1:Math.max(0,1-(Q.vt-8)));tx_('VALID ✓',W_/2,H_*.46,IK.ok,"700 "+Math.round(96*U)+"px 'Abril Fatface',serif");g2.globalAlpha=1}}

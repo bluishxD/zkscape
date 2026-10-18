@@ -285,10 +285,10 @@ function drawHud(p){g2.textAlign='center';const fs=Math.round(Math.max(13,14*U))
  if(V.near)bubble((coarse?'TAP \u270B  ':'[E]  ')+V.near.l,X(V.near.x),Y(260),C.gd,280*U);
  if(V.bad>0){g2.fillStyle='rgba(255,122,74,'+(V.bad*.3)+')';g2.fillRect(0,0,W_,H_)}
  if(V.asc>=0){g2.fillStyle='rgba(0,0,0,'+Math.min(1,Math.sin(Math.min(1,V.asc/2.6)*Math.PI))+')';g2.fillRect(0,0,W_,H_)}
- if(V.dlg){const d=V.dlg,im=d.img,ip=im&&im.width,mw=Math.min(W_-24,640),bx2=(W_-mw)/2,bh=Math.round(Math.max(110,H_*.18)),by2=H_-bh-(coarse?90:24),ix=ip?84:16;rc(bx2,by2,mw,bh,'#05060ff2');g2.strokeStyle=C.gd;g2.lineWidth=2;g2.strokeRect(bx2,by2,mw,bh);
-  if(ip){g2.imageSmoothingEnabled=false;g2.drawImage(im,bx2+10,by2+10,64,64)}
-  g2.textAlign='left';g2.fillStyle=d.acc||C.gd;g2.font=MONO(13);g2.fillText(d.who||'THE AUDITOR',bx2+ix,by2+28);g2.fillStyle='#ece8df';g2.font=MONO(15);wrap(d.L[d.i].slice(0,Math.floor(d.c)),mw-(ip?100:32)).forEach((l,i)=>g2.fillText(l,bx2+ix,by2+54+i*22));g2.fillStyle='#8a867c';g2.font=MONO(11);g2.textAlign='right';g2.fillText(coarse?'TAP TO CONTINUE':'[E] / CLICK',bx2+mw-12,by2+bh-10)}
- else if(V.mt>0&&V.msg){g2.font=MONO(14);const mw=Math.min(W_-24,640),ln=wrap(V.msg,mw-28),bh=ln.length*22+22,bx2=(W_-mw)/2,by2=H_-bh-(coarse?90:22);g2.save();g2.globalAlpha=Math.min(1,V.mt*2);rc(bx2,by2,mw,bh,'#05060ff2');g2.strokeStyle=C.cy;g2.lineWidth=2;g2.strokeRect(bx2,by2,mw,bh);g2.fillStyle='#ece8df';g2.textAlign='left';ln.forEach((l,i)=>g2.fillText(l,bx2+14,by2+24+i*22));g2.restore()}}
+ if(V.dlg){const d=V.dlg,im=d.img,ip=im&&im.width;g2.font=MONO(15);const ln=wrap(d.L[d.i].slice(0,Math.floor(d.c)),W_-(ip?100:32));const B=dlgBox(W_,H_,coarse,ln,{img:ip});rc(B.bx,B.by,B.mw,B.bh,'#05060ff2');g2.strokeStyle=C.gd;g2.lineWidth=2;g2.strokeRect(B.bx,B.by,B.mw,B.bh);
+  if(ip){g2.imageSmoothingEnabled=false;g2.drawImage(im,B.bx+10,B.by+10,64,64)}
+  g2.textAlign='left';g2.fillStyle=d.acc||C.gd;g2.font=MONO(13);g2.fillText(d.who||'THE AUDITOR',B.bx+B.ix,B.by+26);g2.fillStyle='#ece8df';g2.font=MONO(15);B.win.forEach((l,i)=>g2.fillText(l,B.bx+B.ix,B.by+B.head+i*B.lh));g2.fillStyle='#8a867c';g2.font=MONO(11);g2.textAlign='right';g2.fillText(coarse?(B.more?'TAP \u25BC MORE':'TAP TO CONTINUE'):'[E] / CLICK',B.bx+B.mw-12,B.by+B.bh-8)}
+ else if(V.mt>0&&V.msg){g2.font=MONO(14);const mw=Math.min(W_-24,640),ln=wrap(V.msg,mw-28),bh=ln.length*22+22,bx2=(W_-mw)/2,by2=H_-bh-(coarse?150:22);g2.save();g2.globalAlpha=Math.min(1,V.mt*2);rc(bx2,by2,mw,bh,'#05060ff2');g2.strokeStyle=C.cy;g2.lineWidth=2;g2.strokeRect(bx2,by2,mw,bh);g2.fillStyle='#ece8df';g2.textAlign='left';ln.forEach((l,i)=>g2.fillText(l,bx2+14,by2+24+i*22));g2.restore()}}
 
 // ======================= wiring into the shared engine =======================
 DEC.keys=function(w,h,gy,t,p){if(!isK()){OLD(w,h,gy,t,p);return}scene(w,h,gy,t,p)};

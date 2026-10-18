@@ -250,15 +250,22 @@ function frame(w,h,gy){W_=w;H_=h;GY=gy;U=Math.min(h/800,Math.max(w/820,.5));cons
  // quiet hints
  if(V.f.some(f=>f.pl&&f.g>=1&&!f.sealed)&&!V.leakSaid&&Math.abs(V.tx-V.px)<700){V.leakSaid=1;say(V.tx,'I CAN READ THAT FROM HERE',140)}
  // the final walk
- if(K.e){K.e=0;if(V.dlg)advance();else if(V.stt==='play'&&!V.fade&&V.lock<=0&&!V.shape)act();else if(V.shape&&V.shapeT>2)V.shape=0}
+ if(K.e){K.e=0;if(V.dlg)advance();else if(V.endWait){V.endWait=0;V.endGo&&V.endGo()}else if(V.stt==='play'&&!V.fade&&V.lock<=0&&!V.shape)act();else if(V.shape&&V.shapeT>2)V.shape=0}
  if(V.shape){V.shapeT=(V.shapeT||0)+dt}else V.shapeT=0;
- const rm=V.lay===1?-2:V.lay===2?-3:V.py>600?-4:Z.filter(x=>V.px>=x).length-1;if(rm!==V.room){V.room=rm;V.rt=3}V.rt-=dt;V.mt-=dt;V.bad=Math.max(0,V.bad-dt);
+ const rm=V.lay===1?-2:V.lay===2?-3:V.py>600?-4:Z.filter(x=>V.px>=x).length-1;if(rm!==V.room){V.room=rm;V.rt=3}V.rt-=dt;V.mt-=dt;if(V.endWait&&V.mt<1.2)V.mt=1.2;V.bad=Math.max(0,V.bad-dt);
  if(V.dlg&&V.dlg.c<V.dlg.L[V.dlg.i].length)V.dlg.c+=dt*46;
  if(V.awake&&V.lay===0&&V.px>GT-40&&!V.done){V.done=1;V.stt='done';V.vx=0;spark(V.px,100,'#ffffff',44);AM.sfx('collectible');
-  const seq=['The orchard was never growing things. It was keeping score without keeping names.',EDU];note(seq[0]);V.mt=8;
-  const me=V;   // capture this session: a stale timer must never fire against a newer visit
-  setTimeout(()=>{if(V===me&&V.on){note(seq[1]);V.mt=14}},8000);
-  setTimeout(()=>{if(V!==me||!V.on)return;if(S.done.orchard){fact('\u2713 ALREADY DISCOVERED');setTimeout(()=>{if(V===me)back()},2800)}else complete()},21000)}
+  const seq=['The orchard was never growing things. It was keeping score without keeping names.',EDU];const me=V;
+  // Two beats, each advanced by the player instead of a fixed 8s / 21s timer, and skipped entirely on a
+  // revisit (a player who already finished used to sit through the whole thing again every entry).
+  let beat=0;
+  const endGo=()=>{if(V!==me||!V.on)return;clearTimeout(V.endT);V.endT=0;
+   if(beat<seq.length-1){beat++;note(seq[beat]);V.mt=Math.max(V.mt,4);V.endWait=1;V.endT=setTimeout(endGo,60000);return}
+   if(S.done.orchard){fact('\u2713 ALREADY DISCOVERED');V.endT=setTimeout(()=>{if(V===me)back()},2800)}
+   else complete()};
+  V.endGo=endGo;
+  if(S.done.orchard){fact('\u2713 ALREADY DISCOVERED');V.endT=setTimeout(()=>{if(V===me)back()},2800)}
+  else{note(seq[0]);V.mt=Math.max(V.mt,4);V.endWait=1;V.endT=setTimeout(endGo,60000)}}
  let d=120;V.near=null;if(!V.dlg&&V.stt==='play'&&!V.fade&&!V.shape&&V.lock<=0)IA().forEach(o=>{const q=Math.abs(V.px-o.x)*(o.pri?.45:1);if(o.lay===V.lay&&Math.abs(V.py-o.y)<110&&q<d){d=q;V.near=o}});
  // camera: follows you, and the awakening takes it on a tour of the orchard
  const vw=w/U;let tcx=V.px-vw*.42+V.face*60,tcy=V.lay>0?FL:Math.max(0,V.py-130),ks=5;
@@ -486,10 +493,10 @@ function drawHud(p){g2.textAlign='center';const fs=Math.round(Math.max(13,14*U))
  if(V.aw>=0&&V.aw<AW_END&&!V.awake){const b=Math.min(1,V.aw/0.6,(AW_END-V.aw)/0.6)*H_*.09;g2.fillStyle='#000';g2.fillRect(0,0,W_,b);g2.fillRect(0,H_-b,W_,b)}
  if(V.fade){g2.fillStyle='rgba(0,0,0,'+Math.max(0,Math.min(1,V.fade.t))+')';g2.fillRect(0,0,W_,H_)}
  if(V.shape)shapeArt();
- if(V.dlg){const d=V.dlg,im=d.img,ip=im&&im.width,mw=Math.min(W_-24,640),bx2=(W_-mw)/2,bh=Math.round(Math.max(110,H_*.18)),by2=H_-bh-(coarse?90:24),ix=ip?84:16;rc(bx2,by2,mw,bh,'#05060ff2');g2.strokeStyle=C.am;g2.lineWidth=2;g2.strokeRect(bx2,by2,mw,bh);
-  if(ip){g2.imageSmoothingEnabled=false;g2.drawImage(im,bx2+10,by2+10,64,64)}
-  g2.textAlign='left';g2.fillStyle=d.acc||C.am;g2.font=MONO(13);g2.fillText(d.who||'THE TENDER',bx2+ix,by2+28);g2.fillStyle='#ece8df';g2.font=MONO(15);wrap(d.L[d.i].slice(0,Math.floor(d.c)),mw-(ip?100:32)).forEach((l,i)=>g2.fillText(l,bx2+ix,by2+54+i*22));g2.fillStyle='#8a867c';g2.font=MONO(11);g2.textAlign='right';g2.fillText(coarse?'TAP TO CONTINUE':'[E] / CLICK',bx2+mw-12,by2+bh-10)}
- else if(V.mt>0&&V.msg){g2.font=MONO(14);const mw=Math.min(W_-24,640),lns=wrap(V.msg,mw-28),bh=lns.length*22+22,bx2=(W_-mw)/2,by2=H_-bh-(coarse?90:22);g2.save();g2.globalAlpha=Math.min(1,V.mt*2);rc(bx2,by2,mw,bh,'#05060ff2');g2.strokeStyle=C.cy;g2.lineWidth=2;g2.strokeRect(bx2,by2,mw,bh);g2.fillStyle='#ece8df';g2.textAlign='left';lns.forEach((l,i)=>g2.fillText(l,bx2+14,by2+24+i*22));g2.restore()}}
+ if(V.dlg){const d=V.dlg,im=d.img,ip=im&&im.width;g2.font=MONO(15);const ln=wrap(d.L[d.i].slice(0,Math.floor(d.c)),W_-(ip?100:32));const B=dlgBox(W_,H_,coarse,ln,{img:ip});rc(B.bx,B.by,B.mw,B.bh,'#05060ff2');g2.strokeStyle=C.am;g2.lineWidth=2;g2.strokeRect(B.bx,B.by,B.mw,B.bh);
+  if(ip){g2.imageSmoothingEnabled=false;g2.drawImage(im,B.bx+10,B.by+10,64,64)}
+  g2.textAlign='left';g2.fillStyle=d.acc||C.am;g2.font=MONO(13);g2.fillText(d.who||'THE TENDER',B.bx+B.ix,B.by+26);g2.fillStyle='#ece8df';g2.font=MONO(15);B.win.forEach((l,i)=>g2.fillText(l,B.bx+B.ix,B.by+B.head+i*B.lh));g2.fillStyle='#8a867c';g2.font=MONO(11);g2.textAlign='right';g2.fillText(coarse?(B.more?'TAP \u25BC MORE':'TAP TO CONTINUE'):'[E] / CLICK',B.bx+B.mw-12,B.by+B.bh-8)}
+ else if(V.mt>0&&V.msg){g2.font=MONO(14);const mw=Math.min(W_-24,640),lns=wrap(V.msg,mw-28),bh=lns.length*22+22,bx2=(W_-mw)/2,by2=H_-bh-(coarse?150:22);g2.save();g2.globalAlpha=Math.min(1,V.mt*2);rc(bx2,by2,mw,bh,'#05060ff2');g2.strokeStyle=C.cy;g2.lineWidth=2;g2.strokeRect(bx2,by2,mw,bh);g2.fillStyle='#ece8df';g2.textAlign='left';lns.forEach((l,i)=>g2.fillText(l,bx2+14,by2+24+i*22));g2.restore()}}
 const cc2=(x,y,c,r)=>{g2.fillStyle=c;g2.beginPath();g2.arc(x,y,r,0,7);g2.fill()};
 function shapeArt(){ // the secret: the whole shape of the orchard, seen from above
  const a=Math.min(1,V.shapeT*1.2);g2.save();g2.globalAlpha=a;g2.fillStyle='rgba(2,10,7,.93)';g2.fillRect(0,0,W_,H_);

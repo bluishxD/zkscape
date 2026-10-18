@@ -184,10 +184,21 @@ function frame(w,h,gy){W_=w;H_=h;GY=gy;U=Math.min(h/800,Math.max(w/820,.5));cons
  if(V.take)V.tendril=V.smooth?1:V.tendril;V.idle+=dt;if(V.doorGo&&V.door<1)V.door=Math.min(1,V.door+dt/2.5);
  if(V.lay==='g'&&Math.abs(V.px-4520)<60&&V.seenDie&&V.tideHeard){V.mirT+=dt;if(V.mirT>1.5&&!V.mirror){V.mirror=1;note('The amber pulse arrives from the west and dies at the collar. The cyan tide arrives from the east and dies in the same place. They are answering each other. Neither can hear.');AM.sfx('correct')}}
  if(V.fade){V.fade.t+=dt*1.6;if(V.fade.t>=.5&&!V.fade.did){V.fade.did=1;V.lay=V.fade.lay;V.px=V.fade.px;V.py=V.fade.py;V.vx=V.vy=0;V.safeX=V.px;V.safeY=V.py}if(V.fade.t>=1)V.fade=null}
- if(K.e){K.e=0;if(V.dlg)advance();else if(V.stt==='play'&&!V.fade)act()}
- const rm=Z.filter(x=>V.px>=x).length-1;if(rm!==V.room&&V.lay==='g'){V.room=rm;V.rt=3}V.rt-=dt;V.mt-=dt;V.bad=Math.max(0,V.bad-dt);if(V.dlg&&V.dlg.c<V.dlg.L[V.dlg.i].length)V.dlg.c+=dt*46;
+ if(K.e){K.e=0;if(V.dlg)advance();else if(V.endWait){V.endWait=0;V.endGo&&V.endGo()}else if(V.stt==='play'&&!V.fade)act()}
+ const rm=Z.filter(x=>V.px>=x).length-1;if(rm!==V.room&&V.lay==='g'){V.room=rm;V.rt=3}V.rt-=dt;V.mt-=dt;if(V.endWait&&V.mt<1.2)V.mt=1.2;V.bad=Math.max(0,V.bad-dt);if(V.dlg&&V.dlg.c<V.dlg.L[V.dlg.i].length)V.dlg.c+=dt*46;
  if(V.fx){V.fx.t+=dt;if(V.fx.t>2.4)V.fx=null}
- if(V.door>=1&&V.px>DOOR&&!V.done){V.done=1;V.stt='done';spark(V.px,100,'#ffffff',30);AM.sfx('portal');note(EDU);const me=V;setTimeout(()=>{if(V!==me||!V.on)return;if(S.done.ironwood){fact('\u2713 ALREADY DISCOVERED');setTimeout(()=>{if(V===me)back()},2800)}else complete()},16000)}
+ if(V.door>=1&&V.px>DOOR&&!V.done){V.done=1;V.stt='done';spark(V.px,100,'#ffffff',30);AM.sfx('portal');const me=V;
+ // Two bugs lived in this one line. (1) vInit() respawns a player who already finished at px:7440 with
+ // door:1 and done:0, so this block fired - and replayed the whole EDU wall of text - on EVERY visit.
+ // (2) It then locked the player into a flat 16s wait whether or not they had finished reading.
+ // Now: an already-discovered visitor takes the short path, and a first-timer reads at their own pace
+ // and presses E / TAP to move on, with a 60s safety net if they never do.
+ const endGo=()=>{if(V!==me||!V.on)return;clearTimeout(V.endT);V.endT=0;
+  if(S.done.ironwood){fact('\u2713 ALREADY DISCOVERED');V.endT=setTimeout(()=>{if(V===me)back()},2800)}
+  else complete()};
+ V.endGo=endGo;
+ if(S.done.ironwood){fact('\u2713 ALREADY DISCOVERED');V.endT=setTimeout(()=>{if(V===me)back()},2800)}
+ else{note(EDU);V.endWait=1;V.mt=Math.max(V.mt,6);V.endT=setTimeout(endGo,60000)}}
  let d=130;V.near=null;if(!V.dlg&&V.stt==='play'&&!V.fade)IAS().forEach(o=>{const q=Math.abs(V.px-o.x);if(q<d){d=q;V.near=o}});
  const vw=w/U;if(!cine||reduce){V.cx+=((V.px-vw*.42+V.face*60)-V.cx)*(1-Math.exp(-5*dt))}V.cx=cl(V.cx,0,LW-vw);
  // The Answer no longer travels. The pan to the Foundry and back (ans 8 -> 22) used to leave the player at the dais
@@ -338,10 +349,10 @@ function drawHud(p){g2.textAlign='center';
  if(V.bad>0){g2.fillStyle='rgba(255,122,74,'+(V.bad*.25)+')';g2.fillRect(0,0,W_,H_)}
  if(V.fade){g2.fillStyle='rgba(0,0,0,'+Math.sin(Math.min(1,V.fade.t)*Math.PI)+')';g2.fillRect(0,0,W_,H_)}
  if(V.ans>=22&&V.ans<32){const i=Math.min(PLQ.length-1,Math.floor((V.ans-22)/1.7)),s=PLQ[i];g2.save();g2.globalAlpha=.95;g2.font=MONO(i===3?13:16);g2.textAlign='center';const ln=wrap(s,Math.min(W_-40,760)),bh=ln.length*24+24,by=H_*.32;rc(W_/2-Math.min(W_-40,760)/2-10,by,Math.min(W_-40,760)+20,bh,'#05060fe8');g2.fillStyle=i>=4?C.cy:'#ece8df';ln.forEach((l,k)=>g2.fillText(l,W_/2,by+26+k*24));g2.restore()}
- if(V.dlg){const d=V.dlg,im=d.img,ip=im&&im.width,mw=Math.min(W_-24,640),bx2=(W_-mw)/2,bh=Math.round(Math.max(110,H_*.18)),by2=H_-bh-(coarse?90:24),ix=ip?84:16;rc(bx2,by2,mw,bh,'#05060ff2');g2.strokeStyle=C.br;g2.lineWidth=2;g2.strokeRect(bx2,by2,mw,bh);
-  if(ip){g2.imageSmoothingEnabled=false;g2.drawImage(im,bx2+10,by2+10,64,64)}
-  g2.textAlign='left';g2.fillStyle=d.acc||C.br;g2.font=MONO(13);g2.fillText(d.who||'HOB',bx2+ix,by2+28);g2.fillStyle='#ece8df';g2.font=MONO(15);wrap(d.L[d.i].slice(0,Math.floor(d.c)),mw-(ip?100:32)).forEach((l,i)=>g2.fillText(l,bx2+ix,by2+54+i*22));g2.fillStyle='#8a867c';g2.font=MONO(11);g2.textAlign='right';g2.fillText(coarse?'TAP TO CONTINUE':'[E] / CLICK',bx2+mw-12,by2+bh-10)}
- else if(V.mt>0&&V.msg){g2.font=MONO(14);const mw=Math.min(W_-24,660),ln=wrap(V.msg,mw-28),bh=ln.length*22+22,bx2=(W_-mw)/2,by2=H_-bh-(coarse?90:22);g2.save();g2.globalAlpha=Math.min(1,V.mt*2);rc(bx2,by2,mw,bh,'#05060ff2');g2.strokeStyle=C.cy;g2.lineWidth=2;g2.strokeRect(bx2,by2,mw,bh);g2.fillStyle='#ece8df';g2.textAlign='left';ln.forEach((l,i)=>g2.fillText(l,bx2+14,by2+24+i*22));g2.restore()}}
+ if(V.dlg){const d=V.dlg,im=d.img,ip=im&&im.width;g2.font=MONO(15);const ln=wrap(d.L[d.i].slice(0,Math.floor(d.c)),W_-(ip?100:32));const B=dlgBox(W_,H_,coarse,ln,{img:ip});rc(B.bx,B.by,B.mw,B.bh,'#05060ff2');g2.strokeStyle=C.br;g2.lineWidth=2;g2.strokeRect(B.bx,B.by,B.mw,B.bh);
+  if(ip){g2.imageSmoothingEnabled=false;g2.drawImage(im,B.bx+10,B.by+10,64,64)}
+  g2.textAlign='left';g2.fillStyle=d.acc||C.br;g2.font=MONO(13);g2.fillText(d.who||'HOB',B.bx+B.ix,B.by+26);g2.fillStyle='#ece8df';g2.font=MONO(15);B.win.forEach((l,i)=>g2.fillText(l,B.bx+B.ix,B.by+B.head+i*B.lh));g2.fillStyle='#8a867c';g2.font=MONO(11);g2.textAlign='right';g2.fillText(coarse?(B.more?'TAP \u25BC MORE':'TAP TO CONTINUE'):'[E] / CLICK',B.bx+B.mw-12,B.by+B.bh-8)}
+ else if(V.mt>0&&V.msg){g2.font=MONO(14);const mw=Math.min(W_-24,660),ln=wrap(V.msg,mw-28),bh=ln.length*22+22,bx2=(W_-mw)/2,by2=H_-bh-(coarse?150:22);g2.save();g2.globalAlpha=Math.min(1,V.mt*2);rc(bx2,by2,mw,bh,'#05060ff2');g2.strokeStyle=C.cy;g2.lineWidth=2;g2.strokeRect(bx2,by2,mw,bh);g2.fillStyle='#ece8df';g2.textAlign='left';ln.forEach((l,i)=>g2.fillText(l,bx2+14,by2+24+i*22));g2.restore()}}
 
 // ======================= wiring into the shared engine =======================
 DEC.ironwood=function(w,h,gy,t,p){if(!isI()){OLD(w,h,gy,t,p);return}scene(w,h,gy,t,p)};

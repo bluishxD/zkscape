@@ -599,7 +599,7 @@ function drawHud(p){g2.textAlign='center';
  g2.font=MONO(11);g2.fillStyle=C.mu;g2.textAlign='center';
  if(!coarse&&V.stt==='play')g2.fillText('A / D WALK · SPACE JUMP · S DROP · E USE',W_/2,H_-14);
  if(V.mt>0&&V.msg){g2.font=MONO(13);const mw=Math.min(W_-24,680),ln=wrap(V.msg,mw-28),bh=ln.length*22+22;
-  const bx=(W_-mw)/2,by=H_-bh-(coarse?90:40);
+  const bx=(W_-mw)/2,by=H_-bh-(coarse?150:40);
   g2.save();g2.globalAlpha=Math.min(1,V.mt*2);P(bx,by,mw,bh,'#0a0d1df2');g2.strokeStyle=C.ok;g2.lineWidth=2;g2.strokeRect(bx,by,mw,bh);
   g2.fillStyle=C.pc;g2.textAlign='left';ln.forEach((l,i)=>g2.fillText(l,bx+14,by+24+i*22));g2.restore()}
  // the portal: rose light floods the screen, then the generator opens

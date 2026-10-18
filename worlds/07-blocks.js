@@ -198,9 +198,9 @@ function drawHud(p){g2.textAlign='center';if(Q.at>0&&Q.area){g2.globalAlpha=Math
  // the chain, as a strip: kept blocks light up, branches that were not continued stay dusty
  {const list=BK.filter(b=>b.st==='conf'||b.st==='stale');let x=12;g2.textAlign='left';list.forEach(b=>{rc(x,12,14,14,b.st==='conf'?IK.cy:'#3a3e52');x+=18});}
  if(Q.near&&Q.mt<=0){const o=Q.near,lab={npc:'[E] listen',blk:'[E] inspect',con:'[E] wake the engine',forg:'[E] look',ver:'[E] verify',scope:'[E] look east',pl:'[E] read'}[o.k];tx_(coarse?'\u25C9':lab,X(o.x),Y(o.y+(o.k==='blk'?150:140)),'#e8f6ff',MONO(12))}
- if(Q.msg&&Q.mt>0){const m=Q.msg,mw=Math.min(W_-24,660),bx=(W_-mw)/2;g2.font=MONO(14);const ln=wrap(m.s,mw-32),bh=54+ln.length*22,by=H_-bh-(coarse?100:22);g2.save();g2.globalAlpha=Math.min(1,Q.mt*2);rc(bx,by,mw,bh,'#05060ff2');g2.strokeStyle=m.c;g2.lineWidth=2;g2.strokeRect(bx,by,mw,bh);
-  g2.textAlign='left';g2.fillStyle=m.c;g2.font="700 "+Math.round(Math.max(18,22*U))+"px 'Abril Fatface',serif";g2.fillText(m.h,bx+16,by+32);g2.fillStyle='#ece8df';g2.font=MONO(14);ln.forEach((l,i)=>g2.fillText(l,bx+16,by+56+i*22));
-  if(Q.dlg){const more=Q.dlg.i<Q.dlg.L.length-1;g2.textAlign='right';g2.fillStyle=m.c;g2.font=MONO(11);g2.fillText(coarse?'\u25C9':(more?'[E] more \u203A':'\u2713'),bx+mw-16,by+32);g2.textAlign='left';g2.fillStyle=IK.dim;g2.fillText((Q.dlg.i+1)+'/'+Q.dlg.L.length,bx+mw-16,by+bh-10)}
+ if(Q.msg&&Q.mt>0){const m=Q.msg;g2.font=MONO(14);const ln=wrap(m.s,W_-32),B=dlgBox(W_,H_,coarse,ln,{max:660});g2.save();g2.globalAlpha=Math.min(1,Q.mt*2);rc(B.bx,B.by,B.mw,B.bh,'#05060ff2');g2.strokeStyle=m.c;g2.lineWidth=2;g2.strokeRect(B.bx,B.by,B.mw,B.bh);
+  g2.textAlign='left';g2.fillStyle=m.c;g2.font="700 "+Math.round(Math.max(18,22*U))+"px 'Abril Fatface',serif";g2.fillText(m.h,B.bx+16,B.by+30);g2.fillStyle='#ece8df';g2.font=MONO(14);B.win.forEach((l,i)=>g2.fillText(l,B.bx+16,B.by+54+i*B.lh));
+  if(Q.dlg){const more=Q.dlg.i<Q.dlg.L.length-1;g2.textAlign='right';g2.fillStyle=m.c;g2.font=MONO(11);g2.fillText(coarse?(B.more?'\u25BC MORE':'\u25C9'):(more?'[E] more \u203A':'\u2713'),B.bx+B.mw-16,B.by+30);g2.textAlign='left';g2.fillStyle=IK.dim;g2.fillText((Q.dlg.i+1)+'/'+Q.dlg.L.length,B.bx+B.mw-16,B.by+B.bh-8)}
   g2.restore()}}
 // ---------------- wiring into the shared engine ----------------
 DEC.blocks=function(w,h,gy,t,p){if(!isB())return;xFar(Q.cx,Y(0),t,xmix('#1a2347',p.pr,.25),xmix(IK.blue,p.ac,.3),600);scene(w,h,gy,t,p);bTerrace(t);xMid(Q.cx,Y(0),t,[IK.cy,IK.blue,p.pr],14)};

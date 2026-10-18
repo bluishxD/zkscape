@@ -546,12 +546,18 @@ function drawHud(p){g2.textAlign='left';
  g2.textAlign='right';g2.fillStyle=C.txt;g2.fillText('LEDGER '+fmt(SVn().bal)+' ZEC (SIM)',px0+w2-8,py0+17);g2.textAlign='center';
  if(V.near&&!V.ui)bubble((coarse?'TAP \u270B  ':'[E]  ')+V.near.l,X(V.near.x),Y(V.near.y||290),C.ok,320*U);
  if(V.rd&&V.rd.length&&!V.ui){const mw=Math.min(W_-40,560);g2.font=MONO(12);const lh=Math.round(Math.max(15,16*U));
-  const blocks=V.rd.map(q=>({r:q.r,ln:q.r.l.reduce((a,s)=>a.concat(wrap(s,mw-28)),[])})),n=blocks.reduce((s,b)=>s+b.ln.length+1,0),bh=lh*n+18+blocks.length*6,bx=W_/2-mw/2,by=Math.max(80,H_*.17);
+  const cap=capPanel(H_,coarse,lh,18);let blocks=V.rd.map(q=>({r:q.r,ln:q.r.l.reduce((a,s)=>a.concat(wrap(s,mw-28)),[])}));
+  let dropped=0,n=blocks.reduce((s,b)=>s+b.ln.length+1,0);
+  while(blocks.length>1&&n>cap.fit){n-=blocks[0].ln.length+1;blocks.shift();dropped++}   // keep the newest entries
+  if(blocks[0]&&blocks[0].ln.length>cap.fit-1){dropped+=blocks[0].ln.length-(cap.fit-1);blocks[0]={...blocks[0],ln:blocks[0].ln.slice(-(cap.fit-1))}}
+  n=blocks.reduce((s,b)=>s+b.ln.length+1,0);
+  const bh=lh*n+18+blocks.length*6,bx=W_/2-mw/2,by=Math.min(Math.max(64,H_*.17),cap.anchor-bh);
   P(bx,by,mw,bh,'#05070ee8');g2.strokeStyle=C.steel3;g2.lineWidth=2;g2.strokeRect(bx,by,mw,bh);g2.textAlign='left';let yy=by+lh;
+  if(dropped>0){g2.fillStyle=C.mu;g2.font=MONO(11);g2.fillText('\u25B2 '+dropped+' EARLIER LINES',bx+12,yy);yy+=lh;g2.font=MONO(12)}
   blocks.forEach(b=>{g2.fillStyle=b.r.c;g2.fillText(b.r.h+'   \u00B7   LENS: '+AU[V.eq].n,bx+12,yy);yy+=lh;g2.fillStyle=C.txt;b.ln.forEach(s=>{g2.fillText(s,bx+12,yy);yy+=lh});yy+=6});g2.textAlign='center'}
  if(V.bad>0){g2.fillStyle='rgba(255,106,100,'+V.bad*.18+')';g2.fillRect(0,0,W_,H_)}
  if(!coarse&&!V.ui){g2.font=MONO(11);g2.fillStyle=C.mu;g2.fillText('A / D WALK \u00B7 SPACE JUMP \u00B7 E USE \u00B7 Q CHANGE WHAT IS IN HAND \u00B7 R CARD',W_/2,H_-14)}
- if(V.mt>0&&V.msg&&!V.ui){g2.font=MONO(13);const mw=Math.min(W_-24,700),ln=wrap(V.msg,mw-28),bh=ln.length*22+22,bx=(W_-mw)/2,by=H_-bh-(coarse?90:38);
+ if(V.mt>0&&V.msg&&!V.ui){g2.font=MONO(13);const mw=Math.min(W_-24,700),ln=wrap(V.msg,mw-28),bh=ln.length*22+22,bx=(W_-mw)/2,by=H_-bh-(coarse?150:38);
   g2.save();g2.globalAlpha=Math.min(1,V.mt*2);P(bx,by,mw,bh,'#05070ef2');g2.strokeStyle=C.ok;g2.lineWidth=2;g2.strokeRect(bx,by,mw,bh);g2.fillStyle=C.txt;g2.textAlign='left';ln.forEach((l,i)=>g2.fillText(l,bx+14,by+24+i*22));g2.restore()}
  uiDraw();g2.textAlign='center'}
 

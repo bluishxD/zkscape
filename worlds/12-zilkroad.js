@@ -422,17 +422,29 @@ function drawPlayer(p){const eq=SVz().eq,ph=PH*U,sx=X(V.px),sy=Y(V.py),idle=V.gr
  else if(pim&&pim.complete&&pim.width){const aw=ph*pim.width/pim.height;g2.drawImage(pim,-aw/2,-ph,aw,ph)}
  g2.restore()}
 function uiDraw(){const u=V.ui;if(!u)return;const body=typeof u.b==='function'?u.b():u.b;
- const arts=u.art?(Array.isArray(u.art)?u.art:[u.art]):[],two=arts.length>1,asz=two?Math.round(Math.max(96,110*U)):Math.round(Math.max(120,176*U)),acol=arts.length?asz+(two?asz+14:0)+22:0;
- const mw=Math.min(W_-30,arts.length?(two?980:860):720),pad=18;g2.font=MONO(13);const fs=Math.round(Math.max(12,13*U)),lh=fs*1.45,ln=wrap(body,mw-pad*2-acol);
- const oh=Math.round(Math.max(30,32*U)),textH=lh*ln.length+(u.t?lh+6:0),bh=pad*2+Math.max(textH,arts.length?asz+14:0)+u.o.length*oh+8,bx=(W_-mw)/2,by=Math.max(64,(H_-bh)/2-8);
- g2.save();P(bx,by,mw,bh,'#08031af4');g2.strokeStyle=u.c||C.pc;g2.lineWidth=2;g2.strokeRect(bx,by,mw,bh);P(bx,by,mw,3,u.c||C.pc);g2.textAlign='left';
- arts.forEach((id,i)=>{const ax=bx+pad+i*(asz+14);P(ax-3,by+pad+(u.t?lh+6:0)-3,asz+6,asz+6,u.c||C.pc);art(id,ax,by+pad+(u.t?lh+6:0),asz)});
+ const arts=u.art?(Array.isArray(u.art)?u.art:[u.art]):[],two=arts.length>1,asz0=two?Math.round(Math.max(96,110*U)):Math.round(Math.max(120,176*U));
+  const mw0=Math.min(W_-30,arts.length?(two?980:860):720),pad=18;g2.font=MONO(13);const fs=Math.round(Math.max(12,13*U)),lh=fs*1.45;
+  const cap=capPanel(H_,coarse,lh,pad*2+16),availH=cap.anchor-8,oh=Math.round(Math.max(30,32*U));
+  // Two artworks side by side leave no readable column on a 390px phone, and on a short landscape
+  // screen the artwork and the option list together were taller than the panel had room for - the
+  // panel ran off the top of the screen. Give up the artwork first, then its size; never a choice.
+  let nArt=arts.length,asz=asz0;
+  const colW=()=>nArt===0?0:(nArt===1?asz+22:asz*2+36);
+  while(nArt>0&&mw0-pad*2-colW()<Math.max(140,(mw0-pad*2)*.34))nArt--;
+  const rowH=()=>pad*2+Math.max(lh,nArt?asz+14:0)+u.o.length*oh+8;
+  while(nArt&&asz>64&&rowH()>availH)asz-=8;
+  while(nArt&&rowH()>availH)nArt--;
+  const acol=colW(),lnAll=wrap(body,mw0-pad*2-acol),fitTxt=Math.max(1,Math.floor((availH-rowH()-(u.t?lh+6:0))/lh));
+  const ln=lnAll.slice(Math.max(0,lnAll.length-fitTxt)),textH=lh*ln.length+(u.t?lh+6:0);
+  const bh=Math.min(availH,pad*2+Math.max(textH,nArt?asz+14:0)+u.o.length*oh+8),bx=(W_-mw0)/2,by=Math.max(6,Math.min(Math.max(64,(H_-bh)/2-8),cap.anchor-bh));
+ g2.save();P(bx,by,mw0,bh,'#08031af4');g2.strokeStyle=u.c||C.pc;g2.lineWidth=2;g2.strokeRect(bx,by,mw0,bh);P(bx,by,mw0,3,u.c||C.pc);g2.textAlign='left';
+ arts.slice(0,nArt).forEach((id,i)=>{const ax=bx+pad+i*(asz+14);P(ax-3,by+pad+(u.t?lh+6:0)-3,asz+6,asz+6,u.c||C.pc);art(id,ax,by+pad+(u.t?lh+6:0),asz)});
  let y=by+pad;const tx0=bx+pad+acol;
  if(u.t){g2.fillStyle=u.c||C.pc;g2.font=MONO(12);g2.fillText(u.t,bx+pad,y+fs);y+=lh+6}
  g2.font=MONO(13);g2.fillStyle=C.pc;ln.forEach(l=>{g2.fillText(l,tx0,y+fs);y+=lh});
- y=by+pad+Math.max(textH,arts.length?asz+14:0)+8;V.uiR=[];
- u.o.forEach((op,i)=>{const sel=i===u.sel;P(bx+pad-6,y,mw-pad*2+12,oh-4,sel?'#2a1456':'#14072e');if(sel)P(bx+pad-6,y,4,oh-4,u.c||C.pc);
-  g2.fillStyle=sel?C.pc:C.mu;g2.font=MONO(13);g2.fillText((sel?'\u25B6 ':'   ')+op.l,bx+pad+4,y+oh*.62);V.uiR.push({x:bx+pad-6,y,w:mw-pad*2+12,h:oh-4,i});y+=oh});
+ y=by+pad+Math.max(textH,nArt?asz+14:0)+8;V.uiR=[];
+ u.o.forEach((op,i)=>{const sel=i===u.sel;P(bx+pad-6,y,mw0-pad*2+12,oh-4,sel?'#2a1456':'#14072e');if(sel)P(bx+pad-6,y,4,oh-4,u.c||C.pc);
+  g2.fillStyle=sel?C.pc:C.mu;g2.font=MONO(13);g2.fillText((sel?'\u25B6 ':'   ')+op.l,bx+pad+4,y+oh*.62);V.uiR.push({x:bx+pad-6,y,w:mw0-pad*2+12,h:oh-4,i});y+=oh});
  g2.restore()}
 function goal(){const z=SVz(),f=F();
  if(!f.met)return 'TALK TO PIP';if(!Object.keys(z.seen).some(k=>ITEMS.some(i=>i.id===k)))return 'LOOK AT A PORTRAIT';
@@ -447,7 +459,7 @@ function drawHud(p){const z=SVz(),px0=18,py0=coarse?122:18,w2=300;g2.textAlign='
  if(V.bad>0){g2.fillStyle='rgba(255,106,100,'+V.bad*.18+')';g2.fillRect(0,0,W_,H_)}
  if(V.flash>0){g2.fillStyle='rgba(255,233,246,'+V.flash*.3+')';g2.fillRect(0,0,W_,H_)}
  if(!coarse&&!V.ui){g2.font=MONO(11);g2.fillStyle=C.mu;g2.fillText('A / D WALK \u00B7 SPACE JUMP \u00B7 E USE \u00B7 C YOUR COLLECTION',W_/2,H_-14)}
- if(V.mt>0&&V.msg&&!V.ui){g2.font=MONO(13);const mw=Math.min(W_-24,700),ln=wrap(V.msg,mw-28),bh=ln.length*22+22,bx=(W_-mw)/2,by=H_-bh-(coarse?90:38);
+ if(V.mt>0&&V.msg&&!V.ui){g2.font=MONO(13);const mw=Math.min(W_-24,700),ln=wrap(V.msg,mw-28),bh=ln.length*22+22,bx=(W_-mw)/2,by=H_-bh-(coarse?150:38);
   g2.save();g2.globalAlpha=Math.min(1,V.mt*2);P(bx,by,mw,bh,'#08031af2');g2.strokeStyle=C.ok;g2.lineWidth=2;g2.strokeRect(bx,by,mw,bh);g2.fillStyle=C.pc;g2.textAlign='left';ln.forEach((l,i)=>g2.fillText(l,bx+14,by+24+i*22));g2.restore()}
  uiDraw();g2.textAlign='center'}
 

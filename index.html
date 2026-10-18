@@ -118,7 +118,7 @@ body.land canvas{max-width:780px;border-radius:16px;transform:rotate(-.5deg)}
 #zk .po.open{border-color:var(--a);color:#fff;box-shadow:0 0 22px var(--a);animation:pl 2s infinite}
 #zk .po.done{border-color:#5dd68a;color:#5dd68a;box-shadow:0 0 14px #5dd68a66}
 @keyframes pl{50%{box-shadow:0 0 6px var(--a)}}
-#zk .panel{position:absolute;inset:0;background:#02030ae8;display:none;align-items:center;justify-content:center;z-index:5}
+#zk .panel{position:absolute;inset:0;background:#02030ae8;display:none;align-items:center;justify-content:center;z-index:20}
 #zk .panel.on{display:flex}
 #zk .card{width:min(1080px,94vw);height:min(560px,88vh);display:grid;grid-template-columns:34% 1fr;border:1px solid var(--a);border-radius:16px;background:#070916;overflow:hidden;box-shadow:0 0 80px -20px var(--a)}
 #zk .card .l{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;border-right:1px solid #2b2a26;background:radial-gradient(circle at 50% 60%,color-mix(in srgb,var(--a) 25%,#070916),#070916 70%)}
@@ -136,7 +136,7 @@ body.land canvas{max-width:780px;border-radius:16px;transform:rotate(-.5deg)}
 html.zpro-on #zhud,html.zpro-on #zback{display:none!important}
 #zback{position:fixed;right:18px;bottom:18px;z-index:60;display:none;background:#f4b728;color:#000;border:0;border-radius:99px;padding:12px 22px;font:600 16px 'Bricolage Grotesque',sans-serif;cursor:pointer;box-shadow:0 8px 30px #000a}
 #zk canvas#zw{position:absolute;inset:0;width:100%;height:100%;max-width:none;border:0;border-radius:0;transform:none;box-shadow:none}
-#zk .confirm{position:absolute;left:50%;bottom:8vh;transform:translateX(-50%);z-index:6;display:none;width:min(520px,90vw);background:#070916f2;border:1px solid var(--a);border-radius:14px;padding:22px;text-align:center;box-shadow:0 0 60px -10px var(--a)}
+#zk .confirm{position:absolute;left:50%;bottom:8vh;transform:translateX(-50%);z-index:20;display:none;width:min(520px,90vw);background:#070916f2;border:1px solid var(--a);border-radius:14px;padding:22px;text-align:center;box-shadow:0 0 60px -10px var(--a)}
 #zk .confirm.on{display:block}#zk .po.bonus{border-style:dashed}#zk canvas#cc{transform:none!important;max-width:none!important;box-shadow:none!important}
 #zk .plq{background:linear-gradient(180deg,#0a0d1ecc,#05060fee);border:1px solid var(--a);border-left:6px solid var(--a);padding:16px 24px;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));box-shadow:0 0 40px -10px var(--a);animation:fi .5s}
 #zk .bigt{font:400 clamp(24px,2.8vw,42px)/1.2 'Abril Fatface',serif;color:#fff}
@@ -253,6 +253,15 @@ html.zpro-on #zhud,html.zpro-on #zback{display:none!important}
    run HUD (#zhud is top-left, bottom ~177px) and is pointer-events:none apart from its own buttons,
    so it can never swallow a tap meant for the game. "GOT IT" is remembered, so it shows at most once. */
 #zrot{position:absolute;left:50%;top:184px;transform:translateX(-50%);z-index:250;display:none;pointer-events:none;width:min(360px,92vw)}
+/* On a phone the confirm card sat at bottom:8vh, which put the on-screen D-pad and the volume
+   button (z-index 7 and 12) on top of its ENTER/CANCEL buttons. Lift it above them and raise the
+   card so it clears the control bar the same way the dialogue panels do. */
+@media (pointer:coarse),(max-width:800px){#zk .confirm{bottom:calc(3vh + 150px);max-height:62vh;overflow-y:auto}}
+/* The world title (#wt) carries an inline top:8vh, which put it straight underneath the run HUD -
+   about 5,850px2 of overlap on a phone, where the HUD wraps to two rows and reaches y=121. Clear it.
+   !important is needed only because the position is an inline style on the element. */
+@media (max-width:700px){#wt{top:132px!important}}
+@media (min-width:701px){#wt{top:74px!important}}
 #zrot.on{display:block}
 #zrot .zin{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:11px 14px;background:#0a0d1ef2;border:1px solid var(--a);border-radius:4px 14px 4px 14px;box-shadow:0 0 34px -12px var(--a)}
 #zrot .ph{width:26px;height:26px;fill:none;stroke:var(--a);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
@@ -702,6 +711,35 @@ const maybeAsk=()=>{if(typeof DR!=='undefined'&&DR)return;if(!S.nameAsked&&!P_.c
 return{get,has,clean,set,text,width,tag,hook,worldTag,rec,ask,maybeAsk,kScale,accent,onChange:f=>subs.push(f),DEF,MAX}})();
 
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+// ===== SHARED DIALOGUE PANEL (every world draws NPC dialogue through this) =====
+// Before: each world sized its box with a FIXED height (max(120, H*.2) - about 133px on a 390x664
+// phone) and then drew EVERY wrapped line from a fixed origin. Only ~3 lines fit, so the long ZEC
+// explainer dialogue spilled out of the box, across the on-screen control bar and down the screen.
+// Now the box is sized FROM the text: it grows to fit, is capped, and shows a scrolling window of the
+// newest lines so nothing is ever lost. On a phone it is a compact strip anchored just above the
+// control bar; the NPC portrait sits top-left exactly as Origin does.
+function dlgBox(W,H,coarse,lines,o){
+ o=o||{};
+ const img=!!o.img;
+ const mw=coarse?Math.min(W-20,Math.round(W*.94)):Math.min(W-24,o.max||640);
+ const ix=img?84:16, lh=coarse?19:22, head=coarse?40:46, foot=coarse?17:20;
+ const cap=coarse?Math.round(H*.36):Math.round(H*.52);   // never more than this much of the screen
+ const fit=Math.max(1,Math.floor((cap-head-foot)/lh));
+ const win=lines.slice(Math.max(0,lines.length-fit));     // newest lines, so the tail is always readable
+ const bh=Math.min(cap,head+win.length*lh+foot);
+ // coarse: 150px, not 90. The on-screen control bar occupies the bottom ~88px and the volume button
+ // sits just above it at ~144px, so anchoring at 90 put the panel's bottom edge straight through the
+ // volume button and clipped the NPC portrait in the corner.
+ return {bx:Math.round((W-mw)/2),by:H-bh-(coarse?150:24),mw,bh,ix,lh,head,fit,win,more:lines.length>win.length};
+}
+// Shared cap for the Noir reading panel and the Zilkroad art panel. Both sized their box straight
+// from the content, so a long passage grew past the bottom of the screen. This keeps the newest
+// content, clamps the height, and returns an anchor that clears the on-screen controls.
+function capPanel(H,coarse,lh,headPad){
+ const maxH=Math.round(H*(coarse?.5:.62));
+ const fit=Math.max(1,Math.floor((maxH-(headPad||18))/lh));
+ return {maxH,fit,anchor:H-(coarse?150:28)};
+}
 // ===== WORLDS =====  (steps = click-through lessons; edit freely)
 const W=[],GIANT={},LM={};let HUBX=null;
 // ===== QUIZ =====
@@ -1067,12 +1105,24 @@ const SUPABASE_URL='https://unckcqnvfbcpspawbbhg.supabase.co',SUPABASE_ANON_KEY=
 // ---------- AudioManager (files in audio/music + audio/sfx are optional; synth fallback otherwise) ----------
 const AM=(()=>{
 const K='zkscape.audio.v2';let PF={m:.8,mu:.7,sf:.88,mo:1,so:1};try{Object.assign(PF,JSON.parse(localStorage.getItem(K)||'{}'))}catch(e){}
-let C,MG,MB,SB,HEAD,cur='',want='',aud=null,dr=null,ready=0,nb=null,last={};const probe={};
+let C,MG,MB,SB,HEAD,CP,cur='',want='',aud=null,dr=null,ready=0,nb=null,last={};const probe={};
+// Schedule a little way into the future rather than at exactly currentTime. If the main thread
+ // stalls (which is when the player hears the problem), currentTime has already moved on by the time
+ // the audio thread renders the event, so an envelope anchored at "now" gets its attack clipped or
+ // its release truncated - that is the harsh, abrupt onset. 35ms of headroom makes it immune.
+ const LOOK=0.035;
 const F={zk:'zkscape-theme',origin:'origin',shielded:'shielded-valley',proof:'proof-temple',keys:'key-library',orchard:'orchard',ironwood:'ironwood',blocks:'observatory',machine:'zcash-machine',canvas:'canvas',archive:'archive',noir:'noir',zilkroad:'zilkroad'};
 const M={zk:[110,[1,1.5,2,2.25],900,'sine'],origin:[98,[1,1.19,1.5,2],600,'triangle'],shielded:[130.8,[1,1.5,2,3],1100,'sine'],proof:[123.5,[1,1.33,1.78,2.67],1400,'triangle'],keys:[87.3,[1,1.2,1.5,1.8],500,'sine'],orchard:[146.8,[1,1.25,1.5,2],1300,'sine'],ironwood:[65.4,[1,1.5,1.41,2],450,'sawtooth'],blocks:[110,[1,1.5,2,3],1500,'sine'],machine:[82.4,[1,1.5,2,2.97],800,'square'],canvas:[164.8,[1,1.25,1.5,2],1600,'triangle'],archive:[98,[1,1.19,1.41,2],700,'triangle'],noir:[73.4,[1,1.19,1.5,1.78],550,'sawtooth'],zilkroad:[196,[1,1.25,1.5,2],1800,'square']};
 const sv=()=>{try{localStorage.setItem(K,JSON.stringify(PF))}catch(e){}},vol=()=>PF.m*PF.mu;
 function lv(){if(!C)return;const t=C.currentTime;MG.gain.setTargetAtTime(PF.m,t,.05);MB.gain.setTargetAtTime(PF.mo?PF.mu:0,t,.15);SB.gain.setTargetAtTime(PF.so?PF.sf:0,t,.05);if(aud)aud.volume=PF.mo?vol():0;sv()}
-function init(){if(ready)return;try{document.documentElement.classList.add('zlock')}catch(e){}try{const AC=window.AudioContext||window.webkitAudioContext;C=new AC();MG=C.createGain();HEAD=C.createGain();HEAD.gain.value=1.6;MB=C.createGain();SB=C.createGain();MB.connect(MG);SB.connect(MG);MG.connect(HEAD);HEAD.connect(C.destination);ready=1;lv();C.resume&&C.resume();
+function init(){if(ready)return;try{document.documentElement.classList.add('zlock')}catch(e){}try{const AC=window.AudioContext||window.webkitAudioContext;C=new AC();MG=C.createGain();HEAD=C.createGain();HEAD.gain.value=1.2;MB=C.createGain();SB=C.createGain();
+  // A limiter on the master bus. A single sfx already peaked above 1.0 through the old 1.6x HEAD
+  // gain, and when the frame rate dips several events bunch up and stack - which clipped hard and
+  // sounded harsh. The compressor tames peaks instead of letting them distort; 1.6 -> 1.2 is about
+  // -2.5dB of nominal gain, but clean peaks now read louder than the distortion they replace.
+  CP=C.createDynamicsCompressor();CP.threshold.value=-14;CP.knee.value=22;CP.ratio.value=5;
+  CP.attack.value=0.004;CP.release.value=0.18;
+  MB.connect(MG);SB.connect(MG);MG.connect(CP);CP.connect(HEAD);HEAD.connect(C.destination);ready=1;lv();C.resume&&C.resume();
  ['click','hover','portal','enter-world','interaction','correct','incorrect','collectible','world-complete','core-activate','card-reveal','leaderboard'].forEach(n=>{try{const a=new Audio();a.preload='auto';a.oncanplaythrough=()=>{probe[n]=a};a.onerror=()=>{probe[n]=0};a.src='audio/sfx/'+n+'.wav'}catch(e){}});
  if(want)music(want,1)}catch(e){ready=0}}
 function fade(a,to,s,done){const f=a.volume,t0=performance.now();(function st(){const k=Math.min(1,(performance.now()-t0)/(s*1000));try{a.volume=Math.max(0,Math.min(1,f+(to-f)*k))}catch(e){}if(k<1)setTimeout(st,50);else done&&done()})()}
@@ -1084,9 +1134,9 @@ function drone(n){if(!ready||dr||!PF.mo)return;if(window.ZKMUS){try{dr=window.ZK
 function music(n,force){want=n;if(!ready||(n===cur&&!force)||!F[n])return;cur=n;stopCur(1.6);if(!PF.mo)return;let ok=0;
  try{const a=new Audio('audio/music/'+F[n]+'.mp3');a.loop=true;a.volume=0;aud=a;a.onerror=()=>{if(aud===a&&cur===n){aud=null;drone(n)}};
   a.play().then(()=>{ok=1;if(aud===a)fade(a,PF.mo?vol():0,1.6)}).catch(()=>{if(aud===a&&!ok){aud=null;drone(n)}})}catch(e){drone(n)}}
-function tone(f,d,ty,v,sl,dl){if(!ready||!PF.so)return;try{const t=C.currentTime+(dl||0),o=C.createOscillator(),g=C.createGain();o.type=ty||'sine';o.frequency.setValueAtTime(f,t);if(sl)o.frequency.exponentialRampToValueAtTime(Math.max(20,sl),t+d);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(SB);o.start(t);o.stop(t+d+.05);o.onended=()=>g.disconnect()}catch(e){}}
+function tone(f,d,ty,v,sl,dl){if(!ready||!PF.so)return;try{const t=C.currentTime+LOOK+(dl||0),o=C.createOscillator(),g=C.createGain();o.type=ty||'sine';o.frequency.setValueAtTime(f,t);if(sl)o.frequency.exponentialRampToValueAtTime(Math.max(20,sl),t+d);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(SB);o.start(t);o.stop(t+d+.05);o.onended=()=>g.disconnect()}catch(e){}}
 function noise(d,f0,f1,v,dl){if(!ready||!PF.so)return;try{if(!nb){nb=C.createBuffer(1,C.sampleRate*2,C.sampleRate);const x=nb.getChannelData(0);for(let i=0;i<x.length;i++)x[i]=Math.random()*2-1}
- const t=C.currentTime+(dl||0),s=C.createBufferSource(),b=C.createBiquadFilter(),g=C.createGain();s.buffer=nb;b.type='bandpass';b.frequency.setValueAtTime(f0,t);b.frequency.exponentialRampToValueAtTime(f1,t+d);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+d*.3);g.gain.exponentialRampToValueAtTime(.0001,t+d);s.connect(b);b.connect(g);g.connect(SB);s.start(t,0,d);s.onended=()=>{g.disconnect();b.disconnect()}}catch(e){}}
+ const t=C.currentTime+LOOK+(dl||0),s=C.createBufferSource(),b=C.createBiquadFilter(),g=C.createGain();s.buffer=nb;b.type='bandpass';b.frequency.setValueAtTime(f0,t);b.frequency.exponentialRampToValueAtTime(f1,t+d);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+d*.3);g.gain.exponentialRampToValueAtTime(.0001,t+d);s.connect(b);b.connect(g);g.connect(SB);s.start(t,0,d);s.onended=()=>{g.disconnect();b.disconnect()}}catch(e){}}
 const R={click:()=>tone(1100,.05,'square',.025,700),hover:()=>tone(1800,.03,'sine',.01),portal:()=>{noise(1.1,300,3000,.12);tone(220,1,'sine',.07,880)},
 'enter-world':()=>{tone(60,1.4,'sine',.2,35);noise(1.3,2500,200,.1)},interaction:()=>tone(520,.14,'triangle',.07,780),
 correct:()=>{tone(660,.12,'sine',.07);tone(990,.22,'sine',.06,0,.09)},incorrect:()=>tone(200,.3,'sine',.06,140),
@@ -1147,7 +1197,8 @@ document.addEventListener('visibilitychange',()=>{if(!C)return;try{if(document.h
   const portrait=innerHeight>innerWidth*1.02;      // ignore near-square layouts
   // hub + world only: the landing screen is a vertical stack that fits portrait perfectly well, and
   // there the hint would sit right on top of the LOOK UP YOUR zkSNARK button
-  const on=!!(touch&&portrait&&!S.rotOk&&!standalone()&&onScreen());
+  // the ENTER WORLD? card owns the centre of the screen - the hint sat on top of it and hid it
+   const on=!!(touch&&portrait&&!S.rotOk&&!standalone()&&onScreen()&&!$z('zc').classList.contains('on'));
   el.classList.toggle('on',on);
   if(!on)hint.textContent='';                     // clear once they rotate or dismiss
  };
@@ -1155,6 +1206,7 @@ document.addEventListener('visibilitychange',()=>{if(!C)return;try{if(document.h
  const mo=new MutationObserver(check);
  mo.observe($z('s-hub'),{attributes:true,attributeFilter:['class']});
  mo.observe($z('s-world'),{attributes:true,attributeFilter:['class']});
+ mo.observe($z('zc'),{attributes:true,attributeFilter:['class']});   // and again for the confirm card
  addEventListener('resize',check);
  addEventListener('orientationchange',()=>setTimeout(check,150));
  document.addEventListener('fullscreenchange',check);

@@ -297,12 +297,12 @@ function drawJeff(p,t){const sx=X(JF.x);if(sx<-120||sx>W_+120||!NPC_IMG||!NPC_IM
  if(V.jeffNear&&!V.dlg)tx_(coarse?'💬 TALK':'[E] TALK',sx,sy-h-34,'#e8f6ff',MONO(12))}
 // dialogue box: same look and typing rhythm as Origin
 function drawDlg(){
- if(!V.dlg)return;const d=V.dlg,mw=Math.min(W_-24,640),bx=(W_-mw)/2,bh=Math.round(Math.max(120,H_*.2)),by=H_-bh-(coarse?90:24);
- rc(bx,by,mw,bh,'#05060ff2');g2.strokeStyle='#4ee3f0';g2.lineWidth=2;g2.strokeRect(bx,by,mw,bh);
- if(NPC_IMG&&NPC_IMG.width){g2.imageSmoothingEnabled=false;g2.drawImage(NPC_IMG,bx+10,by+10,64,64)}
- g2.textAlign='left';g2.fillStyle=NPC_PAL[0];g2.font=MONO(13);g2.fillText('Jeff',bx+84,by+28);
- g2.fillStyle='#ece8df';g2.font=MONO(15);wrap(d.L[d.i][0].slice(0,Math.floor(d.c)),mw-100).forEach((l,i)=>g2.fillText(l,bx+84,by+54+i*22));
- g2.fillStyle='#8a867c';g2.font=MONO(11);g2.textAlign='right';g2.fillText(coarse?'TAP TO CONTINUE':'[E] / CLICK',bx+mw-12,by+bh-10)}
+ if(!V.dlg)return;const d=V.dlg,npc=NPC_IMG&&NPC_IMG.width;g2.font=MONO(15);const ln=wrap(d.L[d.i][0].slice(0,Math.floor(d.c)),W_-(npc?100:16));const B=dlgBox(W_,H_,coarse,ln,{img:npc});
+ rc(B.bx,B.by,B.mw,B.bh,'#05060ff2');g2.strokeStyle='#4ee3f0';g2.lineWidth=2;g2.strokeRect(B.bx,B.by,B.mw,B.bh);
+ if(npc){g2.imageSmoothingEnabled=false;g2.drawImage(NPC_IMG,B.bx+10,B.by+10,64,64)}
+ g2.textAlign='left';g2.fillStyle=NPC_PAL[0];g2.font=MONO(13);g2.fillText('Jeff',B.bx+B.ix,B.by+26);
+ g2.fillStyle='#ece8df';g2.font=MONO(15);B.win.forEach((l,i)=>g2.fillText(l,B.bx+B.ix,B.by+B.head+i*B.lh));
+ g2.fillStyle='#8a867c';g2.font=MONO(11);g2.textAlign='right';g2.fillText(coarse?(B.more?'TAP \u25BC MORE':'TAP TO CONTINUE'):'[E] / CLICK',B.bx+B.mw-12,B.by+B.bh-8)}
 function updateWarden(dt){const e=V.en,dx=V.px-e.x,adx=Math.abs(dx);e.t+=dt;e.cool-=dt;e.ph+=dt*(e.st==='chase'?6:e.st==='notice'?0:2.2);
  if(e.st==='dissolve'){e.lock=Math.max(0,e.lock-dt);if(Math.random()<.5)V.vp.push({x:e.x+(Math.random()-.5)*40,y:e.y+(Math.random()-.5)*40,vx:0,vy:30,l:.6,c:'#ffb347',s:4,g:0});return}
  e.lock+=((e.st==='chase'||e.st==='notice'?1-V.z:0)-e.lock)*Math.min(1,dt*3);                      // tracking strength: strong when exposed, fading as you cross into the shield
