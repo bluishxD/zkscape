@@ -732,6 +732,15 @@ function dlgBox(W,H,coarse,lines,o){
  // volume button and clipped the NPC portrait in the corner.
  return {bx:Math.round((W-mw)/2),by:H-bh-(coarse?150:24),mw,bh,ix,lh,head,fit,win,more:lines.length>win.length};
 }
+// Available text width inside a dlgBox dialogue box. Matches dlgBox's mw/ix computation so
+// wrap() breaks lines at the actual box width instead of the full screen width - on
+// laptops/desktops W_-16 (~1350px) was far wider than the 640px box, so NPC text ran off the
+// right edge of the dialogue panel. On phones W_-16 ~= box width so it was hidden there.
+function dlgTxtW(W,coarse,img,maxW){
+ const mw=coarse?Math.min(W-20,Math.round(W*.94)):Math.min(W-24,maxW||640);
+ return mw-(img?84:16)-12;
+}
+
 // Shared cap for the Noir reading panel and the Zilkroad art panel. Both sized their box straight
 // from the content, so a long passage grew past the bottom of the screen. This keeps the newest
 // content, clamps the height, and returns an anchor that clears the on-screen controls.
@@ -1245,6 +1254,11 @@ Z.addEventListener('keydown',()=>AM.init(),true);
 Z.addEventListener('mouseover',e=>{const t=e.target.closest&&e.target.closest('.po:not(:disabled),.btn,.opts button');if(t&&t!==lastH){lastH=t;AM.sfx('hover')}});
 
 // ---------- explorer identity + stats (server recomputes the same formulas) ----------
+// run.wrong accumulates att-1, i.e. the number of EXTRA attempts, not the number of questions
+// missed. Those differ the moment a player misses the same question twice - which the order and
+// match questions allow, because they re-enable their buttons. submit_run derives the wrong count
+// as cnt-f (questions not answered first try) and rejects the whole run as 'inconsistent run'
+// when the two disagree. Derive it the same way here so the run survives validation.
 function stats(){const R=S.run||{n:5,first:Math.max(0,Math.min(5,S.score|0)),wrong:(S.stats&&S.stats.i)|0,hints:0,answers:[]},n=R.n,w=nd(),b=bonus(),f=Math.max(0,Math.min(n,R.first|0)),i=Math.max(0,Math.min(200,n-f)),h=Math.max(0,Math.min(50,R.hints|0)),B=breakdown();
  return {first_try:f,correct_answers:n,incorrect_answers:i,questions_answered:n+i,worlds_completed:w,bonus_worlds_completed:b,artifacts_collected:w+b,hints_used:h,accuracy:Math.round(n*1000/(n+i))/10,score:B.totalScore,elapsed_seconds:B.elapsed,canvas_completed:!!S.done.canvas,breakdown:B,completion_percentage:Math.round((w+b)*100/12),answers:(R.answers||[]).map(x=>({id:x.id,ok:!!x.ok,att:x.att|0}))}}
 function ident(){const s=stats(),sc=s.score,a=s.accuracy,rank=sc>=13500?'ARCHITECT':sc>=12000?'GUARDIAN':sc>=10500?'PATHFINDER':sc>=8500?'EXPLORER':'ROOKIE',cat={};
@@ -1340,6 +1354,10 @@ var ZPEND=null;
 const fmtN=n=>isFinite(n)?Math.round(n).toLocaleString('en-US'):'0';
 const fmtT=s=>{s=Number(s);if(!isFinite(s)||s<=0)return'--:--';s=Math.floor(s);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
 function elapsedNow(){if(S.tEnd>0)return S.tEnd;if(!S.t0||S.done.archive)return null;const x=Math.floor(((S.tz||Date.now())-S.t0)/1000);return isFinite(x)?Math.max(0,x):null}
+// wr must be n-f (questions not answered first try), not R.wrong (extra attempts) - see the note
+// above stats(). Accuracy feeds accuracyBonus, so if this disagreed with the server the submitted
+// score would not match what submit_run recomputes, and the run would be rejected as
+// 'inconsistent score' even after the counters were fixed.
 function breakdown(){const R=S.run,A=(R&&R.answers)||[],n=A.length,w=nd(),b=bonus(),f=A.filter(x=>x.ok).length,wr=Math.max(0,Math.min(200,n-f)),h=R?Math.max(0,Math.min(50,R.hints|0)):0,fin=!!S.done.archive,el=elapsedNow();
  let st=0,pv=false;A.forEach(x=>{if(x.ok){if(pv)st+=50;pv=true}else pv=false});
  const acc=n?Math.round(n*1000/(n+wr))/10:0;
