@@ -721,7 +721,7 @@ const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 function dlgBox(W,H,coarse,lines,o){
  o=o||{};
  const img=!!o.img;
- const mw=coarse?Math.min(W-20,Math.round(W*.94)):Math.min(W-24,o.max||640);
+ const mw=Math.min(W-24,o.max||640);   // capped at maxW (640) on every screen; coarse/wide screens no longer overflow
  const ix=img?84:16, lh=coarse?19:22, head=coarse?40:46, foot=coarse?17:20;
  const cap=coarse?Math.round(H*.36):Math.round(H*.52);   // never more than this much of the screen
  const fit=Math.max(1,Math.floor((cap-head-foot)/lh));
@@ -737,7 +737,7 @@ function dlgBox(W,H,coarse,lines,o){
 // laptops/desktops W_-16 (~1350px) was far wider than the 640px box, so NPC text ran off the
 // right edge of the dialogue panel. On phones W_-16 ~= box width so it was hidden there.
 function dlgTxtW(W,coarse,img,maxW){
- const mw=coarse?Math.min(W-20,Math.round(W*.94)):Math.min(W-24,maxW||640);
+ const mw=Math.min(W-24,maxW||640);   // same cap as dlgBox, fine or coarse - never exceeds 640px
  return mw-(img?84:16)-12;
 }
 
