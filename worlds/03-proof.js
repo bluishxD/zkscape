@@ -184,7 +184,7 @@ function drawVS(p,t){if(!VS_IMG||!VS_IMG.width)return;const wx=VSX(),sx=X(wx),sy
   g2.shadowColor=VS_PAL[0];g2.shadowBlur=18;g2.imageSmoothingEnabled=false;g2.translate(sx,sy-bob);g2.scale(fl,1);g2.drawImage(VS_IMG,-w/2,-h,w,h)}
  g2.restore();
  if(Q.vsNear){tx_('Winter Spring',sx,sy-h-16,VS_PAL[0],MONO(12));tx_(coarse?'◉ TALK':'[E] TALK',sx,sy-h-34,'#e8f6ff',MONO(12))}}
- function drawVsDlg(){if(!Q.dlg)return;const d=Q.dlg,npc=VS_IMG&&VS_IMG.width;g2.font=MONO(15);const ln=wrap(d.L[d.i][0].slice(0,Math.floor(d.c)),W_-(npc?100:16));const B=dlgBox(W_,H_,coarse,ln,{img:npc});
+ function drawVsDlg(){if(!Q.dlg)return;const d=Q.dlg,npc=VS_IMG&&VS_IMG.width;g2.font=MONO(15);const ln=wrap(d.L[d.i][0].slice(0,Math.floor(d.c)),dlgTxtW(W_,coarse,npc));const B=dlgBox(W_,H_,coarse,ln,{img:npc});
  rc(B.bx,B.by,B.mw,B.bh,'#05060ff2');g2.strokeStyle='#4ee3f0';g2.lineWidth=2;g2.strokeRect(B.bx,B.by,B.mw,B.bh);
  if(npc){g2.imageSmoothingEnabled=false;g2.drawImage(VS_IMG,B.bx+10,B.by+10,64,64)}
  g2.textAlign='left';g2.fillStyle=VS_PAL[0];g2.font=MONO(13);g2.fillText('Winter Spring',B.bx+B.ix,B.by+26);

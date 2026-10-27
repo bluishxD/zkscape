@@ -297,7 +297,7 @@ function drawJeff(p,t){const sx=X(JF.x);if(sx<-120||sx>W_+120||!NPC_IMG||!NPC_IM
  if(V.jeffNear&&!V.dlg)tx_(coarse?'💬 TALK':'[E] TALK',sx,sy-h-34,'#e8f6ff',MONO(12))}
 // dialogue box: same look and typing rhythm as Origin
 function drawDlg(){
- if(!V.dlg)return;const d=V.dlg,npc=NPC_IMG&&NPC_IMG.width;g2.font=MONO(15);const ln=wrap(d.L[d.i][0].slice(0,Math.floor(d.c)),W_-(npc?100:16));const B=dlgBox(W_,H_,coarse,ln,{img:npc});
+ if(!V.dlg)return;const d=V.dlg,npc=NPC_IMG&&NPC_IMG.width;g2.font=MONO(15);const ln=wrap(d.L[d.i][0].slice(0,Math.floor(d.c)),dlgTxtW(W_,coarse,npc));const B=dlgBox(W_,H_,coarse,ln,{img:npc});
  rc(B.bx,B.by,B.mw,B.bh,'#05060ff2');g2.strokeStyle='#4ee3f0';g2.lineWidth=2;g2.strokeRect(B.bx,B.by,B.mw,B.bh);
  if(npc){g2.imageSmoothingEnabled=false;g2.drawImage(NPC_IMG,B.bx+10,B.by+10,64,64)}
  g2.textAlign='left';g2.fillStyle=NPC_PAL[0];g2.font=MONO(13);g2.fillText('Jeff',B.bx+B.ix,B.by+26);

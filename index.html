@@ -279,6 +279,17 @@ html.zpro-on #zhud,html.zpro-on #zback{display:none!important}
 #zfsb:active{background:var(--a);color:#000}
 @media(max-width:700px){#zfsb{top:64px;right:10px}}
 @media(prefers-reduced-motion:reduce){#zk #wel{transition:none}}
+/* Touch layering: the on-screen control bar (#hctl / #octl) spans from bottom:3vh up to about 3vh+72px.
+   The hub hint card (#zhm), the in-world fact card (#wf) and the end-of-world link buttons (#wd) all sat
+   inside that band, so they were drawn over the buttons. Lift them above it. #wf holds text only, so it
+   also stops taking pointer events and can never swallow a tap meant for the game. #wd holds real
+   buttons, so it is raised above the control bar (z-index) instead. !important only because #wf / #wd
+   carry their position as inline styles. */
+@media (pointer:coarse),(max-width:800px){
+#zhm{bottom:calc(3vh + 86px)}
+#zk #wf{bottom:calc(3vh + 86px)!important;max-height:34vh;overflow:hidden;pointer-events:none}
+#zk #wd{bottom:calc(3vh + 86px)!important;z-index:9}
+}
 </style>
 <style id="zk-snark">
 /* zkSNARK number picker (landing). Framed like .plq / the angled-corner buttons. */

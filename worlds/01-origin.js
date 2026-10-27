@@ -288,7 +288,7 @@ function drawHud(p){g2.textAlign='center';const s='ORIGIN DISCOVERIES: '+O.n+'/5
  rc(bx,by,wd,fs*2.3,'#05060fcc');g2.strokeStyle=O.hf>0?'#fff':p.pr;g2.lineWidth=O.hf>0?3:1.5;g2.strokeRect(bx,by,wd,fs*2.3);g2.fillStyle='#ece8df';g2.fillText(s,W_/2,by+fs*1.05);
  for(let i=0;i<5;i++){g2.fillStyle=O.got[i]===2?p.pr:O.got[i]===1?'#ffd35a':'#3a3d55';const x=W_/2-40+i*20,y=by+fs*1.75;g2.beginPath();g2.moveTo(x,y-6);g2.lineTo(x+5,y);g2.lineTo(x,y+6);g2.lineTo(x-5,y);g2.fill()}
  if(O.carry>=0){const c='CARRYING  \u25C8 '+D[O.carry].h;g2.font=MONO(12);const cw=g2.measureText(c).width+28,cy=by+fs*2.3+6;rc(W_/2-cw/2,cy,cw,fs*1.6,'#05060fcc');g2.strokeStyle='#ffd35a';g2.lineWidth=1.5;g2.strokeRect(W_/2-cw/2,cy,cw,fs*1.6);g2.fillStyle='#ffd35a';g2.fillText(c,W_/2,cy+fs*1.1)}
- if(O.dlg){const d=O.dlg,npc=NPC.complete&&NPC.width;g2.font=MONO(15);const ln=wrap(d.L[d.i].slice(0,Math.floor(d.c)),W_-(npc?100:16));const B=dlgBox(W_,H_,coarse,ln,{img:npc});
+ if(O.dlg){const d=O.dlg,npc=NPC.complete&&NPC.width;g2.font=MONO(15);const ln=wrap(d.L[d.i].slice(0,Math.floor(d.c)),dlgTxtW(W_,coarse,npc));const B=dlgBox(W_,H_,coarse,ln,{img:npc});
   rc(B.bx,B.by,B.mw,B.bh,'#05060ff2');g2.strokeStyle='#4ee3f0';g2.lineWidth=2;g2.strokeRect(B.bx,B.by,B.mw,B.bh);
   if(npc){g2.imageSmoothingEnabled=false;g2.drawImage(NPC,B.bx+10,B.by+10,64,64)}
   g2.textAlign='left';g2.fillStyle=NPC_PAL[0];g2.font=MONO(13);g2.fillText('zkSNARK',B.bx+B.ix,B.by+26);g2.fillStyle='#ece8df';g2.font=MONO(15);B.win.forEach((l,i)=>g2.fillText(l,B.bx+B.ix,B.by+B.head+i*B.lh));
